@@ -97,7 +97,6 @@ export function createParser(tkns: Array<Token>): Parser {
     while (!isAtEnd()) {
       const statement: ThriftStatement = parseStatement();
       if (statement !== null) {
-        console.log('statement: ', statement);
         thrift.body.push(statement);
       }
     }
@@ -107,7 +106,7 @@ export function createParser(tkns: Array<Token>): Parser {
 
   function parseStatement(): ThriftStatement {
     const next: Token = currentToken();
-    console.log('next: ', next);
+    
     // All Thrift statements must start with one of these types
     switch(next.type) {
       case SyntaxType.NamespaceKeyword:

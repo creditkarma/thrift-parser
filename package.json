@@ -9,8 +9,8 @@
     "test": "NODE_ENV=test mocha --opts mocha.opts",
     "coverage": "NODE_ENV=test nyc mocha --opts mocha.cover.opts"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Credit Karma",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "^4.0.2",
     "@types/mocha": "^2.2.41",

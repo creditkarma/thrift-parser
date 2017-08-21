@@ -353,8 +353,6 @@ describe('Parser', () => {
     const parser: Parser = createParser(tokens);
     const thrift: ThriftDocument = parser.parse();
 
-    // console.log(JSON.stringify(thrift, null, 2));
-
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
       body: [

@@ -88,6 +88,13 @@ export function createScanner(src: string) {
         nextLine();
         break;
 
+      case '&':
+        // Thirft supports (undocumented by the grammar) a syntax for c-style pointers
+        // Pointers are indicated by the '&' token. As these are not relevant to JavaScript we
+        // drop them here. This may not be the best thing to do, perhaps should leave them in
+        // the parse tree and allow consumers to deal.
+        break;
+
       case '=':
         addToken(SyntaxType.EqualToken);
         break;

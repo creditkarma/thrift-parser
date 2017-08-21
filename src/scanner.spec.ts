@@ -448,6 +448,181 @@ describe('Scanner', () => {
     assert.deepEqual(tokens, expected);
   });
 
+    it(`should remove pointer syntax '&' from the list of tokens`, () => {
+    const content: string = `
+      struct MyStruct {
+        1: required MyStruct & nextItem
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const expected: Array<Token> = [
+      {
+        type: SyntaxType.StructKeyword,
+        text: 'struct',
+        loc: {
+          start: {
+            line: 2,
+            column: 7,
+            index: 7
+          },
+          end: {
+            line: 2,
+            column: 13,
+            index: 13
+          }
+        }
+      },
+      {
+        type: SyntaxType.Identifier,
+        text: 'MyStruct',
+        loc: {
+          start: {
+            line: 2,
+            column: 14,
+            index: 14
+          },
+          end: {
+            line: 2,
+            column: 22,
+            index: 22
+          }
+        }
+      },
+      {
+        type: SyntaxType.LeftBraceToken,
+        text: '',
+        loc: {
+          start: {
+            line: 2,
+            column: 23,
+            index: 23
+          },
+          end: {
+            line: 2,
+            column: 24,
+            index: 24
+          }
+        }
+      },
+      {
+        type: SyntaxType.IntegerLiteral,
+        text: '1',
+        loc: {
+          start: {
+            line: 3,
+            column: 9,
+            index: 33
+          },
+          end: {
+            line: 3,
+            column: 10,
+            index: 34
+          }
+        }
+      },
+      {
+        type: SyntaxType.ColonToken,
+        text: '',
+        loc: {
+          start: {
+            line: 3,
+            column: 10,
+            index: 34
+          },
+          end: {
+            line: 3,
+            column: 11,
+            index: 35
+          }
+        }
+      },
+      {
+        type: SyntaxType.RequiredKeyword,
+        text: 'required',
+        loc: {
+          start: {
+            line: 3,
+            column: 12,
+            index: 36
+          },
+          end: {
+            line: 3,
+            column: 20,
+            index: 44
+          }
+        }
+      },
+      {
+        type: SyntaxType.Identifier,
+        text: 'MyStruct',
+        loc: {
+          start: {
+            line: 3,
+            column: 21,
+            index: 45
+          },
+          end: {
+            line: 3,
+            column: 29,
+            index: 53
+          }
+        }
+      },
+      {
+        type: SyntaxType.Identifier,
+        text: 'nextItem',
+        loc: {
+          start: {
+            line: 3,
+            column: 32,
+            index: 56
+          },
+          end: {
+            line: 3,
+            column: 40,
+            index: 64
+          }
+        }
+      },
+      {
+        type: SyntaxType.RightBraceToken,
+        text: '',
+        loc: {
+          start: {
+            line: 4,
+            column: 7,
+            index: 71
+          },
+          end: {
+            line: 4,
+            column: 8,
+            index: 72
+          }
+        }
+      },
+      {
+        type: SyntaxType.EOF,
+        text: '',
+        loc: {
+          start: {
+            line: 5,
+            column: 4,
+            index: 77
+          },
+          end: {
+            line: 5,
+            column: 5,
+            index: 77
+          }
+        }
+      }
+    ];
+
+    assert.deepEqual(tokens, expected);
+  });
+
   it(`should correctly handle single-line comments with '//'`, () => {
     const content: string = `
       // This is a struct

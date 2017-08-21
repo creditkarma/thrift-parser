@@ -44,12 +44,8 @@ export type DefinitionType =
 export type KeywordType =
   SyntaxType.StringKeyword | SyntaxType.DoubleKeyword | SyntaxType.MapKeyword |
   SyntaxType.BoolKeyword | SyntaxType.I8Keyword | SyntaxType.I16Keyword |
-<<<<<<< HEAD
   SyntaxType.I32Keyword | SyntaxType.I64Keyword | SyntaxType.BinaryKeyword |
   SyntaxType.ByteKeyword;
-=======
-  SyntaxType.I32Keyword | SyntaxType.I64Keyword | SyntaxType.BinaryKeyword;
->>>>>>> Parser implementation
 
 export interface VoidType extends SyntaxNode {
   type: SyntaxType.VoidKeyword;
@@ -249,7 +245,6 @@ export const enum SyntaxType {
 
   // Type Annotations
   FieldType = 'FieldType',
-  ReferenceFieldType = 'ReferenceFieldType',
   BaseType = 'BaseType',
   SetType = 'SetType',
   MapType = 'MapType',
