@@ -44,8 +44,12 @@ export type DefinitionType =
 export type KeywordType =
   SyntaxType.StringKeyword | SyntaxType.DoubleKeyword | SyntaxType.MapKeyword |
   SyntaxType.BoolKeyword | SyntaxType.I8Keyword | SyntaxType.I16Keyword |
+<<<<<<< HEAD
   SyntaxType.I32Keyword | SyntaxType.I64Keyword | SyntaxType.BinaryKeyword |
   SyntaxType.ByteKeyword;
+=======
+  SyntaxType.I32Keyword | SyntaxType.I64Keyword | SyntaxType.BinaryKeyword;
+>>>>>>> Parser implementation
 
 export interface VoidType extends SyntaxNode {
   type: SyntaxType.VoidKeyword;
@@ -221,7 +225,6 @@ export interface Identifier extends SyntaxNode {
 }
 
 export const enum SyntaxType {
-  ThriftDocument = 'ThriftDocument',
   ThriftDocument = 'ThriftDocument',
 
   Identifier = 'Identifier',
