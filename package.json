@@ -1,0 +1,24 @@
+{
+  "name": "ts-thrift-parser",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist; tsc",
+    "test": "NODE_ENV=test mocha --opts mocha.opts",
+    "coverage": "NODE_ENV=test nyc mocha --opts mocha.cover.opts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.0.2",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.24",
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0",
+    "nyc": "^11.1.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.4.2"
+  }
+}

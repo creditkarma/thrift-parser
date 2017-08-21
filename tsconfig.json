@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "suppressExcessPropertyErrors": true,
+    "allowSyntheticDefaultImports": true,
+    "listEmittedFiles": true,
+    "pretty": true,
+    "removeComments": false,
+    "lib": [
+      "ES6"
+    ],
+    "types": [
+      "@types/mocha",
+      "@types/chai",
+      "@types/node"
+    ]
+  },
+  "files": [
+    "./index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
