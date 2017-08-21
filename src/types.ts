@@ -222,6 +222,7 @@ export interface Identifier extends SyntaxNode {
 
 export const enum SyntaxType {
   ThriftDocument = 'ThriftDocument',
+  ThriftDocument = 'ThriftDocument',
 
   Identifier = 'Identifier',
   NamespaceScope = 'NamespaceScope',

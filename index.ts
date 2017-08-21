@@ -1,6 +1,7 @@
 import { ThriftDocument, Token } from './src/types';
 import { Scanner, createScanner } from './src/scanner';
 import { Parser, createParser } from './src/parser';
+import { organize } from './src/organizer';
 export * from './src/types';
 
 export function parse(source: string): ThriftDocument {
@@ -10,7 +11,12 @@ export function parse(source: string): ThriftDocument {
   const tokens: Array<Token> = scanner.scan();
 
   const parser: Parser = createParser(tokens);
-  const thrift: ThriftDocument = parser.parse();
+  const intermediate: ThriftDocument = parser.parse();
+  const thrift: ThriftDocument = organize(intermediate);
 
   return thrift;
+}
+
+export function report(line: number, column: number, where: string, message: string): void {
+
 }

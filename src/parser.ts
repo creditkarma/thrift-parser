@@ -347,7 +347,6 @@ export function createParser(tkns: Array<Token>): Parser {
     const idToken: Token = consume(SyntaxType.Identifier);
     requireToken(idToken, `typedef is expected to have name and none found`);
 
-
     return {
       type: SyntaxType.TypedefDefinition,
       name: createIdentifier(idToken.text, idToken.loc),
