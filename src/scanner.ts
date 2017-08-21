@@ -370,7 +370,7 @@ export function createScanner(src: string) {
 
   function nextLine() {
     line++;
-    column = 0;
+    column = 1;
   }
 
   function commitToken(type: SyntaxType): void {

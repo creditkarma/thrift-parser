@@ -25,19 +25,19 @@ describe('Parser', () => {
         {
           type: SyntaxType.TypedefDefinition,
           name: createIdentifier('name', {
-            start: { line: 2, column: 21, index: 22 },
-            end: { line: 2, column: 25, index: 26 }
+            start: { line: 2, column: 22, index: 22 },
+            end: { line: 2, column: 26, index: 26 }
           }),
           definitionType: {
             type: SyntaxType.StringKeyword,
             loc: {
-              start: { line: 2, column: 14, index: 15 },
-              end: { line: 2, column: 20, index: 21 }
+              start: { line: 2, column: 15, index: 15 },
+              end: { line: 2, column: 21, index: 21 }
             }
           },
           loc: {
-            start: { line: 2, column: 6, index: 7 },
-            end: { line: 2, column: 25, index: 26 }
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 2, column: 26, index: 26 }
           }
         }
       ]
@@ -67,12 +67,12 @@ describe('Parser', () => {
             loc: {
               start: {
                 line: 2,
-                column: 19,
+                column: 20,
                 index: 20
               },
               end: {
                 line: 2,
-                column: 23,
+                column: 24,
                 index: 24
               }
             }
@@ -83,12 +83,12 @@ describe('Parser', () => {
             loc: {
               start: {
                 line: 2,
-                column: 16,
+                column: 17,
                 index: 17
               },
               end: {
                 line: 2,
-                column: 18,
+                column: 19,
                 index: 19
               }
             }
@@ -96,12 +96,12 @@ describe('Parser', () => {
           loc: {
             start: {
               line: 2,
-              column: 6,
+              column: 7,
               index: 7
             },
             end: {
               line: 2,
-              column: 23,
+              column: 24,
               index: 24
             }
           }
@@ -133,44 +133,36 @@ describe('Parser', () => {
             type: SyntaxType.Identifier,
             value: 'Test',
             loc: {
-              start: {
-                line: 2,
-                column: 14,
-                index: 15
-              },
-              end: {
-                line: 2,
-                column: 18,
-                index: 19
-              }
+              start: { line: 2, column: 15, index: 15 },
+              end: { line: 2, column: 19, index: 19 }
             }
           },
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
-                start: { line: 3, column: 13, index: 35 },
-                end: { line: 3, column: 17, index: 39 }
+                start: { line: 3, column: 14, index: 35 },
+                end: { line: 3, column: 18, index: 39 }
               }),
               fields: [],
               throws: [],
               returnType: {
                 type: SyntaxType.BoolKeyword,
                 loc: {
-                  start: { line: 3, column: 8, index: 30 },
-                  end: { line: 3, column: 12, index: 34 }
+                  start: { line: 3, column: 9, index: 30 },
+                  end: { line: 3, column: 13, index: 34 }
                 }
               },
               loc: {
-                start: { line: 3, column: 8, index: 30 },
-                end: { line: 3, column: 17, index: 39 }
+                start: { line: 3, column: 9, index: 30 },
+                end: { line: 3, column: 18, index: 39 }
               }
             }
           ],
           extends: null,
           loc: {
-            start: { line: 2, column: 6, index: 7 },
-            end: { line: 4, column: 7, index: 49 }
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 4, column: 8, index: 49 }
           }
         }
       ]
@@ -198,16 +190,16 @@ describe('Parser', () => {
         {
           type: SyntaxType.ServiceDefinition,
           name: createIdentifier('Test', {
-            start: { line: 2, column: 14, index: 15 },
-            end: { line: 2, column: 18, index: 19 },
+            start: { line: 2, column: 15, index: 15 },
+            end: { line: 2, column: 19, index: 19 },
           }),
           extends: null,
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
-                start: { line: 3, column: 17, index: 39 },
-                end: { line: 3, column: 21, index: 43 }
+                start: { line: 3, column: 18, index: 39 },
+                end: { line: 3, column: 22, index: 43 }
               }),
               fields: [],
               throws: [],
@@ -215,19 +207,19 @@ describe('Parser', () => {
                 type: SyntaxType.Identifier,
                 value: 'TestType',
                 loc: {
-                  start: { line: 3, column: 8, index: 30 },
-                  end: { line: 3, column: 16, index: 38 }
+                  start: { line: 3, column: 9, index: 30 },
+                  end: { line: 3, column: 17, index: 38 }
                 }
               },
               loc: {
-                start: { line: 3, column: 8, index: 30 },
-                end: { line: 3, column: 21, index: 43 }
+                start: { line: 3, column: 9, index: 30 },
+                end: { line: 3, column: 22, index: 43 }
               }
             }
           ],
           loc: {
-            start: { line: 2, column: 6, index: 7 },
-            end: { line: 4, column: 7, index: 53 }
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 4, column: 8, index: 53 }
           }
         }
       ]
@@ -259,24 +251,16 @@ describe('Parser', () => {
             type: SyntaxType.Identifier,
             value: 'Test',
             loc: {
-              start: {
-                line: 2,
-                column: 14,
-                index: 15
-              },
-              end: {
-                line: 2,
-                column: 18,
-                index: 19
-              }
+              start: { line: 2, column: 15, index: 15 },
+              end: { line: 2, column: 19, index: 19 }
             }
           },
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
-                start: { line: 3, column: 13, index: 35 },
-                end: { line: 3, column: 17, index: 39 }
+                start: { line: 3, column: 14, index: 35 },
+                end: { line: 3, column: 18, index: 39 }
               }),
               fields: [
                 {
@@ -285,19 +269,19 @@ describe('Parser', () => {
                   requiredness: null,
                   defaultValue: null,
                   name: createIdentifier('test1', {
-                    start: { line: 3, column: 25, index: 47 },
-                    end: { line: 3, column: 30, index: 52 }
+                    start: { line: 3, column: 26, index: 47 },
+                    end: { line: 3, column: 31, index: 52 }
                   }),
                   fieldType: {
                     type: SyntaxType.StringKeyword,
                     loc: {
-                      start: { line: 3, column: 18, index: 40 },
-                      end: { line: 3, column: 24, index: 46 }
+                      start: { line: 3, column: 19, index: 40 },
+                      end: { line: 3, column: 25, index: 46 }
                     }
                   },
                   loc: {
-                    start: { line: 3, column: 18, index: 40 },
-                    end: { line: 3, column: 31, index: 53 }
+                    start: { line: 3, column: 19, index: 40 },
+                    end: { line: 3, column: 32, index: 53 }
                   }
                 },
                 {
@@ -306,26 +290,26 @@ describe('Parser', () => {
                     type: SyntaxType.FieldID,
                     value: 1,
                     loc: {
-                      start: { line: 3, column: 32, index: 54 },
-                      end: { line: 3, column: 34, index: 56 }
+                      start: { line: 3, column: 33, index: 54 },
+                      end: { line: 3, column: 35, index: 56 }
                     }
                   },
                   requiredness: null,
                   defaultValue: null,
                   name: createIdentifier('test2', {
-                    start: { line: 3, column: 40, index: 62 },
-                    end: { line: 3, column: 45, index: 67 }
+                    start: { line: 3, column: 41, index: 62 },
+                    end: { line: 3, column: 46, index: 67 }
                   }),
                   fieldType: {
                     type: SyntaxType.BoolKeyword,
                     loc: {
-                      start: { line: 3, column: 35, index: 57 },
-                      end: { line: 3, column: 39, index: 61 }
+                      start: { line: 3, column: 36, index: 57 },
+                      end: { line: 3, column: 40, index: 61 }
                     }
                   },
                   loc: {
-                    start: { line: 3, column: 32, index: 54 },
-                    end: { line: 3, column: 45, index: 67  }
+                    start: { line: 3, column: 33, index: 54 },
+                    end: { line: 3, column: 46, index: 67  }
                   }
                 }
               ],
@@ -333,28 +317,20 @@ describe('Parser', () => {
               returnType: {
                 type: SyntaxType.VoidKeyword,
                 loc: {
-                  start: { line: 3, column: 8, index: 30 },
-                  end: { line: 3, column: 12, index: 34 }
+                  start: { line: 3, column: 9, index: 30 },
+                  end: { line: 3, column: 13, index: 34 }
                 }
               },
               loc: {
-                start: { line: 3, column: 8, index: 30 },
-                end: { line: 3, column: 17, index: 39 }
+                start: { line: 3, column: 9, index: 30 },
+                end: { line: 3, column: 18, index: 39 }
               }
             }
           ],
           extends: null,
           loc: {
-            start: {
-              line: 2,
-              column: 6,
-              index: 7
-            },
-            end: {
-              line: 4,
-              column: 7,
-              index: 76
-            }
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 4, column: 8, index: 76 }
           }
         }
       ]
@@ -385,38 +361,38 @@ describe('Parser', () => {
         {
           type: SyntaxType.EnumDefinition,
           name: createIdentifier('Test', {
-            start: { line: 2, column: 11, index: 12 },
-            end: { line: 2, column: 15, index: 16 }
+            start: { line: 2, column: 12, index: 12 },
+            end: { line: 2, column: 16, index: 16 }
           }),
           members: [
             {
               type: SyntaxType.EnumMember,
               name: createIdentifier('ONE', {
-                start: { line: 3, column: 8, index: 27 },
-                end: { line: 3, column: 11, index: 30 }
+                start: { line: 3, column: 9, index: 27 },
+                end: { line: 3, column: 12, index: 30 }
               }),
               initializer: null,
               loc: {
-                start: { line: 3, column: 8, index: 27 },
-                end: { line: 3, column: 11, index: 30 }
+                start: { line: 3, column: 9, index: 27 },
+                end: { line: 3, column: 12, index: 30 }
               }
             },
             {
               type: SyntaxType.EnumMember,
               name: createIdentifier('TWO', {
-                start: { line: 4, column: 8, index: 40 },
-                end: { line: 4, column: 11, index: 43 }
+                start: { line: 4, column: 9, index: 40 },
+                end: { line: 4, column: 12, index: 43 }
               }),
               initializer: null,
               loc: {
-                start: { line: 4, column: 8, index: 40 },
-                end: { line: 4, column: 11, index: 43 }
+                start: { line: 4, column: 9, index: 40 },
+                end: { line: 4, column: 12, index: 43 }
               }
             }
           ],
           loc: {
-            start: { line: 2, column: 6, index: 7 },
-            end: { line: 5, column: 7, index: 51 }
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 5, column: 8, index: 51 }
           }
         }
       ]

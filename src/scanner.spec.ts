@@ -17,12 +17,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 10,
+            column: 11,
             index: 11
           }
         }
@@ -33,12 +33,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 16
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 16
           }
         }
@@ -62,12 +62,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 22,
+            column: 23,
             index: 23
           }
         }
@@ -78,12 +78,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 28
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 28
           }
         }
@@ -107,12 +107,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 22,
+            column: 23,
             index: 23
           }
         }
@@ -123,12 +123,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 28
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 28
           }
         }
@@ -152,12 +152,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 11,
+            column: 12,
             index: 12
           }
         }
@@ -168,12 +168,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 17
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 17
           }
         }
@@ -197,12 +197,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 9,
+            column: 10,
             index: 10
           }
         }
@@ -213,12 +213,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 15
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 15
           }
         }
@@ -242,12 +242,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 12,
+            column: 13,
             index: 13
           }
         }
@@ -258,12 +258,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 18
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 18
           }
         }
@@ -289,12 +289,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 12,
+            column: 13,
             index: 13
           }
         }
@@ -305,12 +305,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 13,
+            column: 14,
             index: 14
           },
           end: {
             line: 2,
-            column: 21,
+            column: 22,
             index: 22
           }
         }
@@ -321,12 +321,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 22,
+            column: 23,
             index: 23
           },
           end: {
             line: 2,
-            column: 23,
+            column: 24,
             index: 24
           }
         }
@@ -337,12 +337,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 8,
+            column: 9,
             index: 33
           },
           end: {
             line: 3,
-            column: 9,
+            column: 10,
             index: 34
           }
         }
@@ -353,12 +353,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 9,
+            column: 10,
             index: 34
           },
           end: {
             line: 3,
-            column: 10,
+            column: 11,
             index: 35
           }
         }
@@ -369,12 +369,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 11,
+            column: 12,
             index: 36
           },
           end: {
             line: 3,
-            column: 19,
+            column: 20,
             index: 44
           }
         }
@@ -385,12 +385,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 20,
+            column: 21,
             index: 45
           },
           end: {
             line: 3,
-            column: 23,
+            column: 24,
             index: 48
           }
         }
@@ -401,12 +401,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 24,
+            column: 25,
             index: 49
           },
           end: {
             line: 3,
-            column: 26,
+            column: 27,
             index: 51
           }
         }
@@ -417,12 +417,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 4,
-            column: 6,
+            column: 7,
             index: 58
           },
           end: {
             line: 4,
-            column: 7,
+            column: 8,
             index: 59
           }
         }
@@ -433,12 +433,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 5,
-            column: 3,
+            column: 4,
             index: 64
           },
           end: {
             line: 5,
-            column: 4,
+            column: 5,
             index: 64
           }
         }
@@ -462,12 +462,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 25,
+            column: 26,
             index: 26
           }
         }
@@ -478,12 +478,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 31
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 31
           }
         }
@@ -507,12 +507,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 24,
+            column: 25,
             index: 25
           }
         }
@@ -523,12 +523,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 30
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 30
           }
         }
@@ -554,12 +554,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 4,
-            column: 10,
+            column: 11,
             index: 60
           }
         }
@@ -570,12 +570,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 5,
-            column: 3,
+            column: 4,
             index: 65
           },
           end: {
             line: 5,
-            column: 4,
+            column: 5,
             index: 65
           }
         }
@@ -599,12 +599,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 11,
+            column: 12,
             index: 12
           }
         }
@@ -615,12 +615,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 12,
+            column: 13,
             index: 13
           },
           end: {
             line: 2,
-            column: 18,
+            column: 19,
             index: 19
           }
         }
@@ -631,12 +631,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 19,
+            column: 20,
             index: 20
           },
           end: {
             line: 2,
-            column: 23,
+            column: 24,
             index: 24
           }
         }
@@ -647,12 +647,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 24,
+            column: 25,
             index: 25
           },
           end: {
             line: 2,
-            column: 25,
+            column: 26,
             index: 26
           }
         }
@@ -663,12 +663,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 26,
+            column: 27,
             index: 27
           },
           end: {
             line: 2,
-            column: 39,
+            column: 40,
             index: 40
           }
         }
@@ -679,12 +679,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 45
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 45
           }
         }
@@ -708,12 +708,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 6,
+            column: 7,
             index: 7
           },
           end: {
             line: 2,
-            column: 11,
+            column: 12,
             index: 12
           }
         }
@@ -724,12 +724,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 12,
+            column: 13,
             index: 13
           },
           end: {
             line: 2,
-            column: 15,
+            column: 16,
             index: 16
           }
         }
@@ -740,12 +740,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 16,
+            column: 17,
             index: 17
           },
           end: {
             line: 2,
-            column: 20,
+            column: 21,
             index: 21
           }
         }
@@ -756,12 +756,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 21,
+            column: 22,
             index: 22
           },
           end: {
             line: 2,
-            column: 22,
+            column: 23,
             index: 23
           }
         }
@@ -772,12 +772,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 2,
-            column: 23,
+            column: 24,
             index: 24
           },
           end: {
             line: 2,
-            column: 26,
+            column: 27,
             index: 27
           }
         }
@@ -788,12 +788,12 @@ describe('Scanner', () => {
         loc: {
           start: {
             line: 3,
-            column: 3,
+            column: 4,
             index: 32
           },
           end: {
             line: 3,
-            column: 4,
+            column: 5,
             index: 32
           }
         }
