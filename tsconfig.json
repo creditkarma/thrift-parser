@@ -8,8 +8,6 @@
     "outDir": "./dist",
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "suppressExcessPropertyErrors": true,
-    "allowSyntheticDefaultImports": true,
     "listEmittedFiles": true,
     "pretty": true,
     "removeComments": false,

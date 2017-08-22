@@ -3,10 +3,10 @@ import { Scanner, createScanner } from './src/scanner';
 import { Parser, createParser } from './src/parser';
 import { organize } from './src/organizer';
 export * from './src/types';
+export { createScanner } from './src/scanner';
+export { createParser } from './src/parser';
 
 export function parse(source: string): ThriftDocument {
-  console.log('source: ', source);
-  var hadError: boolean = false;
   const scanner: Scanner = createScanner(source);
   const tokens: Array<Token> = scanner.scan();
 
@@ -15,8 +15,4 @@ export function parse(source: string): ThriftDocument {
   const thrift: ThriftDocument = organize(intermediate);
 
   return thrift;
-}
-
-export function report(line: number, column: number, where: string, message: string): void {
-
 }
