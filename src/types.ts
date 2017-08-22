@@ -109,10 +109,21 @@ export interface CppIncludeDefinition extends SyntaxNode {
   path: StringLiteral;
 }
 
-export interface StructDefinition extends SyntaxNode {
-  type: SyntaxType.StructDefinition;
+export interface InterfaceWithFields extends SyntaxNode {
   name: Identifier;
   fields: Array<FieldDefinition>;
+}
+
+export interface StructDefinition extends InterfaceWithFields {
+  type: SyntaxType.StructDefinition;
+}
+
+export interface UnionDefinition extends InterfaceWithFields {
+  type: SyntaxType.UnionDefinition;
+}
+
+export interface ExceptionDefinition extends InterfaceWithFields {
+  type: SyntaxType.ExceptionDefinition;
 }
 
 export interface FieldDefinition extends SyntaxNode {
@@ -139,18 +150,6 @@ export interface EnumMember extends SyntaxNode {
   type: SyntaxType.EnumMember;
   name: Identifier;
   initializer: IntConstant;
-}
-
-export interface UnionDefinition extends SyntaxNode {
-  type: SyntaxType.UnionDefinition;
-  name: Identifier;
-  fields: Array<FieldDefinition>;
-}
-
-export interface ExceptionDefinition extends SyntaxNode {
-  type: SyntaxType.ExceptionDefinition;
-  name: Identifier;
-  fields: Array<FieldDefinition>;
 }
 
 export interface TypedefDefinition extends SyntaxNode {
