@@ -47,40 +47,36 @@ function isHexDigit(value: string): boolean {
 
 export class ScanError extends Error {}
 
-export class Scanner {
-  private source: string;
-  private line: number;
-  private column: number;
-  private startLine: number;
-  private startColumn: number;
-  private startIndex: number;
-  private currentIndex: number;
-  private tokens: Array<Token>;
+export interface Scanner {
+  scan(): Array<Token>;
+}
 
-  constructor(src: string) {
-    this.source = src;
-    this.tokens = [];
-    this.line = 1;
-    this.column = 1;
-    this.currentIndex = 0;
-  }
+export function createScanner(src: string) {
+  const source: string = src;
+  const tokens: Array<Token> = [];
+  var line: number = 1;
+  var column: number = 1;
+  var startLine: number = 1;
+  var startColumn: number = 1;
+  var startIndex: number = 0;
+  var currentIndex: number = 0;
 
-  scan(): Array<Token> {
-    while (!this.isAtEnd()) {
-      this.startIndex = this.currentIndex;
-      this.startLine = this.line;
-      this.startColumn = this.column;
-      this.scanToken();
+  function scan(): Array<Token> {
+    while (!isAtEnd()) {
+      startIndex = currentIndex;
+      startLine = line;
+      startColumn = column;
+      scanToken();
     }
 
-    this.startIndex = this.currentIndex;
-    this.addToken(SyntaxType.EOF);
+    startIndex = currentIndex;
+    addToken(SyntaxType.EOF);
 
-    return this.tokens;
+    return tokens;
   }
 
-  private scanToken(): void {
-    const next = this.advance();
+  function scanToken(): void {
+    const next = advance();
     switch (next) {
       case ' ':
       case '\r':
@@ -89,65 +85,65 @@ export class Scanner {
         break;
 
       case '\n':
-        this.nextLine();
+        nextLine();
         break;
 
       case '=':
-        this.addToken(SyntaxType.EqualToken);
+        addToken(SyntaxType.EqualToken);
         break;
 
       case '(':
-        this.addToken(SyntaxType.LeftParenToken);
+        addToken(SyntaxType.LeftParenToken);
         break;
 
       case ')':
-        this.addToken(SyntaxType.RightParenToken);
+        addToken(SyntaxType.RightParenToken);
         break;
 
       case '{':
-        this.addToken(SyntaxType.LeftBraceToken);
+        addToken(SyntaxType.LeftBraceToken);
         break;
 
       case '}':
-        this.addToken(SyntaxType.RightBraceToken);
+        addToken(SyntaxType.RightBraceToken);
         break;
 
       case '[':
-        this.addToken(SyntaxType.LeftBracketToken);
+        addToken(SyntaxType.LeftBracketToken);
         break;
 
       case ']':
-        this.addToken(SyntaxType.RightBracketToken);
+        addToken(SyntaxType.RightBracketToken);
         break;
 
       case ';':
-        this.addToken(SyntaxType.SemicolonToken);
+        addToken(SyntaxType.SemicolonToken);
         break;
 
       case ',':
-        this.addToken(SyntaxType.CommaToken);
+        addToken(SyntaxType.CommaToken);
         break;
 
       // Strings can use single or double quotes
       case '"':
       case '\'':
-        this.string();
+        string();
         break;
 
       case ':':
-        this.addToken(SyntaxType.ColonToken);
+        addToken(SyntaxType.ColonToken);
         break;
 
       case '#':
-        this.singleLineComment();
+        singleLineComment();
         break;
 
       case '/':
-        if (this.peek() === '/') {
-          this.singleLineComment();
+        if (peek() === '/') {
+          singleLineComment();
         }
-        else if (this.peek() === '*') {
-          this.multilineComment();
+        else if (peek() === '*') {
+          multilineComment();
         }
         else {
           throw new ScanError(`Unexpected token: ${next}`);
@@ -155,23 +151,23 @@ export class Scanner {
         break;
 
       case '<':
-        this.addToken(SyntaxType.LessThanToken);
+        addToken(SyntaxType.LessThanToken);
         break;
 
       case '>':
-        this.addToken(SyntaxType.GreaterThanToken);
+        addToken(SyntaxType.GreaterThanToken);
         break;
 
       case '-':
-        this.addToken(SyntaxType.MinusToken);
+        addToken(SyntaxType.MinusToken);
         break;
 
       default:
         if (isDigit(next)) {
-          this.number();
+          number();
         }
         else if (isAlphaOrUnderscore(next)) {
-          this.identifier();
+          identifier();
         }
         else if (isValidIdentifier(next)) {
           throw new ScanError(`Invalid identifier '${next}': Identifiers must begin with a letter or underscore`);
@@ -182,228 +178,228 @@ export class Scanner {
     }
   }
 
-  private identifier(): void {
-    while (!this.isAtEnd() && this.peek() !== '\n' && isValidIdentifier(this.peek())) {
-      this.advance();
+  function identifier(): void {
+    while (!isAtEnd() && peek() !== '\n' && isValidIdentifier(peek())) {
+      advance();
     }
 
-    const literal: string = this.source.substring(this.startIndex, this.currentIndex);
+    const literal: string = source.substring(startIndex, currentIndex);
     const type: SyntaxType = KEYWORDS[literal];
 
     if (type == null) {
-      this.addToken(SyntaxType.Identifier, literal);
+      addToken(SyntaxType.Identifier, literal);
     }
     else {
-      this.addToken(type, literal);
+      addToken(type, literal);
     }
   }
 
-  private number(): void {
-    if (this.current() === '0' && (this.consume('x') || this.consume('X'))) {
-      this.hexadecimal();
+  function number(): void {
+    if (current() === '0' && (consume('x') || consume('X'))) {
+      hexadecimal();
     } else {
-      this.integer();
+      integer();
 
-      if (this.peek() === 'e' || this.peek() === 'E') {
-        this.enotation();
-      } else if (this.peek() === '.' && isDigit(this.peekNext())) {
-        this.float();
+      if (peek() === 'e' || peek() === 'E') {
+        enotation();
+      } else if (peek() === '.' && isDigit(peekNext())) {
+        float();
       } else {
-        this.commitToken(SyntaxType.IntegerLiteral);
+        commitToken(SyntaxType.IntegerLiteral);
       }
     }
   }
 
-  private hexadecimal(): void {
+  function hexadecimal(): void {
     while(
-      !this.isAtEnd() &&
-      this.peek() !== '\n' &&
-      isHexDigit(this.peek())
+      !isAtEnd() &&
+      peek() !== '\n' &&
+      isHexDigit(peek())
     ) {
-      this.advance();
+      advance();
     }
 
-    this.commitToken(SyntaxType.HexLiteral);
+    commitToken(SyntaxType.HexLiteral);
   }
 
-  private enotation(): void {
-    this.consume('e') || this.consume('E');
-    this.consume('-') || this.consume('+');
-    if (isDigit(this.peek())) {
-      this.integer();
-      this.commitToken(SyntaxType.ExponentialLiteral);
+  function enotation(): void {
+    consume('e') || consume('E');
+    consume('-') || consume('+');
+    if (isDigit(peek())) {
+      integer();
+      commitToken(SyntaxType.ExponentialLiteral);
     } else {
       throw new ScanError(`Invalid use of e-notation`);
     }
   }
 
-  private float(): void {
-    this.consume('.');
-    this.integer();
+  function float(): void {
+    consume('.');
+    integer();
 
-    if (this.peek() === 'e' || this.peek() === 'E') {
-      this.enotation();
+    if (peek() === 'e' || peek() === 'E') {
+      enotation();
     } else {
-      this.commitToken(SyntaxType.FloatLiteral);
+      commitToken(SyntaxType.FloatLiteral);
     }
   }
 
-  private integer(): void {
+  function integer(): void {
     while (
-      !this.isAtEnd() &&
-      this.peek() !== '\n' &&
-      (isDigit(this.peek()))
+      !isAtEnd() &&
+      peek() !== '\n' &&
+      (isDigit(peek()))
     ) {
-      this.advance();
+      advance();
     }
   }
 
-  private singleLineComment(): void {
+  function singleLineComment(): void {
     var comment: string = '';
     
-    if (this.current() === '#') {
-      this.advance();
+    if (current() === '#') {
+      advance();
     } else {
-      this.advance();
-      this.advance();
+      advance();
+      advance();
     }
 
     // A comment goes until the end of the line.
-    while (this.peek() !== '\n' && !this.isAtEnd()) {
-      comment += this.current();
-      this.advance();
+    while (peek() !== '\n' && !isAtEnd()) {
+      comment += current();
+      advance();
     }
 
-    comment += this.current();
+    comment += current();
 
-    this.addToken(SyntaxType.CommentLine, comment.trim());
+    addToken(SyntaxType.CommentLine, comment.trim());
   }
 
-  private multilineComment(): void {
+  function multilineComment(): void {
     var comment: string = '';
     var cursor: number = 0;
-    this.advance();
-    this.advance();
+    advance();
+    advance();
 
     while (true) {
-      if (this.peek() === '\n') {
-        this.nextLine();
+      if (peek() === '\n') {
+        nextLine();
       }
 
       if (
         comment.charAt(cursor - 1) === '\n' &&
-        (this.peek() === ' ' || this.peek() === '*')
+        (peek() === ' ' || peek() === '*')
       ) {
         /**
          * We ignore stars and spaces after a new line to normalize comment formatting.
          * We're only keeping the text of the comment without the extranious formatting.
          */
       } else {
-        comment += this.current();
+        comment += current();
         cursor += 1;
       }
 
-      this.advance();
+      advance();
 
       // A comment goes until we find a comment terminator (*/).
-      if ((this.peek() === '*' && this.peekNext() === '/') || this.isAtEnd()) {
-        this.advance();
-        this.advance();
+      if ((peek() === '*' && peekNext() === '/') || isAtEnd()) {
+        advance();
+        advance();
         break;
       }
     }
 
-    this.addToken(SyntaxType.CommentBlock, comment.trim());
+    addToken(SyntaxType.CommentBlock, comment.trim());
   }
 
-  private string(): void {
+  function string(): void {
     while (
-      !this.isAtEnd() &&
-      this.peek() !== '"' &&
-      this.peek() !== '\''
+      !isAtEnd() &&
+      peek() !== '"' &&
+      peek() !== '\''
     ) {
-      if (this.peek() === '\n') {
-        this.nextLine();
+      if (peek() === '\n') {
+        nextLine();
       }
 
-      this.advance();
+      advance();
     }
 
-    if (this.isAtEnd() && this.previous() !== '"') {
+    if (isAtEnd() && previous() !== '"') {
       throw new ScanError(`Strings must be terminated with '"'`);
     }
     else {
       // advance past closing "
-      this.advance();
+      advance();
       // We use "+ 1" and "- 1" to remove the quote markes from the string
-      const literal: string = this.source.substring(this.startIndex + 1, this.currentIndex - 1);
-      this.addToken(SyntaxType.StringLiteral, literal);
+      const literal: string = source.substring(startIndex + 1, currentIndex - 1);
+      addToken(SyntaxType.StringLiteral, literal);
     }
   }
 
-  private consume(text: string): boolean {
-    if (this.peek() === text) {
-      this.advance();
+  function consume(text: string): boolean {
+    if (peek() === text) {
+      advance();
       return true;
     }
 
     return false;
   }
 
-  private advance(): string {
-    this.currentIndex++;
-    this.column++;
-    return this.source.charAt(this.currentIndex - 1);
+  function advance(): string {
+    currentIndex++;
+    column++;
+    return source.charAt(currentIndex - 1);
   }
 
-  private previous(): string {
-    return this.source.charAt(this.currentIndex - 2);
+  function previous(): string {
+    return source.charAt(currentIndex - 2);
   }
 
-  private current(): string {
-    return this.source.charAt(this.currentIndex - 1);
+  function current(): string {
+    return source.charAt(currentIndex - 1);
   }
 
-  private peek(): string {
-    return this.source.charAt(this.currentIndex);
+  function peek(): string {
+    return source.charAt(currentIndex);
   }
 
-  private peekNext(): string {
-    return this.source.charAt(this.currentIndex + 1);
+  function peekNext(): string {
+    return source.charAt(currentIndex + 1);
   }
 
-  private nextLine() {
-    this.line++;
-    this.column = 0;
+  function nextLine() {
+    line++;
+    column = 0;
   }
 
-  private commitToken(type: SyntaxType): void {
-    const literal: string = this.source.substring(this.startIndex, this.currentIndex);
-    this.addToken(type, literal);
+  function commitToken(type: SyntaxType): void {
+    const literal: string = source.substring(startIndex, currentIndex);
+    addToken(type, literal);
   }
 
-  private addToken(type: SyntaxType, value: string = ''): void {
+  function addToken(type: SyntaxType, value: string = ''): void {
     const loc: TextLocation = {
       start: {
-        line: this.startLine,
-        column: this.startColumn,
-        index: this.startIndex
+        line: startLine,
+        column: startColumn,
+        index: startIndex
       },
       end: {
-        line: this.line,
-        column: this.column,
-        index: this.currentIndex
+        line: line,
+        column: column,
+        index: currentIndex
       }
     };
 
-    this.tokens.push(createToken(type, value, loc));
+    tokens.push(createToken(type, value, loc));
   }
 
-  private isAtEnd(): boolean {
-    return this.currentIndex >= this.source.length;
+  function isAtEnd(): boolean {
+    return currentIndex >= source.length;
   }
-}
 
-export function createScanner(src: string): Scanner {
-  return new Scanner(src);
+  return {
+    scan
+  };
 }

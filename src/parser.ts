@@ -54,23 +54,48 @@ import {
 
 export class ParseError extends Error {}
 
-export class Parser {
-  private tokens: Token[];
-  private currentIndex: number;
+export interface Parser {
+  parse(): ThriftDocument;
+}
 
-  constructor(tokens: Array<Token>) {
-    this.tokens = tokens;
-    this.currentIndex = 0;
+function isStatementBeginning(token: Token): boolean {
+  switch(token.type) {
+    case SyntaxType.NamespaceDefinition:
+    case SyntaxType.IncludeDefinition:
+    case SyntaxType.ConstDefinition:
+    case SyntaxType.StructDefinition:
+    case SyntaxType.EnumDefinition:
+    case SyntaxType.ExceptionDefinition:
+    case SyntaxType.UnionDefinition:
+    case SyntaxType.TypedefDefinition:
+      return true;
+
+    default:
+      return false;
+  }
+}
+
+// Throw if the given value doesn't exist.
+function requireToken<T>(val: T, msg: string): T {
+  if (val === null || val === undefined) {
+    throw new ParseError(msg);
   }
 
-  parse(): ThriftDocument {
+  return val;
+}
+
+export function createParser(tkns: Array<Token>): Parser {
+  const tokens: Array<Token> = tkns;
+  var currentIndex: number = 0;
+
+  function parse(): ThriftDocument {
     const thrift: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
       body: []
     };
 
-    while (!this.isAtEnd()) {
-      const statement: ThriftStatement = this.parseStatement();
+    while (!isAtEnd()) {
+      const statement: ThriftStatement = parseStatement();
       if (statement !== null) {
         console.log('statement: ', statement);
         thrift.body.push(statement);
@@ -80,38 +105,38 @@ export class Parser {
     return thrift;
   }
 
-  private parseStatement(): ThriftStatement {
-    const next: Token = this.currentToken();
+  function parseStatement(): ThriftStatement {
+    const next: Token = currentToken();
     console.log('next: ', next);
     // All Thrift statements must start with one of these types
     switch(next.type) {
       case SyntaxType.NamespaceKeyword:
-        return this.parseNamespace();
+        return parseNamespace();
 
       case SyntaxType.ConstKeyword:
-        return this.parseConst();
+        return parseConst();
 
       case SyntaxType.StructKeyword:
-        return this.parseStruct();
+        return parseStruct();
 
       case SyntaxType.UnionKeyword:
-        return this.parseUnion();
+        return parseUnion();
 
       case SyntaxType.ExceptionKeyword:
-        return this.parseException();
+        return parseException();
 
       case SyntaxType.ServiceKeyword:
-        return this.parseService();
+        return parseService();
 
       case SyntaxType.TypedefKeyword:
-        return this.parseTypedef();
+        return parseTypedef();
 
       case SyntaxType.EnumKeyword:
-        return this.parseEnum();
+        return parseEnum();
 
       case SyntaxType.CommentBlock:
       case SyntaxType.CommentLine:
-        this.advance();
+        advance();
         return null;
 
       default:
@@ -119,36 +144,19 @@ export class Parser {
     }
   }
 
-  private isStatementBeginning(): boolean {
-    switch(this.currentToken().type) {
-      case SyntaxType.NamespaceDefinition:
-      case SyntaxType.IncludeDefinition:
-      case SyntaxType.ConstDefinition:
-      case SyntaxType.StructDefinition:
-      case SyntaxType.EnumDefinition:
-      case SyntaxType.ExceptionDefinition:
-      case SyntaxType.UnionDefinition:
-      case SyntaxType.TypedefDefinition:
-        return true;
-
-      default:
-        return false;
-    }
-  }
-
   // ServiceDefinition → 'service' Identifier ( 'extends' Identifier )? '{' Function* '}'
-  private parseService(): ServiceDefinition {
-    const keywordToken: Token = this.advance();
-    const idToken: Token = this.consume(SyntaxType.Identifier);
-    this.require(idToken, `Unable to find identifier for service`);
+  function parseService(): ServiceDefinition {
+    const keywordToken: Token = advance();
+    const idToken: Token = consume(SyntaxType.Identifier);
+    requireToken(idToken, `Unable to find identifier for service`);
 
-    const extendsId: Identifier = this.parseExtends();
-    const openBrace: Token = this.consume(SyntaxType.LeftBraceToken);
-    this.require(openBrace, `Expected opening curly brace`);
+    const extendsId: Identifier = parseExtends();
+    const openBrace: Token = consume(SyntaxType.LeftBraceToken);
+    requireToken(openBrace, `Expected opening curly brace`);
 
-    const functions: Array<FunctionDefinition> = this.parseFunctions();
-    const closeBrace: Token = this.consume(SyntaxType.RightBraceToken);
-    this.require(closeBrace, `Expected closing curly brace`);
+    const functions: Array<FunctionDefinition> = parseFunctions();
+    const closeBrace: Token = consume(SyntaxType.RightBraceToken);
+    requireToken(closeBrace, `Expected closing curly brace`);
 
     const location: TextLocation = createTextLocation(keywordToken.loc.start, closeBrace.loc.end);
 
@@ -161,11 +169,11 @@ export class Parser {
     };
   }
 
-  private parseExtends(): Identifier {
-    if (this.checkText('extends')) {
-      const keywordToken: Token = this.advance();
-      const idToken: Token = this.consume(SyntaxType.Identifier);
-      this.require(idToken, `Identifier expected after 'extends' keyword`);
+  function parseExtends(): Identifier {
+    if (checkText('extends')) {
+      const keywordToken: Token = advance();
+      const idToken: Token = consume(SyntaxType.Identifier);
+      requireToken(idToken, `Identifier expected after 'extends' keyword`);
 
       return createIdentifier(
         idToken.text,
@@ -176,17 +184,17 @@ export class Parser {
     }
   }
 
-  private parseFunctions(): Array<FunctionDefinition> {
+  function parseFunctions(): Array<FunctionDefinition> {
     const functions: Array<FunctionDefinition> = [];
 
     while(true) {
-      functions.push(this.parseFunction());
+      functions.push(parseFunction());
 
-      if (this.check(SyntaxType.RightBraceToken)) {
+      if (check(SyntaxType.RightBraceToken)) {
         break;
-      } else if (this.isStatementBeginning()) {
+      } else if (isStatementBeginning(currentToken())) {
         throw new ParseError(`closing curly brace expected, but new statement found`);
-      } else if (this.check(SyntaxType.EOF)) {
+      } else if (check(SyntaxType.EOF)) {
         throw new ParseError(`closing curly brace expected but reached end of file`);
       }
     }
@@ -195,18 +203,18 @@ export class Parser {
   }
 
   // Function → 'oneway'? FunctionType Identifier '(' Field* ')' Throws? ListSeparator?
-  private parseFunction(): FunctionDefinition {
-    const returnType: FunctionType = this.parseFunctionType();
+  function parseFunction(): FunctionDefinition {
+    const returnType: FunctionType = parseFunctionType();
   
-    const idToken: Token = this.consume(SyntaxType.Identifier);
-    this.require(idToken, `Unable to find function identifier`);
+    const idToken: Token = consume(SyntaxType.Identifier);
+    requireToken(idToken, `Unable to find function identifier`);
     
-    const openParen: Token = this.consume(SyntaxType.LeftParenToken);
-    this.require(openParen, `Opening parent expected in function definition`);
+    const openParen: Token = consume(SyntaxType.LeftParenToken);
+    requireToken(openParen, `Opening parent expected in function definition`);
 
-    const fields: Array<FieldDefinition> = this.parseParameterFields();
-    const closeParen: Token = this.consume(SyntaxType.RightParenToken);
-    this.require(closeParen, `Closing parent expected in function definition`);
+    const fields: Array<FieldDefinition> = parseParameterFields();
+    const closeParen: Token = consume(SyntaxType.RightParenToken);
+    requireToken(closeParen, `Closing parent expected in function definition`);
 
     return {
       type: SyntaxType.FunctionDefinition,
@@ -221,16 +229,16 @@ export class Parser {
     };
   }
 
-  private parseParameterFields(): Array<FieldDefinition> {
+  function parseParameterFields(): Array<FieldDefinition> {
     const fields: Array<FieldDefinition> = [];
 
-    while(!this.match(SyntaxType.RightParenToken)) {
-      this.readListSeparator();
-      fields.push(this.parseField());
+    while(!match(SyntaxType.RightParenToken)) {
+      readListSeparator();
+      fields.push(parseField());
 
-      if (this.isStatementBeginning()) {
+      if (isStatementBeginning(currentToken())) {
         throw new ParseError(`closing paren brace expected, but new statement found`);
-      } else if (this.check(SyntaxType.EOF)) {
+      } else if (check(SyntaxType.EOF)) {
         throw new ParseError(`closing paren brace expected but reached end of file`);
       }
     }
@@ -239,16 +247,15 @@ export class Parser {
   }
 
   // Throws → 'throws' '(' Field* ')'
-  private parseThrows(): Array<FieldDefinition> {
-    if (this.check(SyntaxType.ThrowsKeyword)) {
-      const keywordToken: Token = this.advance();
-      const openParen: Token = this.consume(SyntaxType.LeftParenToken);
-      this.require(openParen, `opening paren '(' expected`);
+  function parseThrows(): Array<FieldDefinition> {
+    if (check(SyntaxType.ThrowsKeyword)) {
+      const keywordToken: Token = advance();
+      const openParen: Token = consume(SyntaxType.LeftParenToken);
+      requireToken(openParen, `opening paren '(' expected`);
 
-      const fields: Array<FieldDefinition> = this.parseParameterFields();
-
-      const closeParen: Token = this.consume(SyntaxType.RightParenToken);
-      this.require(closeParen, `closing paren ')' expected`);
+      const fields: Array<FieldDefinition> = parseParameterFields();
+      const closeParen: Token = consume(SyntaxType.RightParenToken);
+      requireToken(closeParen, `closing paren ')' expected`);
 
       return fields;
     }
@@ -257,11 +264,11 @@ export class Parser {
   }
 
   // Namespace → 'namespace' ( NamespaceScope Identifier )
-  private parseNamespace(): NamespaceDefinition {
-    const keywordToken: Token = this.advance();
-    const scope: NamespaceScope = this.parseNamespaceScope();
-    const idToken: Token = this.consume(SyntaxType.Identifier);
-    this.require(idToken, `Unable to find identifier for namespace`);
+  function parseNamespace(): NamespaceDefinition {
+    const keywordToken: Token = advance();
+    const scope: NamespaceScope = parseNamespaceScope();
+    const idToken: Token = consume(SyntaxType.Identifier);
+    requireToken(idToken, `Unable to find identifier for namespace`);
 
     return {
       type: SyntaxType.NamespaceDefinition,
@@ -275,9 +282,9 @@ export class Parser {
   }
 
   // NamespaceScope → '*' | 'cpp' | 'java' | 'py' | 'perl' | 'rb' | 'cocoa' | 'csharp' | 'js'
-  private parseNamespaceScope(): NamespaceScope {
-    const currentToken: Token = this.currentToken();
-    switch(currentToken.text) {
+  function parseNamespaceScope(): NamespaceScope {
+    const current: Token = currentToken();
+    switch(current.text) {
       case '*':
       case 'js':
       case 'cpp':
@@ -287,13 +294,13 @@ export class Parser {
       case 'rb':
       case 'cocoa':
       case 'csharp':
-        this.advance();
+        advance();
         return {
           type: SyntaxType.NamespaceScope,
-          value: currentToken.text,
+          value: current.text,
           loc: {
-            start: currentToken.loc.start,
-            end: currentToken.loc.end
+            start: current.loc.start,
+            end: current.loc.end
           }
         };
 
@@ -303,13 +310,14 @@ export class Parser {
   }
 
   // ConstDefinition → 'const' FieldType Identifier '=' ConstValue ListSeparator?
-  private parseConst(): ConstDefinition {
-    const keywordToken: Token = this.advance();
-    const fieldType: FieldType = this.parseFieldType();
-    const idToken: Token = this.advance();
-    this.require(idToken, `const definition must have a name`);
-    const initializer: ConstValue = this.parseValueAssignment();
-    this.require(initializer, `const must be initialized to a value`);
+  function parseConst(): ConstDefinition {
+    const keywordToken: Token = advance();
+    const fieldType: FieldType = parseFieldType();
+    const idToken: Token = advance();
+    requireToken(idToken, `const definition must have a name`);
+
+    const initializer: ConstValue = parseValueAssignment();
+    requireToken(initializer, `const must be initialized to a value`);
 
     return {
       type: SyntaxType.ConstDefinition,
@@ -323,21 +331,21 @@ export class Parser {
     };
   }
 
-  private parseValueAssignment(): ConstValue {
-    if (this.check(SyntaxType.EqualToken)) {
-      this.advance();
-      return this.parseValue();
+  function parseValueAssignment(): ConstValue {
+    if (check(SyntaxType.EqualToken)) {
+      advance();
+      return parseValue();
     }
 
     return null;
   }
 
   // TypedefDefinition → 'typedef' DefinitionType Identifier
-  private parseTypedef(): TypedefDefinition {
-    const keywordToken: Token = this.advance();
-    const type: DefinitionType = this.parseDefinitionType();
-    const idToken: Token = this.consume(SyntaxType.Identifier);
-    this.require(idToken, `typedef is expected to have name and none found`);
+  function parseTypedef(): TypedefDefinition {
+    const keywordToken: Token = advance();
+    const type: DefinitionType = parseDefinitionType();
+    const idToken: Token = consume(SyntaxType.Identifier);
+    requireToken(idToken, `typedef is expected to have name and none found`);
 
 
     return {
@@ -352,17 +360,17 @@ export class Parser {
   }
 
   // EnumDefinition → 'enum' Identifier '{' EnumMember* '}'
-  private parseEnum(): EnumDefinition {
-    const keywordToken: Token = this.advance();
-    const idToken: Token = this.consume(SyntaxType.Identifier);
-    this.require(idToken, `expected identifier for enum definition`);
+  function parseEnum(): EnumDefinition {
+    const keywordToken: Token = advance();
+    const idToken: Token = consume(SyntaxType.Identifier);
+    requireToken(idToken, `expected identifier for enum definition`);
     
-    const openBrace: Token = this.consume(SyntaxType.LeftBraceToken);
-    this.require(openBrace, `expected opening brace`);
+    const openBrace: Token = consume(SyntaxType.LeftBraceToken);
+    requireToken(openBrace, `expected opening brace`);
     
-    const members: Array<EnumMember> = this.parseEnumMembers();
-    const closeBrace: Token = this.consume(SyntaxType.RightBraceToken);
-    this.require(closeBrace, `expected closing brace`);
+    const members: Array<EnumMember> = parseEnumMembers();
+    const closeBrace: Token = consume(SyntaxType.RightBraceToken);
+    requireToken(closeBrace, `expected closing brace`);
 
     const loc: TextLocation = {
       start: keywordToken.loc.start,
@@ -377,12 +385,12 @@ export class Parser {
     };
   }
 
-  private parseEnumMembers(): Array<EnumMember> {
+  function parseEnumMembers(): Array<EnumMember> {
     const members: Array<EnumMember> = [];
-    while (this.check(SyntaxType.Identifier)) {
-      members.push(this.parseEnumMember());
-      if (this.match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
-        this.advance();
+    while (check(SyntaxType.Identifier)) {
+      members.push(parseEnumMember());
+      if (match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
+        advance();
       }
     }
 
@@ -390,10 +398,10 @@ export class Parser {
   }
 
   // EnumMember → (Identifier ('=' IntConstant)? ListSeparator?)*
-  private parseEnumMember(): EnumMember {
-    const idToken: Token = this.consume(SyntaxType.Identifier);
-    const equalToken: Token = this.consume(SyntaxType.EqualToken);
-    const numToken: Token = this.consume(SyntaxType.NumberLiteral);
+  function parseEnumMember(): EnumMember {
+    const idToken: Token = consume(SyntaxType.Identifier);
+    const equalToken: Token = consume(SyntaxType.EqualToken);
+    const numToken: Token = consume(SyntaxType.NumberLiteral);
     var loc: TextLocation = null;
     var initializer: IntConstant = null;
 
@@ -413,14 +421,14 @@ export class Parser {
   }
 
   // StructDefinition → 'struct' Identifier 'xsd_all'? '{' Field* '}'
-  private parseStruct(): StructDefinition {
-    const keywordToken: Token = this.advance();
-    const idToken: Token = this.advance();
-    const openBrace: Token = this.consume(SyntaxType.LeftBraceToken);
-    this.require(openBrace, `struct body must begin with opening curly brace`);
+  function parseStruct(): StructDefinition {
+    const keywordToken: Token = advance();
+    const idToken: Token = advance();
+    const openBrace: Token = consume(SyntaxType.LeftBraceToken);
+    requireToken(openBrace, `struct body must begin with opening curly brace`);
 
-    const fields: Array<FieldDefinition> = this.parseFields();
-    const closeBrace: Token = this.advance();
+    const fields: Array<FieldDefinition> = parseFields();
+    const closeBrace: Token = advance();
 
     return {
       type: SyntaxType.StructDefinition,
@@ -434,14 +442,14 @@ export class Parser {
   }
 
   // UnioinDefinition → 'union' Identifier 'xsd_all'? '{' Field* '}'
-  private parseUnion(): UnionDefinition {
-    const keywordToken: Token = this.advance();
-    const idToken: Token = this.advance();
-    const openBrace: Token = this.consume(SyntaxType.LeftBraceToken);
-    this.require(openBrace, `union body must begin with opening curly brace`);
+  function parseUnion(): UnionDefinition {
+    const keywordToken: Token = advance();
+    const idToken: Token = advance();
+    const openBrace: Token = consume(SyntaxType.LeftBraceToken);
+    requireToken(openBrace, `union body must begin with opening curly brace`);
 
-    const fields: Array<FieldDefinition> = this.parseFields();
-    const closeBrace: Token = this.advance();
+    const fields: Array<FieldDefinition> = parseFields();
+    const closeBrace: Token = advance();
 
     return {
       type: SyntaxType.UnionDefinition,
@@ -459,15 +467,15 @@ export class Parser {
   }
 
   // ExceptionDefinition → 'exception' Identifier '{' Field* '}'
-  private parseException(): ExceptionDefinition {
-    const keywordToken: Token = this.advance();
-    const idToken: Token = this.advance();
-    const openBrace: Token = this.consume(SyntaxType.LeftBraceToken);
-    this.require(openBrace, `exception body must begin with opening curly brace '{'`);
+  function parseException(): ExceptionDefinition {
+    const keywordToken: Token = advance();
+    const idToken: Token = advance();
+    const openBrace: Token = consume(SyntaxType.LeftBraceToken);
+    requireToken(openBrace, `exception body must begin with opening curly brace '{'`);
 
-    const fields: Array<FieldDefinition> = this.parseFields();
-    const closeBrace: Token = this.advance();
-    this.require(closeBrace, `exception body must end with a closing curly brace '}'`)
+    const fields: Array<FieldDefinition> = parseFields();
+    const closeBrace: Token = advance();
+    requireToken(closeBrace, `exception body must end with a closing curly brace '}'`)
 
     return {
       type: SyntaxType.ExceptionDefinition,
@@ -480,15 +488,15 @@ export class Parser {
     };
   }
 
-  private parseFields(): Array<FieldDefinition> {
+  function parseFields(): Array<FieldDefinition> {
     const fields: Array<FieldDefinition> = [];
 
-    while(!this.check(SyntaxType.RightBraceToken)) {
-      fields.push(this.parseField());
+    while(!check(SyntaxType.RightBraceToken)) {
+      fields.push(parseField());
 
-      if (this.isStatementBeginning()) {
+      if (isStatementBeginning(currentToken())) {
         throw new ParseError(`closing curly brace expected, but new statement found`);
-      } else if (this.check(SyntaxType.EOF)) {
+      } else if (check(SyntaxType.EOF)) {
         throw new ParseError(`closing curly brace expected but reached end of file`);
       }
     }
@@ -497,16 +505,16 @@ export class Parser {
   }
 
   // Field → FieldID? FieldReq? FieldType Identifier ('= ConstValue)? XsdFieldOptions ListSeparator?
-  private parseField(): FieldDefinition {
-    const startPos: TextLocation = this.currentToken().loc;
-    const fieldID: FieldID = this.parseFieldId();
-    const fieldRequired: FieldRequired = this.parseRequiredness();
-    const fieldType: FieldType = this.parseFieldType();
-    const idToken: Token = this.consume(SyntaxType.Identifier);
-    this.require(idToken, `Unable to find identifier for field`);
+  function parseField(): FieldDefinition {
+    const startPos: TextLocation = currentToken().loc;
+    const fieldID: FieldID = parseFieldId();
+    const fieldRequired: FieldRequired = parserequireTokendness();
+    const fieldType: FieldType = parseFieldType();
+    const idToken: Token = consume(SyntaxType.Identifier);
+    requireToken(idToken, `Unable to find identifier for field`);
 
-    const defaultValue: ConstValue = this.parseValueAssignment();
-    const listSeparator: Token = this.readListSeparator();
+    const defaultValue: ConstValue = parseValueAssignment();
+    const listSeparator: Token = readListSeparator();
     const endPos: TextLocation = (listSeparator !== null) ? listSeparator.loc : (defaultValue !== null) ? defaultValue.loc : idToken.loc;
     const location: TextLocation = createTextLocation(startPos.start, endPos.end);
 
@@ -522,35 +530,34 @@ export class Parser {
   }
 
   // ListSeparator → ',' | ';'
-  private readListSeparator(): Token {
-    const currentToken: Token = this.currentToken();
-    if (this.match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
-      this.advance();
-      return currentToken;
+  function readListSeparator(): Token {
+    const current: Token = currentToken();
+    if (match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
+      return advance();
     }
 
     return null;
   }
 
-  // FieldRequired → 'required' | 'optional'
-  private parseRequiredness(): FieldRequired {
-    const currentToken: Token = this.currentToken();
-    if (currentToken.text === 'required' || currentToken.text === 'optional') {
-      this.advance();
-      return currentToken.text;
+  // FieldrequireTokend → 'requireTokend' | 'optional'
+  function parserequireTokendness(): FieldRequired {
+    const current: Token = currentToken();
+    if (current.text === 'required' || current.text === 'optional') {
+      advance();
+      return current.text;
     }
 
     return null;
   }
 
   // FieldID → IntConstant ':'
-  private parseFieldId(): FieldID {
+  function parseFieldId(): FieldID {
     if (
-      this.currentToken().type === SyntaxType.IntegerLiteral &&
-      this.peek().type === SyntaxType.ColonToken
+      currentToken().type === SyntaxType.IntegerLiteral &&
+      peek().type === SyntaxType.ColonToken
     ) {
-      const fieldIDToken: Token = this.advance();
-      const colonToken: Token = this.advance();
+      const fieldIDToken: Token = advance();
+      const colonToken: Token = advance();
 
       // return value of number token
       return createFieldID(
@@ -562,8 +569,8 @@ export class Parser {
     }
   }
 
-  private parseValue(): ConstValue {
-    const next: Token = this.advance();
+  function parseValue(): ConstValue {
+    const next: Token = advance();
     switch(next.type) {
       case SyntaxType.StringLiteral:
         return createStringLiteral(next.text, next.loc);
@@ -583,10 +590,10 @@ export class Parser {
         return createBooleanLiteral(false, next.loc);
 
       case SyntaxType.LeftBraceToken:
-        return this.parseMapValue();
+        return parseMapValue();
 
       case SyntaxType.LeftBracketToken:
-        return this.parseListValue();
+        return parseListValue();
 
       default:
         return null;
@@ -594,12 +601,12 @@ export class Parser {
   }
 
   // ConstMap → '{' (ConstValue ':' ConstValue ListSeparator?)* '}'
-  private parseMapValue(): ConstMap {
+  function parseMapValue(): ConstMap {
     // The parseValue method has already advanced the cursor
-    const startPos: TextLocation = this.currentToken().loc;
-    const properties: Array<PropertyAssignment> = this.readMapValues();
-    const closeBrace: Token = this.consume(SyntaxType.RightBraceToken);
-    this.require(closeBrace, `Closing brace missing from map definition`);
+    const startPos: TextLocation = currentToken().loc;
+    const properties: Array<PropertyAssignment> = readMapValues();
+    const closeBrace: Token = consume(SyntaxType.RightBraceToken);
+    requireToken(closeBrace, `Closing brace missing from map definition`);
 
     const endPos: TextLocation = closeBrace.loc;
     const location: TextLocation = {
@@ -611,12 +618,12 @@ export class Parser {
   }
 
   // ConstList → '[' (ConstValue ListSeparator?)* ']'
-  private parseListValue(): ConstList {
+  function parseListValue(): ConstList {
     // The parseValue method has already advanced the cursor
-    const startPos: TextLocation = this.currentToken().loc;
-    const elements: Array<ConstValue> = this.readListValues();
-    const closeBrace: Token = this.consume(SyntaxType.RightBracketToken);
-    this.require(closeBrace, `Closing square-bracket missing from list definition`);
+    const startPos: TextLocation = currentToken().loc;
+    const elements: Array<ConstValue> = readListValues();
+    const closeBrace: Token = consume(SyntaxType.RightBracketToken);
+    requireToken(closeBrace, `Closing square-bracket missing from list definition`);
     const endPos: TextLocation = closeBrace.loc;
 
     return createConstList(elements, {
@@ -625,21 +632,21 @@ export class Parser {
     });
   }
 
-  private readMapValues(): Array<PropertyAssignment> {
+  function readMapValues(): Array<PropertyAssignment> {
     const properties: Array<PropertyAssignment> = [];
     while (true) {
-      const key: ConstValue = this.parseValue();
-      const semicolon: Token = this.consume(SyntaxType.ColonToken);
-      this.require(semicolon, `Semicolon expected after key in map property assignment`);
-      const value: ConstValue = this.parseValue();
+      const key: ConstValue = parseValue();
+      const semicolon: Token = consume(SyntaxType.ColonToken);
+      requireToken(semicolon, `Semicolon expected after key in map property assignment`);
+      const value: ConstValue = parseValue();
 
       properties.push(creataePropertyAssignment(key, value, {
         start: key.loc.start,
         end: value.loc.end
       }));
 
-      if (this.check(SyntaxType.CommaToken)) {
-        this.advance()
+      if (check(SyntaxType.CommaToken)) {
+        advance()
       } else {
         break;
       }
@@ -648,13 +655,13 @@ export class Parser {
     return properties;
   }
 
-  private readListValues(): Array<ConstValue> {
+  function readListValues(): Array<ConstValue> {
     const elements: Array<ConstValue> = [];
     while(true) {
-      elements.push(this.parseValue());
+      elements.push(parseValue());
 
-      if (this.check(SyntaxType.CommaToken) || this.check(SyntaxType.SemicolonToken)) {
-        this.advance();
+      if (check(SyntaxType.CommaToken) || check(SyntaxType.SemicolonToken)) {
+        advance();
       } else {
         break;
       }
@@ -663,37 +670,37 @@ export class Parser {
   }
 
   // FunctionType → FieldType | 'void'
-  private parseFunctionType(): FunctionType {
-    const typeToken: Token = this.currentToken();
+  function parseFunctionType(): FunctionType {
+    const typeToken: Token = currentToken();
     switch (typeToken.type) {
       case SyntaxType.VoidKeyword:
-        this.advance();
+        advance();
         return {
           type: SyntaxType.VoidKeyword,
           loc: typeToken.loc
         };
 
       default:
-        return this.parseFieldType();
+        return parseFieldType();
     }
   }
 
   // FieldType → Identifier | BaseType | ContainerType
-  private parseFieldType(): FieldType {
-    const typeToken: Token = this.currentToken();
+  function parseFieldType(): FieldType {
+    const typeToken: Token = currentToken();
     switch (typeToken.type) {
       case SyntaxType.Identifier:
-        this.advance();
+        advance();
         return createIdentifier(typeToken.text, typeToken.loc);
 
       default:
-        return this.parseDefinitionType();
+        return parseDefinitionType();
     }
   }
 
   // DefinitionType → BaseType | ContainerType
-  private parseDefinitionType(): DefinitionType {
-    const typeToken: Token = this.advance();
+  function parseDefinitionType(): DefinitionType {
+    const typeToken: Token = advance();
     switch(typeToken.type) {
       case SyntaxType.BoolKeyword:
       case SyntaxType.StringKeyword:
@@ -704,13 +711,13 @@ export class Parser {
         return createKeywordFieldType(typeToken.type, typeToken.loc);
 
       case SyntaxType.MapKeyword:
-        return this.parseMapType();
+        return parseMapType();
 
       case SyntaxType.ListKeyword:
-        return this.parseListType();
+        return parseListType();
 
       case SyntaxType.SetKeyword:
-        return this.parseSetType();
+        return parseSetType();
 
       default:
         throw new ParseError(`FieldType expected`);
@@ -718,17 +725,17 @@ export class Parser {
   }
 
   // MapType → 'map' CppType? '<' FieldType ',' FieldType '>'
-  private parseMapType(): MapType {
-    const openBracket: Token = this.consume(SyntaxType.LessThanToken);
-    this.require(openBracket, `map needs to defined contained types`);
+  function parseMapType(): MapType {
+    const openBracket: Token = consume(SyntaxType.LessThanToken);
+    requireToken(openBracket, `map needs to defined contained types`);
 
-    const keyType: FieldType = this.parseFieldType();
-    const commaToken: Token = this.consume(SyntaxType.CommaToken);
-    this.require(commaToken, `comma expedted to separate map types <key, value>`);
+    const keyType: FieldType = parseFieldType();
+    const commaToken: Token = consume(SyntaxType.CommaToken);
+    requireToken(commaToken, `comma expedted to separate map types <key, value>`);
 
-    const valueType: FieldType = this.parseFieldType();
-    const closeBracket: Token = this.consume(SyntaxType.GreaterThanToken);
-    this.require(closeBracket, `map needs to defined contained types`);
+    const valueType: FieldType = parseFieldType();
+    const closeBracket: Token = consume(SyntaxType.GreaterThanToken);
+    requireToken(closeBracket, `map needs to defined contained types`);
 
     const location: TextLocation = {
       start: openBracket.loc.start,
@@ -739,13 +746,13 @@ export class Parser {
   }
 
   // SetType → 'set' CppType? '<' FieldType '>'
-  private parseSetType(): SetType {
-    const openBracket: Token = this.consume(SyntaxType.LessThanToken);
-    this.require(openBracket, `map needs to defined contained types`);
+  function parseSetType(): SetType {
+    const openBracket: Token = consume(SyntaxType.LessThanToken);
+    requireToken(openBracket, `map needs to defined contained types`);
 
-    const valueType: FieldType = this.parseFieldType();
-    const closeBracket: Token = this.consume(SyntaxType.GreaterThanToken);
-    this.require(closeBracket, `map needs to defined contained types`);
+    const valueType: FieldType = parseFieldType();
+    const closeBracket: Token = consume(SyntaxType.GreaterThanToken);
+    requireToken(closeBracket, `map needs to defined contained types`);
 
     return {
       type: SyntaxType.SetType,
@@ -758,13 +765,13 @@ export class Parser {
   }
 
   // ListType → 'list' '<' FieldType '>' CppType?
-  private parseListType(): ListType {
-    const openBracket: Token = this.consume(SyntaxType.LessThanToken);
-    this.require(openBracket, `map needs to defined contained types`);
+  function parseListType(): ListType {
+    const openBracket: Token = consume(SyntaxType.LessThanToken);
+    requireToken(openBracket, `map needs to defined contained types`);
 
-    const valueType: FieldType = this.parseFieldType();
-    const closeBracket: Token = this.consume(SyntaxType.GreaterThanToken);
-    this.require(closeBracket, `map needs to defined contained types`);
+    const valueType: FieldType = parseFieldType();
+    const closeBracket: Token = consume(SyntaxType.GreaterThanToken);
+    requireToken(closeBracket, `map needs to defined contained types`);
 
     return {
       type: SyntaxType.ListType,
@@ -776,26 +783,26 @@ export class Parser {
     };
   }
 
-  private currentToken(): Token {
-    return this.tokens[this.currentIndex];
+  function currentToken(): Token {
+    return tokens[currentIndex];
   }
 
-  private previousToken(): Token {
-    return this.tokens[this.currentIndex - 1];
+  function previousToken(): Token {
+    return tokens[currentIndex - 1];
   }
 
-  private peek(): Token {
-    return this.tokens[this.currentIndex + 1];
+  function peek(): Token {
+    return tokens[currentIndex + 1];
   }
 
-  private peekNext(): Token {
-    return this.tokens[this.currentIndex + 2];
+  function peekNext(): Token {
+    return tokens[currentIndex + 2];
   }
 
   // Does the current token match one in a list of types
-  private match(...types: Array<SyntaxType>): boolean {
+  function match(...types: Array<SyntaxType>): boolean {
     for (let i = 0; i < types.length; i++) {
-      if (this.check(types[i])) {
+      if (check(types[i])) {
         return true;
       }
     }
@@ -804,66 +811,57 @@ export class Parser {
   }
 
   // Does the current token match the given type
-  private check(type: SyntaxType): boolean {
-    if (this.isAtEnd()) {
+  function check(type: SyntaxType): boolean {
+    if (isAtEnd()) {
       return false;
     }
 
-    return type === this.currentToken().type;
+    return type === currentToken().type;
   }
 
   // Does the current token match the given text
-  private checkText(text: string): boolean {
-    if (this.isAtEnd()) {
+  function checkText(text: string): boolean {
+    if (isAtEnd()) {
       return false;
     }
 
-    return text === this.currentToken().text;
+    return text === currentToken().text;
   }
 
-  // Throw if the given value doesn't exist.
-  private require<T>(val: T, msg: string): T {
-    if (val === null || val === undefined) {
-      throw new ParseError(msg);
-    }
-
-    return val;
-  }
-
-  // Require the current token to match given type and advance, otherwise return null
-  private consume(type: SyntaxType): Token {
-    if (this.check(type)) {
-      return this.advance();
+  // requireToken the current token to match given type and advance, otherwise return null
+  function consume(type: SyntaxType): Token {
+    if (check(type)) {
+      return advance();
     }
 
     return null;
   }
 
-  private consumeText(text: string): Token {
-    if (this.checkText(text)) {
-      return this.advance();
+  function consumeText(text: string): Token {
+    if (checkText(text)) {
+      return advance();
     }
 
     return null;
   }
 
   // Move the cursor forward and return the previous token
-  private advance(): Token {
-    if (!this.isAtEnd()) {
-      this.currentIndex += 1;
+  function advance(): Token {
+    if (!isAtEnd()) {
+      currentIndex += 1;
     }
 
-    return this.previousToken();
+    return previousToken();
   }
 
-  private isAtEnd(): boolean {
+  function isAtEnd(): boolean {
     return (
-      this.currentIndex >= this.tokens.length ||
-      this.currentToken().type === SyntaxType.EOF
+      currentIndex >= tokens.length ||
+      currentToken().type === SyntaxType.EOF
     );
   }
-}
 
-export function createParser(tokens: Array<Token>): Parser {
-  return new Parser(tokens);
+  return {
+    parse
+  };
 }
