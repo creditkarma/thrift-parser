@@ -2,6 +2,7 @@ import { ThriftDocument, Token } from './src/types';
 import { Scanner, createScanner } from './src/scanner';
 import { Parser, createParser } from './src/parser';
 import { organize } from './src/organizer';
+
 export * from './src/types';
 export { createScanner } from './src/scanner';
 export { createParser } from './src/parser';

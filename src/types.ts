@@ -42,10 +42,9 @@ export type DefinitionType =
   BaseType | ContainerType
 
 export type KeywordType =
-  SyntaxType.StringKeyword | SyntaxType.DoubleKeyword | SyntaxType.MapKeyword |
-  SyntaxType.BoolKeyword | SyntaxType.I8Keyword | SyntaxType.I16Keyword |
-  SyntaxType.I32Keyword | SyntaxType.I64Keyword | SyntaxType.BinaryKeyword |
-  SyntaxType.ByteKeyword;
+  SyntaxType.StringKeyword | SyntaxType.DoubleKeyword | SyntaxType.BoolKeyword |
+  SyntaxType.I8Keyword | SyntaxType.I16Keyword | SyntaxType.I32Keyword |
+  SyntaxType.I64Keyword | SyntaxType.BinaryKeyword | SyntaxType.ByteKeyword;
 
 export interface VoidType extends SyntaxNode {
   type: SyntaxType.VoidKeyword;
@@ -171,10 +170,6 @@ export interface FunctionDefinition extends SyntaxNode {
   returnType: FunctionType;
   fields: Array<FieldDefinition>;
   throws: Array<FieldDefinition>;
-}
-
-export interface Field extends SyntaxNode {
-  fieldID: number;
 }
 
 export interface StringLiteral extends SyntaxNode {
