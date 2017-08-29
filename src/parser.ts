@@ -399,13 +399,13 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseEnumMember(): EnumMember {
     const idToken: Token = consume(SyntaxType.Identifier);
     const equalToken: Token = consume(SyntaxType.EqualToken);
-    const numToken: Token = consume(SyntaxType.NumberLiteral);
+    const numToken: Token = consume(SyntaxType.IntegerLiteral);
     var loc: TextLocation = null;
     var initializer: IntConstant = null;
 
     if (numToken !== null) {
-      loc = createTextLocation(idToken.loc.start, initializer.loc.end);
       initializer = createIntConstant(parseInt(numToken.text), numToken.loc);
+      loc = createTextLocation(idToken.loc.start, initializer.loc.end);
     } else {
       loc = createTextLocation(idToken.loc.start, idToken.loc.end);
     }
