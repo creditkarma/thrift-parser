@@ -19,6 +19,7 @@ export const KEYWORDS: KeywordMap = {
   'list': SyntaxType.ListKeyword,
   'set': SyntaxType.SetKeyword,
   'map': SyntaxType.MapKeyword,
+  'double': SyntaxType.DoubleKeyword,
   'i8': SyntaxType.I8Keyword,
   'i16': SyntaxType.I16Keyword,
   'i32': SyntaxType.I32Keyword,

@@ -706,6 +706,7 @@ export function createParser(tkns: Array<Token>): Parser {
       case SyntaxType.I16Keyword:
       case SyntaxType.I32Keyword:
       case SyntaxType.I64Keyword:
+      case SyntaxType.DoubleKeyword:
         return createKeywordFieldType(typeToken.type, typeToken.loc);
 
       case SyntaxType.MapKeyword:
