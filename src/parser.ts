@@ -558,7 +558,7 @@ export function createParser(tkns: Array<Token>): Parser {
     return null;
   }
 
-  // FieldrequireValued → 'requireValued' | 'optional'
+  // FieldRequired → 'required' | 'optional'
   function parserequireValuedness(): FieldRequired {
     const current: Token = currentToken();
     if (current.text === 'required' || current.text === 'optional') {
