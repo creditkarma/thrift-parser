@@ -314,7 +314,7 @@ describe('Parser', () => {
                 end: { line: 3, column: 18, index: 39 }
               }),
               fields: [],
-              throws: null,
+              throws: [],
               returnType: {
                 type: SyntaxType.BoolKeyword,
                 loc: {
@@ -324,7 +324,7 @@ describe('Parser', () => {
               },
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 20, index: 41 }
               }
             }
           ],
@@ -371,7 +371,7 @@ describe('Parser', () => {
                 end: { line: 3, column: 22, index: 43 }
               }),
               fields: [],
-              throws: null,
+              throws: [],
               returnType: {
                 type: SyntaxType.Identifier,
                 value: 'TestType',
@@ -382,7 +382,7 @@ describe('Parser', () => {
               },
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 22, index: 43 }
+                end: { line: 3, column: 24, index: 45 }
               }
             }
           ],
@@ -571,7 +571,7 @@ describe('Parser', () => {
               },
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 90, index: 111 }
               }
             }
           ],
@@ -671,7 +671,7 @@ describe('Parser', () => {
                   }
                 }
               ],
-              throws: null,
+              throws: [],
               returnType: {
                 type: SyntaxType.VoidKeyword,
                 loc: {
@@ -681,7 +681,7 @@ describe('Parser', () => {
               },
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 47, index: 68 }
               }
             }
           ],

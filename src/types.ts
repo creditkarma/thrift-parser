@@ -172,6 +172,16 @@ export interface FunctionDefinition extends SyntaxNode {
   throws: Array<FieldDefinition>;
 }
 
+export interface ParametersDefinition extends SyntaxNode {
+  type: SyntaxType.ParametersDefinition;
+  fields: Array<FieldDefinition>;
+}
+
+export interface ThrowsDefinition extends SyntaxNode {
+  type: SyntaxType.ThrowsDefinition;
+  fields: Array<FieldDefinition>;
+}
+
 export interface StringLiteral extends SyntaxNode {
   type: SyntaxType.StringLiteral;
   value: string;
@@ -236,6 +246,8 @@ export const enum SyntaxType {
   // Fields
   FieldDefinition = 'FieldDefinition',
   FunctionDefinition = 'FunctionDefinition',
+  ParametersDefinition = 'ParametersDefinition',
+  ThrowsDefinition = 'ThrowsDefinition',
 
   // Type Annotations
   FieldType = 'FieldType',
