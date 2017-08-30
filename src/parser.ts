@@ -186,8 +186,8 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseFunctions(): Array<FunctionDefinition> {
     const functions: Array<FunctionDefinition> = [];
 
-    while(!check(SyntaxType.RightBraceToken)) {
-      if (currentToken().type === SyntaxType.CommentBlock || currentToken().type === SyntaxType.CommentLine) {
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (match(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
         advance();
       } else {
         functions.push(parseFunction());
@@ -233,7 +233,7 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseParameterFields(): Array<FieldDefinition> {
     const fields: Array<FieldDefinition> = [];
 
-    while(!match(SyntaxType.RightParenToken)) {
+    while (!match(SyntaxType.RightParenToken)) {
       readListSeparator();
       fields.push(parseField());
 
@@ -491,8 +491,8 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseFields(): Array<FieldDefinition> {
     const fields: Array<FieldDefinition> = [];
 
-    while(!check(SyntaxType.RightBraceToken)) {
-      if (currentToken().type === SyntaxType.CommentBlock || currentToken().type === SyntaxType.CommentLine) {
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (match(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
         advance();
       } else {
         fields.push(parseField());
@@ -661,10 +661,10 @@ export function createParser(tkns: Array<Token>): Parser {
 
   function readListValues(): Array<ConstValue> {
     const elements: Array<ConstValue> = [];
-    while(true) {
+    while (true) {
       elements.push(parseValue());
 
-      if (check(SyntaxType.CommaToken) || check(SyntaxType.SemicolonToken)) {
+      if (match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
         advance();
       } else {
         break;
