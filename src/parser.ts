@@ -188,8 +188,8 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseFunctions(): Array<FunctionDefinition> {
     const functions: Array<FunctionDefinition> = [];
 
-    while(!check(SyntaxType.RightBraceToken)) {
-      if (currentToken().type === SyntaxType.CommentBlock || currentToken().type === SyntaxType.CommentLine) {
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (check(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
         advance();
       } else {
         functions.push(parseFunction());
@@ -236,7 +236,7 @@ export function createParser(tkns: Array<Token>): Parser {
     const openParen: Token = consume(SyntaxType.LeftParenToken);
     requireValue(openParen, `Opening paren expected to start list of fields`);
 
-    while(!match(SyntaxType.RightParenToken)) {
+    while (!check(SyntaxType.RightParenToken)) {
       readListSeparator();
       fields.push(parseField());
 
@@ -403,7 +403,7 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseEnumMembers(): Array<EnumMember> {
     const members: Array<EnumMember> = [];
     while (!check(SyntaxType.RightBraceToken)) {
-      if (match(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
+      if (check(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
         advance();
       } else {
         members.push(parseEnumMember());
@@ -515,8 +515,8 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseFields(): Array<FieldDefinition> {
     const fields: Array<FieldDefinition> = [];
 
-    while(!check(SyntaxType.RightBraceToken)) {
-      if (currentToken().type === SyntaxType.CommentBlock || currentToken().type === SyntaxType.CommentLine) {
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (check(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
         advance();
       } else {
         fields.push(parseField());
@@ -566,7 +566,7 @@ export function createParser(tkns: Array<Token>): Parser {
   // ListSeparator → ',' | ';'
   function readListSeparator(): Token {
     const current: Token = currentToken();
-    if (match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
+    if (check(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
       return advance();
     }
 
@@ -691,7 +691,7 @@ export function createParser(tkns: Array<Token>): Parser {
 
   function readListValues(): Array<ConstValue> {
     const elements: Array<ConstValue> = [];
-    while(true) {
+    while (true) {
       elements.push(parseValue());
 
       if (check(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
@@ -832,17 +832,6 @@ export function createParser(tkns: Array<Token>): Parser {
 
   function peekNext(): Token {
     return tokens[currentIndex + 2];
-  }
-
-  // Does the current token match one in a list of types
-  function match(...types: Array<SyntaxType>): boolean {
-    for (let i = 0; i < types.length; i++) {
-      if (check(types[i])) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   // Does the current token match the given type
