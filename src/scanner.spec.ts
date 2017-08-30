@@ -47,7 +47,7 @@ describe('Scanner', () => {
 
     assert.deepEqual(tokens, expected);
   });
-  
+
   it('should correctly recognize strings with double quotes', () => {
     const content = `
       "this is a test"
@@ -137,7 +137,7 @@ describe('Scanner', () => {
 
     assert.deepEqual(tokens, expected);
   });
-  
+
   it('should correctly recognize hex values', () => {
     const content = `
       0xfff
@@ -182,7 +182,7 @@ describe('Scanner', () => {
 
     assert.deepEqual(tokens, expected);
   });
-  
+
   it('should correctly recognize e-notation', () => {
     const content = `
       5e6

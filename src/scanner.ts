@@ -1,6 +1,10 @@
-import { createToken } from './factory';
+import { createToken, createScanError } from './factory';
 import { Token, SyntaxType, TextLocation } from './types';
 import { KEYWORDS } from './keywords';
+import {
+  ErrorReporter,
+  noopReporter
+} from './debugger';
 
 function isDigit(value: string): boolean {
   return (
@@ -45,13 +49,35 @@ function isHexDigit(value: string): boolean {
   );
 }
 
-export class ScanError extends Error {}
+function isWhiteSpace(char: string): boolean {
+  switch (char) {
+    case ' ':
+    case '\r':
+    case '\t':
+    case '\n':
+      return true;
+
+    default:
+      return false;
+  }
+}
+
+class ScanError extends Error {
+  public message: string;
+  public loc: TextLocation;
+  constructor(msg: string, loc: TextLocation) {
+    super(msg);
+    this.message = msg;
+    this.loc = loc;
+  }
+}
 
 export interface Scanner {
   scan(): Array<Token>;
+  syncronize(): void;
 }
 
-export function createScanner(src: string) {
+export function createScanner(src: string, report: ErrorReporter = noopReporter) {
   const source: string = src;
   const tokens: Array<Token> = [];
   var line: number = 1;
@@ -63,16 +89,27 @@ export function createScanner(src: string) {
 
   function scan(): Array<Token> {
     while (!isAtEnd()) {
-      startIndex = currentIndex;
-      startLine = line;
-      startColumn = column;
-      scanToken();
+      try {
+        startIndex = currentIndex;
+        startLine = line;
+        startColumn = column;
+        scanToken();
+      } catch (e) {
+        report(createScanError(e.message, e.loc));
+      }
     }
 
     startIndex = currentIndex;
     addToken(SyntaxType.EOF);
 
     return tokens;
+  }
+
+  // Find the beginning of the next word to restart parse after error
+  function syncronize(): void {
+    while (!isAtEnd() && !isWhiteSpace(current())) {
+      advance();
+    }
   }
 
   function scanToken(): void {
@@ -153,7 +190,7 @@ export function createScanner(src: string) {
           multilineComment();
         }
         else {
-          throw new ScanError(`Unexpected token: ${next}`);
+          reportError(`Unexpected token: ${next}`);
         }
         break;
 
@@ -177,10 +214,10 @@ export function createScanner(src: string) {
           identifier();
         }
         else if (isValidIdentifier(next)) {
-          throw new ScanError(`Invalid identifier '${next}': Identifiers must begin with a letter or underscore`);
+          reportError(`Invalid identifier '${next}': Identifiers must begin with a letter or underscore`);
         }
         else {
-          throw new ScanError(`Unexpected token: ${next}`);
+          reportError(`Unexpected token: ${next}`);
         }
     }
   }
@@ -236,7 +273,7 @@ export function createScanner(src: string) {
       integer();
       commitToken(SyntaxType.ExponentialLiteral);
     } else {
-      throw new ScanError(`Invalid use of e-notation`);
+      reportError(`Invalid use of e-notation`);
     }
   }
 
@@ -333,7 +370,7 @@ export function createScanner(src: string) {
     }
 
     if (isAtEnd() && previous() !== '"') {
-      throw new ScanError(`Strings must be terminated with '"'`);
+      reportError(`Strings must be terminated with '"'`);
     }
     else {
       // advance past closing "
@@ -385,8 +422,8 @@ export function createScanner(src: string) {
     addToken(type, literal);
   }
 
-  function addToken(type: SyntaxType, value: string = ''): void {
-    const loc: TextLocation = {
+  function currentLocation(): TextLocation {
+    return {
       start: {
         line: startLine,
         column: startColumn,
@@ -397,8 +434,11 @@ export function createScanner(src: string) {
         column: column,
         index: currentIndex
       }
-    };
+    }
+  }
 
+  function addToken(type: SyntaxType, value: string = ''): void {
+    const loc: TextLocation = currentLocation();
     tokens.push(createToken(type, value, loc));
   }
 
@@ -406,7 +446,12 @@ export function createScanner(src: string) {
     return currentIndex >= source.length;
   }
 
+  function reportError(msg: string): void {
+    throw new ScanError(msg, currentLocation());
+  }
+
   return {
-    scan
+    scan,
+    syncronize
   };
 }

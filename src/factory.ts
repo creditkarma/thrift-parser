@@ -23,8 +23,28 @@ import {
   TextPosition,
   StructDefinition,
   FieldDefinition,
-  FunctionType
+  FunctionType,
+  ParseError,
+  ScanError,
+  ThriftError,
+  ErrorType
 } from './types';
+
+export function createParseError(message: string, loc: TextLocation): ParseError {
+  return {
+    type: ErrorType.ParseError,
+    message,
+    loc
+  };
+}
+
+export function createScanError(message: string, loc: TextLocation): ScanError {
+  return {
+    type: ErrorType.ScanError,
+    message,
+    loc
+  };
+}
 
 export function createTextLocation(start: TextPosition, end: TextPosition): TextLocation {
   return { start, end };

@@ -8,6 +8,10 @@ import {
   createIdentifier,
   createStringLiteral
 } from './factory';
+import {
+  Debugger,
+  createDebugger
+} from './debugger';
 
 describe('Parser', () => {
   it('should parse complex.thrift', () => {
@@ -942,7 +946,6 @@ describe('Parser', () => {
         # TWO
       }
     `;
-
     const scanner: Scanner = createScanner(content);
     const tokens: Array<Token> = scanner.scan();
 
@@ -2191,7 +2194,6 @@ describe('Parser', () => {
         TestType test()
       }
     `;
-
     const scanner: Scanner = createScanner(content);
     const tokens: Array<Token> = scanner.scan();
 
@@ -2448,7 +2450,6 @@ describe('Parser', () => {
         void test()
       }
     `;
-
     const scanner: Scanner = createScanner(content);
     const tokens: Array<Token> = scanner.scan();
 
@@ -2571,7 +2572,6 @@ describe('Parser', () => {
         void test(string test1, 1: bool test2)
       }
     `;
-
     const scanner: Scanner = createScanner(content);
     const tokens: Array<Token> = scanner.scan();
 
