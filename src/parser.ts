@@ -215,12 +215,14 @@ export function createParser(tkns: Array<Token>): Parser {
     const closeParen: Token = consume(SyntaxType.RightParenToken);
     requireToken(closeParen, `Closing parent expected in function definition`);
 
+    const throws: Array<FieldDefinition> = parseThrows();
+
     return {
       type: SyntaxType.FunctionDefinition,
       name: createIdentifier(idToken.text, idToken.loc),
       returnType,
       fields,
-      throws: [],
+      throws,
       loc: {
         start: returnType.loc.start,
         end: idToken.loc.end
@@ -304,7 +306,7 @@ export function createParser(tkns: Array<Token>): Parser {
         };
 
       default:
-        throw new ParseError(`Invalid or missing namespace scope`);
+        throw new ParseError(`Invalid or missing namespace scope: ${current.text}`);
     }
   }
 
