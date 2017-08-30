@@ -20,7 +20,8 @@
     ]
   },
   "files": [
-    "./index.ts"
+    "./index.ts",
+    "./src/bin/index.ts"
   ],
   "exclude": [
     "node_modules",

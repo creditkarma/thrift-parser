@@ -1,3 +1,17 @@
+export interface ThriftError {
+  type: ErrorType;
+  message: string;
+  loc: TextLocation;
+}
+
+export interface ParseError extends ThriftError {
+  type: ErrorType.ParseError;
+}
+
+export interface ScanError extends ThriftError {
+  type: ErrorType.ScanError;
+}
+
 export interface Node {
   type: SyntaxType;
 }
@@ -243,6 +257,11 @@ export interface Identifier extends SyntaxNode {
   type: SyntaxType.Identifier;
   value: string;
   loc: TextLocation;
+}
+
+export const enum ErrorType {
+  ParseError = 'ParseError',
+  ScanError = 'ScanError'
 }
 
 export const enum SyntaxType {

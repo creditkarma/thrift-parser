@@ -52,45 +52,53 @@ import {
   createSetFieldType,
   createListFieldType,
   creataePropertyAssignment,
-  createFieldID
+  createFieldID,
+  createParseError
 } from './factory';
 
-export class ParseError extends Error {}
+import {
+  ErrorReporter,
+  noopReporter
+} from './debugger';
 
 export interface Parser {
   parse(): ThriftDocument;
+  synchronize(): void;
 }
 
 function isStatementBeginning(token: Token): boolean {
   switch(token.type) {
-    case SyntaxType.NamespaceDefinition:
-    case SyntaxType.IncludeDefinition:
-    case SyntaxType.ConstDefinition:
-    case SyntaxType.StructDefinition:
-    case SyntaxType.EnumDefinition:
-    case SyntaxType.ExceptionDefinition:
-    case SyntaxType.UnionDefinition:
-    case SyntaxType.TypedefDefinition:
-      return true;
+    case SyntaxType.NamespaceKeyword:
+    case SyntaxType.IncludeKeyword:
+    case SyntaxType.ConstKeyword:
+    case SyntaxType.StructKeyword:
+    case SyntaxType.UnionKeyword:
+    case SyntaxType.ExceptionKeyword:
+    case SyntaxType.ServiceKeyword:
+    case SyntaxType.TypedefKeyword:
+    case SyntaxType.EnumKeyword:
+    return true;
 
     default:
       return false;
   }
 }
 
-// Throw if the given value doesn't exist.
-function requireValue<T>(val: T, msg: string): T {
-  if (val === null || val === undefined) {
-    throw new ParseError(msg);
+class ParseError extends Error {
+  public message: string;
+  public loc: TextLocation;
+  constructor(msg: string, loc: TextLocation) {
+    super(msg);
+    this.message = msg;
+    this.loc = loc;
   }
-
-  return val;
 }
 
-export function createParser(tokens: Array<Token>): Parser {
+export function createParser(tokens: Array<Token>, report: ErrorReporter = noopReporter): Parser {
   var comments: Array<Comment> = [];
   var currentIndex: number = 0;
 
+  // PUBLIC
   function parse(): ThriftDocument {
     const thrift: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -98,13 +106,24 @@ export function createParser(tokens: Array<Token>): Parser {
     };
 
     while (!isAtEnd()) {
-      const statement: ThriftStatement = parseStatement();
-      if (statement !== null) {
-        thrift.body.push(statement);
+      try {
+        const statement: ThriftStatement = parseStatement();
+        if (statement !== null) {
+          thrift.body.push(statement);
+        }
+      } catch (e) {
+        report(createParseError(e.message, e.loc));
       }
     }
 
     return thrift;
+  }
+
+  // Finds the beginning of the next statement so we can continue parse after error.
+  function synchronize(): void {
+    while (!isAtEnd() && !isStatementBeginning(currentToken())) {
+      advance();
+    }
   }
 
   function parseStatement(): ThriftStatement {
@@ -145,7 +164,7 @@ export function createParser(tokens: Array<Token>): Parser {
         return null;
 
       default:
-        throw new ParseError(`Invalid start to Thrift statement ${next.text}`);
+        reportError(`Invalid start to Thrift statement ${next.text}`);
     }
   }
 
@@ -219,9 +238,9 @@ export function createParser(tokens: Array<Token>): Parser {
         functions.push(parseFunction());
 
         if (isStatementBeginning(currentToken())) {
-          throw new ParseError(`Closing curly brace expected, but new statement found`);
+          reportError(`Closing curly brace expected, but new statement found`);
         } else if (check(SyntaxType.EOF)) {
-          throw new ParseError(`Closing curly brace expected but reached end of file`);
+          reportError(`Closing curly brace expected but reached end of file`);
         }
       }
     }
@@ -235,7 +254,7 @@ export function createParser(tokens: Array<Token>): Parser {
     const returnType: FunctionType = parseFunctionType();
 
     if (onewayToken !== null && returnType.type !== SyntaxType.VoidKeyword) {
-      throw new ParseError(`Oneway keyword must be followed by a void return type`);
+      reportError(`Oneway keyword must be followed by a void return type`);
     }
 
     const nameToken: Token = consume(SyntaxType.Identifier);
@@ -284,9 +303,9 @@ export function createParser(tokens: Array<Token>): Parser {
       fields.push(parseField());
 
       if (isStatementBeginning(currentToken())) {
-        throw new ParseError(`Closing paren ')' expected, but new statement found`);
+        reportError(`Closing paren ')' expected, but new statement found`);
       } else if (check(SyntaxType.EOF)) {
-        throw new ParseError(`Closing paren ')' expected but reached end of file`);
+        reportError(`Closing paren ')' expected but reached end of file`);
       }
     }
 
@@ -377,7 +396,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // TypedefDefinition → 'typedef' FieldType Identifier
   function parseTypedef(): TypedefDefinition {
-    const keywordToken: Token = advance();
+    const keywordToken: Token = consume(SyntaxType.TypedefKeyword);
     const type: FieldType = parseFieldType();
     const nameToken: Token = consume(SyntaxType.Identifier);
     requireValue(nameToken, `Typedef is expected to have name and none found`);
@@ -432,9 +451,9 @@ export function createParser(tokens: Array<Token>): Parser {
         // consume list separator if there is one
         readListSeparator();
         if (isStatementBeginning(currentToken())) {
-          throw new ParseError(`Closing curly brace expected, but new statement found`);
+          reportError(`Closing curly brace expected, but new statement found`);
         } else if (check(SyntaxType.EOF)) {
-          throw new ParseError(`Closing curly brace expected but reached end of file`);
+          reportError(`Closing curly brace expected but reached end of file`);
         }
       }
     }
@@ -468,6 +487,7 @@ export function createParser(tokens: Array<Token>): Parser {
     };
   }
 
+  // StructLike → ('struct' | 'union' | 'exception') Identifier 'xsd_all'? '{' Field* '}'
   function parseStructLikeInterface(): StructLike {
     const keywordToken: Token = consume(SyntaxType.StructKeyword, SyntaxType.UnionKeyword, SyntaxType.ExceptionKeyword);
     const nameToken: Token = consume(SyntaxType.Identifier);
@@ -548,9 +568,9 @@ export function createParser(tokens: Array<Token>): Parser {
         fields.push(parseField());
 
         if (isStatementBeginning(currentToken())) {
-          throw new ParseError(`Closing curly brace expected, but new statement found`);
+          reportError(`Closing curly brace expected, but new statement found`);
         } else if (check(SyntaxType.EOF)) {
-          throw new ParseError(`Closing curly brace expected but reached end of file`);
+          reportError(`Closing curly brace expected but reached end of file`);
         }
       }
     }
@@ -771,7 +791,7 @@ export function createParser(tokens: Array<Token>): Parser {
         return createKeywordFieldType(typeToken.type, typeToken.loc);
 
       default:
-        throw new ParseError(`FieldType expected but found: ${typeToken.type}`);
+        reportError(`FieldType expected but found: ${typeToken.type}`);
     }
   }
 
@@ -942,7 +962,21 @@ export function createParser(tokens: Array<Token>): Parser {
     return current;
   }
 
+  function reportError(msg: string): void {
+    throw new ParseError(msg, previousToken().loc);
+  }
+
+  // Throw if the given value doesn't exist.
+  function requireValue<T>(val: T, msg: string): T {
+    if (val === null || val === undefined) {
+      reportError(msg);
+    }
+
+    return val;
+  }
+
   return {
-    parse
+    parse,
+    synchronize
   };
 }

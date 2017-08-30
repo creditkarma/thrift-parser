@@ -3,9 +3,13 @@
   "version": "0.0.1",
   "description": "A parser for Thrift written in TypeScript",
   "main": "./dist/index.js",
+  "bin": {
+    "thrift-parser": "./dist/app/bin/index.js"
+  },
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist; tsc",
+    "test:cli": "ts-node ./src/bin/index.ts ./fixtures/errors.thrift",
     "test": "NODE_ENV=test mocha --opts mocha.opts",
     "coverage": "NODE_ENV=test nyc mocha --opts mocha.cover.opts"
   },
