@@ -402,6 +402,54 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected)
   });
 
+  it('should correctly parse an enum with field commented out', function() {
+    const content: string = `
+      enum Test {
+        ONE,
+        # TWO
+      }
+    `;
+
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.EnumDefinition,
+          name: createIdentifier('Test', {
+            start: { line: 2, column: 12, index: 12 },
+            end: { line: 2, column: 16, index: 16 }
+          }),
+          members: [
+            {
+              type: SyntaxType.EnumMember,
+              name: createIdentifier('ONE', {
+                start: { line: 3, column: 9, index: 27 },
+                end: { line: 3, column: 12, index: 30 }
+              }),
+              initializer: null,
+              loc: {
+                start: { line: 3, column: 9, index: 27 },
+                end: { line: 3, column: 12, index: 30 }
+              }
+            }
+          ],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 5, column: 8, index: 53 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
   it('should correctly parse the syntax of an enum with initialized member', () => {
     const content: string = `
       enum Test {

@@ -205,15 +205,17 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseFunctions(): Array<FunctionDefinition> {
     const functions: Array<FunctionDefinition> = [];
 
-    while(true) {
-      functions.push(parseFunction());
+    while(!check(SyntaxType.RightBraceToken)) {
+      if (currentToken().type === SyntaxType.CommentBlock || currentToken().type === SyntaxType.CommentLine) {
+        advance();
+      } else {
+        functions.push(parseFunction());
 
-      if (check(SyntaxType.RightBraceToken)) {
-        break;
-      } else if (isStatementBeginning(currentToken())) {
-        throw new ParseError(`Closing curly brace expected, but new statement found`);
-      } else if (check(SyntaxType.EOF)) {
-        throw new ParseError(`Closing curly brace expected but reached end of file`);
+        if (isStatementBeginning(currentToken())) {
+          throw new ParseError(`closing curly brace expected, but new statement found`);
+        } else if (check(SyntaxType.EOF)) {
+          throw new ParseError(`closing curly brace expected but reached end of file`);
+        }
       }
     }
 
@@ -393,14 +395,14 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseEnum(): EnumDefinition {
     const keywordToken: Token = advance();
     const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `expected identifier for enum definition`);
+    requireValue(idToken, `Expected identifier for enum definition`);
     
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
-    requireValue(openBrace, `expected opening brace`);
+    requireValue(openBrace, `Expected opening brace`);
     
     const members: Array<EnumMember> = parseEnumMembers();
     const closeBrace: Token = consume(SyntaxType.RightBraceToken);
-    requireValue(closeBrace, `expected closing brace`);
+    requireValue(closeBrace, `Expected closing brace`);
 
     const loc: TextLocation = {
       start: keywordToken.loc.start,
@@ -417,10 +419,19 @@ export function createParser(tkns: Array<Token>): Parser {
 
   function parseEnumMembers(): Array<EnumMember> {
     const members: Array<EnumMember> = [];
-    while (check(SyntaxType.Identifier)) {
-      members.push(parseEnumMember());
-      if (match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (match(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
         advance();
+      } else {
+        members.push(parseEnumMember());
+
+        // consume list separator if there is one
+        readListSeparator();
+        if (isStatementBeginning(currentToken())) {
+          throw new ParseError(`Closing curly brace expected, but new statement found`);
+        } else if (check(SyntaxType.EOF)) {
+          throw new ParseError(`Closing curly brace expected but reached end of file`);
+        }
       }
     }
 
@@ -455,7 +466,7 @@ export function createParser(tkns: Array<Token>): Parser {
     const keywordToken: Token = advance();
     const idToken: Token = advance();
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
-    requireValue(openBrace, `struct body must begin with opening curly brace`);
+    requireValue(openBrace, `Struct body must begin with opening curly brace`);
 
     const fields: Array<FieldDefinition> = parseFields();
     const closeBrace: Token = advance();
@@ -476,7 +487,7 @@ export function createParser(tkns: Array<Token>): Parser {
     const keywordToken: Token = advance();
     const idToken: Token = advance();
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
-    requireValue(openBrace, `union body must begin with opening curly brace`);
+    requireValue(openBrace, `Union body must begin with opening curly brace`);
 
     const fields: Array<FieldDefinition> = parseFields();
     const closeBrace: Token = advance();
@@ -501,11 +512,11 @@ export function createParser(tkns: Array<Token>): Parser {
     const keywordToken: Token = advance();
     const idToken: Token = advance();
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
-    requireValue(openBrace, `exception body must begin with opening curly brace '{'`);
+    requireValue(openBrace, `Exception body must begin with opening curly brace '{'`);
 
     const fields: Array<FieldDefinition> = parseFields();
     const closeBrace: Token = advance();
-    requireValue(closeBrace, `exception body must end with a closing curly brace '}'`)
+    requireValue(closeBrace, `Exception body must end with a closing curly brace '}'`)
 
     return {
       type: SyntaxType.ExceptionDefinition,
@@ -522,12 +533,16 @@ export function createParser(tkns: Array<Token>): Parser {
     const fields: Array<FieldDefinition> = [];
 
     while(!check(SyntaxType.RightBraceToken)) {
-      fields.push(parseField());
+      if (currentToken().type === SyntaxType.CommentBlock || currentToken().type === SyntaxType.CommentLine) {
+        advance();
+      } else {
+        fields.push(parseField());
 
-      if (isStatementBeginning(currentToken())) {
-        throw new ParseError(`closing curly brace expected, but new statement found`);
-      } else if (check(SyntaxType.EOF)) {
-        throw new ParseError(`closing curly brace expected but reached end of file`);
+        if (isStatementBeginning(currentToken())) {
+          throw new ParseError(`Closing curly brace expected, but new statement found`);
+        } else if (check(SyntaxType.EOF)) {
+          throw new ParseError(`Closing curly brace expected but reached end of file`);
+        }
       }
     }
 
@@ -764,15 +779,15 @@ export function createParser(tkns: Array<Token>): Parser {
   // MapType → 'map' CppType? '<' FieldType ',' FieldType '>'
   function parseMapType(): MapType {
     const openBracket: Token = consume(SyntaxType.LessThanToken);
-    requireValue(openBracket, `map needs to defined contained types`);
+    requireValue(openBracket, `Map needs to defined contained types`);
 
     const keyType: FieldType = parseFieldType();
     const commaToken: Token = consume(SyntaxType.CommaToken);
-    requireValue(commaToken, `comma expedted to separate map types <key, value>`);
+    requireValue(commaToken, `Comma expedted to separate map types <key, value>`);
 
     const valueType: FieldType = parseFieldType();
     const closeBracket: Token = consume(SyntaxType.GreaterThanToken);
-    requireValue(closeBracket, `map needs to defined contained types`);
+    requireValue(closeBracket, `Map needs to defined contained types`);
 
     const location: TextLocation = {
       start: openBracket.loc.start,
@@ -785,11 +800,11 @@ export function createParser(tkns: Array<Token>): Parser {
   // SetType → 'set' CppType? '<' FieldType '>'
   function parseSetType(): SetType {
     const openBracket: Token = consume(SyntaxType.LessThanToken);
-    requireValue(openBracket, `map needs to defined contained types`);
+    requireValue(openBracket, `Map needs to defined contained types`);
 
     const valueType: FieldType = parseFieldType();
     const closeBracket: Token = consume(SyntaxType.GreaterThanToken);
-    requireValue(closeBracket, `map needs to defined contained types`);
+    requireValue(closeBracket, `Map needs to defined contained types`);
 
     return {
       type: SyntaxType.SetType,
@@ -804,11 +819,11 @@ export function createParser(tkns: Array<Token>): Parser {
   // ListType → 'list' '<' FieldType '>' CppType?
   function parseListType(): ListType {
     const openBracket: Token = consume(SyntaxType.LessThanToken);
-    requireValue(openBracket, `map needs to defined contained types`);
+    requireValue(openBracket, `Map needs to defined contained types`);
 
     const valueType: FieldType = parseFieldType();
     const closeBracket: Token = consume(SyntaxType.GreaterThanToken);
-    requireValue(closeBracket, `map needs to defined contained types`);
+    requireValue(closeBracket, `Map needs to defined contained types`);
 
     return {
       type: SyntaxType.ListType,
