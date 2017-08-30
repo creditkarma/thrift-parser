@@ -281,6 +281,77 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('should correctly parse the syntax of a struct with commented fields', () => {
+    const content: string = `
+      struct Test {
+        1: required i32 field1,
+        # 2: required bool field2,
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.StructDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 14, index: 14 },
+              end: { line: 2, column: 18, index: 18 }
+            }
+          },
+          fields: [
+            {
+              type: SyntaxType.FieldDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'field1',
+                loc: {
+                  start: { line: 3, column: 25, index: 45 },
+                  end: { line: 3, column: 31, index: 51 }
+                }
+              },
+              fieldID: {
+                type: SyntaxType.FieldID,
+                value: 1,
+                loc: {
+                  start: { line: 3, column: 9, index: 29 },
+                  end: { line: 3, column: 11, index: 31 }
+                }
+              },
+              fieldType: {
+                type: SyntaxType.I32Keyword,
+                loc: {
+                  start: { line: 3, column: 21, index: 41 },
+                  end: { line: 3, column: 24, index: 44 }
+                }
+              },
+              requiredness: 'required',
+              defaultValue: null,
+              loc: {
+                start: { line: 3, column: 9, index: 29 },
+                end: { line: 3, column: 32, index: 52 }
+              }
+            }
+          ],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 5, column: 8, index: 95 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
   it('should correctly parse the syntax of a simple service', () => {
     const content: string = `
       service Test {
@@ -332,6 +403,66 @@ describe('Parser', () => {
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 49 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
+  it('should correctly parse the syntax of a service with commented functions', () => {
+    const content: string = `
+      service Test {
+        bool test()
+        # void ping()
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 15, index: 15 },
+              end: { line: 2, column: 19, index: 19 }
+            }
+          },
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: createIdentifier('test', {
+                start: { line: 3, column: 14, index: 35 },
+                end: { line: 3, column: 18, index: 39 }
+              }),
+              fields: [],
+              throws: [],
+              returnType: {
+                type: SyntaxType.BoolKeyword,
+                loc: {
+                  start: { line: 3, column: 9, index: 30 },
+                  end: { line: 3, column: 13, index: 34 }
+                }
+              },
+              loc: {
+                start: { line: 3, column: 9, index: 30 },
+                end: { line: 3, column: 18, index: 39 }
+              }
+            }
+          ],
+          extends: null,
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 5, column: 8, index: 71 }
           }
         }
       ]

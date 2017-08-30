@@ -186,15 +186,17 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseFunctions(): Array<FunctionDefinition> {
     const functions: Array<FunctionDefinition> = [];
 
-    while(true) {
-      functions.push(parseFunction());
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (match(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
+        advance();
+      } else {
+        functions.push(parseFunction());
 
-      if (check(SyntaxType.RightBraceToken)) {
-        break;
-      } else if (isStatementBeginning(currentToken())) {
-        throw new ParseError(`closing curly brace expected, but new statement found`);
-      } else if (check(SyntaxType.EOF)) {
-        throw new ParseError(`closing curly brace expected but reached end of file`);
+        if (isStatementBeginning(currentToken())) {
+          throw new ParseError(`closing curly brace expected, but new statement found`);
+        } else if (check(SyntaxType.EOF)) {
+          throw new ParseError(`closing curly brace expected but reached end of file`);
+        }
       }
     }
 
@@ -231,7 +233,7 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseParameterFields(): Array<FieldDefinition> {
     const fields: Array<FieldDefinition> = [];
 
-    while(!match(SyntaxType.RightParenToken)) {
+    while (!match(SyntaxType.RightParenToken)) {
       readListSeparator();
       fields.push(parseField());
 
@@ -489,13 +491,17 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseFields(): Array<FieldDefinition> {
     const fields: Array<FieldDefinition> = [];
 
-    while(!check(SyntaxType.RightBraceToken)) {
-      fields.push(parseField());
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (match(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
+        advance();
+      } else {
+        fields.push(parseField());
 
-      if (isStatementBeginning(currentToken())) {
-        throw new ParseError(`closing curly brace expected, but new statement found`);
-      } else if (check(SyntaxType.EOF)) {
-        throw new ParseError(`closing curly brace expected but reached end of file`);
+        if (isStatementBeginning(currentToken())) {
+          throw new ParseError(`closing curly brace expected, but new statement found`);
+        } else if (check(SyntaxType.EOF)) {
+          throw new ParseError(`closing curly brace expected but reached end of file`);
+        }
       }
     }
 
@@ -655,10 +661,10 @@ export function createParser(tkns: Array<Token>): Parser {
 
   function readListValues(): Array<ConstValue> {
     const elements: Array<ConstValue> = [];
-    while(true) {
+    while (true) {
       elements.push(parseValue());
 
-      if (check(SyntaxType.CommaToken) || check(SyntaxType.SemicolonToken)) {
+      if (match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
         advance();
       } else {
         break;
