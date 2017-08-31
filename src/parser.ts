@@ -299,46 +299,20 @@ export function createParser(tkns: Array<Token>): Parser {
   // Namespace → 'namespace' ( NamespaceScope Identifier )
   function parseNamespace(): NamespaceDefinition {
     const keywordToken: Token = advance();
-    const scope: NamespaceScope = parseNamespaceScope();
-    const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `Unable to find identifier for namespace`);
+    const scopeToken: Token = consume(SyntaxType.Identifier);
+    requireValue(scopeToken, `Unable to find scope identifier for namespace`);
+    
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Unable to find name identifier for namespace`);
 
     return {
       type: SyntaxType.NamespaceDefinition,
-      scope: scope,
-      name: createIdentifier(idToken.text, idToken.loc),
+      scope: createIdentifier(scopeToken.text, scopeToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       loc: createTextLocation(
         keywordToken.loc.start,
-        idToken.loc.end
+        nameToken.loc.end
       )
-    }
-  }
-
-  // NamespaceScope → '*' | 'cpp' | 'java' | 'py' | 'perl' | 'rb' | 'cocoa' | 'csharp' | 'js'
-  function parseNamespaceScope(): NamespaceScope {
-    const current: Token = currentToken();
-    switch(current.text) {
-      case '*':
-      case 'js':
-      case 'cpp':
-      case 'java':
-      case 'py':
-      case 'perl':
-      case 'rb':
-      case 'cocoa':
-      case 'csharp':
-        advance();
-        return {
-          type: SyntaxType.NamespaceScope,
-          value: current.text,
-          loc: {
-            start: current.loc.start,
-            end: current.loc.end
-          }
-        };
-
-      default:
-        throw new ParseError(`Invalid or missing namespace scope: ${current.text}`);
     }
   }
 
