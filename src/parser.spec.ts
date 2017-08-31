@@ -46,6 +46,56 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('should correctly parse the syntax of an include', () => {
+    const content: string = `
+      include "test"
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.IncludeDefinition,
+          path: {
+            type: SyntaxType.StringLiteral,
+            value: 'test',
+            loc: {
+              start: {
+                line: 2,
+                column: 15,
+                index: 15
+              },
+              end: {
+                line: 2,
+                column: 21,
+                index: 21
+              }
+            }
+          },
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7
+            },
+            end: {
+              line: 2,
+              column: 21,
+              index: 21
+            }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
   it('should correctly parse the syntax of a namespace definition', () => {
     const content: string = `
       namespace js test

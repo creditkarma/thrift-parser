@@ -5,6 +5,7 @@ import {
   Token,
   NamespaceScope,
   NamespaceDefinition,
+  IncludeDefinition,
   ConstDefinition,
   TypedefDefinition,
   StructDefinition,
@@ -114,6 +115,9 @@ export function createParser(tkns: Array<Token>): Parser {
       case SyntaxType.NamespaceKeyword:
         return parseNamespace();
 
+      case SyntaxType.IncludeKeyword:
+        return parseInclude();
+
       case SyntaxType.ConstKeyword:
         return parseConst();
 
@@ -143,6 +147,19 @@ export function createParser(tkns: Array<Token>): Parser {
       default:
         throw new ParseError(`Invalid start to Thrift statement ${next.text}`);
     }
+  }
+
+  // IncludeDefinition → 'include' StringLiteral
+  function parseInclude(): IncludeDefinition {
+    const keywordToken: Token = advance();
+    const pathToken: Token = consume(SyntaxType.StringLiteral);
+    requireValue(pathToken, `Include statement must include a path as string literal`);
+
+    return {
+      type: SyntaxType.IncludeDefinition,
+      path: createStringLiteral(pathToken.text, pathToken.loc),
+      loc: createTextLocation(keywordToken.loc.start, pathToken.loc.end)
+    };
   }
 
   // ServiceDefinition → 'service' Identifier ( 'extends' Identifier )? '{' Function* '}'
