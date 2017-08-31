@@ -448,7 +448,7 @@ describe('Scanner', () => {
     assert.deepEqual(tokens, expected);
   });
 
-    it(`should remove pointer syntax '&' from the list of tokens`, () => {
+  it(`should remove pointer syntax '&' from the list of tokens`, () => {
     const content: string = `
       struct MyStruct {
         1: required MyStruct & nextItem

@@ -553,7 +553,7 @@ describe('Parser', () => {
               },
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 20, index: 41 }
               }
             }
           ],
@@ -611,7 +611,7 @@ describe('Parser', () => {
               },
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 22, index: 43 }
+                end: { line: 3, column: 24, index: 45 }
               }
             }
           ],
@@ -626,6 +626,195 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('should correctly parse the syntax of a service containing a function that throws', () => {
+    const content: string = `
+      service Test {
+        bool test() throws (1: Exception1 user_exception, 2: Exception2 system_exception)
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 15, index: 15 },
+              end: { line: 2, column: 19, index: 19 }
+            }
+          },
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: createIdentifier('test', {
+                start: { line: 3, column: 14, index: 35 },
+                end: { line: 3, column: 18, index: 39 }
+              }),
+              fields: [],
+              throws: [
+                {
+                  type: SyntaxType.FieldDefinition,
+                  name: {
+                    type: SyntaxType.Identifier,
+                    value: 'user_exception',
+                    loc: {
+                      start: {
+                        line: 3,
+                        column: 43,
+                        index: 64
+                      },
+                      end: {
+                        line: 3,
+                        column: 57,
+                        index: 78
+                      }
+                    }
+                  },
+                  fieldID: {
+                    type: SyntaxType.FieldID,
+                    value: 1,
+                    loc: {
+                      start: {
+                        line: 3,
+                        column: 29,
+                        index: 50
+                      },
+                      end: {
+                        line: 3,
+                        column: 31,
+                        index: 52
+                      }
+                    }
+                  },
+                  fieldType: {
+                    type: SyntaxType.Identifier,
+                    value: 'Exception1',
+                    loc: {
+                      start: {
+                        line: 3,
+                        column: 32,
+                        index: 53
+                      },
+                      end: {
+                        line: 3,
+                        column: 42,
+                        index: 63
+                      }
+                    }
+                  },
+                  requiredness: null,
+                  defaultValue: null,
+                  loc: {
+                    start: {
+                      line: 3,
+                      column: 29,
+                      index: 50
+                    },
+                    end: {
+                      line: 3,
+                      column: 58,
+                      index: 79
+                    }
+                  }
+                },
+                {
+                  type: SyntaxType.FieldDefinition,
+                  name: {
+                    type: SyntaxType.Identifier,
+                    value: 'system_exception',
+                    loc: {
+                      start: {
+                        line: 3,
+                        column: 73,
+                        index: 94
+                      },
+                      end: {
+                        line: 3,
+                        column: 89,
+                        index: 110
+                      }
+                    }
+                  },
+                  fieldID: {
+                    type: SyntaxType.FieldID,
+                    value: 2,
+                    loc: {
+                      start: {
+                        line: 3,
+                        column: 59,
+                        index: 80
+                      },
+                      end: {
+                        line: 3,
+                        column: 61,
+                        index: 82
+                      }
+                    }
+                  },
+                  fieldType: {
+                    type: SyntaxType.Identifier,
+                    value: 'Exception2',
+                    loc: {
+                      start: {
+                        line: 3,
+                        column: 62,
+                        index: 83
+                      },
+                      end: {
+                        line: 3,
+                        column: 72,
+                        index: 93
+                      }
+                    }
+                  },
+                  requiredness: null,
+                  defaultValue: null,
+                  loc: {
+                    start: {
+                      line: 3,
+                      column: 59,
+                      index: 80
+                    },
+                    end: {
+                      line: 3,
+                      column: 89,
+                      index: 110
+                    }
+                  }
+                }
+              ],
+              returnType: {
+                type: SyntaxType.BoolKeyword,
+                loc: {
+                  start: { line: 3, column: 9, index: 30 },
+                  end: { line: 3, column: 13, index: 34 }
+                }
+              },
+              loc: {
+                start: { line: 3, column: 9, index: 30 },
+                end: { line: 3, column: 90, index: 111 }
+              }
+            }
+          ],
+          extends: null,
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 4, column: 8, index: 119 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
 
   it('parses a service containing a function with arguments with mixed FieldIDs', function() {
     const content: string = `
@@ -721,7 +910,7 @@ describe('Parser', () => {
               },
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 47, index: 68 }
               }
             }
           ],
