@@ -79,14 +79,12 @@ export type ConstValue =
 
 export interface NamespaceDefinition extends SyntaxNode {
   type: SyntaxType.NamespaceDefinition;
-  scope: NamespaceScope;
+  scope: Identifier;
   name: Identifier;
 }
 
-export interface NamespaceScope extends SyntaxNode {
-  type: SyntaxType.NamespaceScope;
-  value: '*' | 'cpp' | 'java' | 'py' | 'perl' | 'rb' | 'cocoa' | 'csharp' | 'js'
-}
+export type NamespaceScope =
+  '*' | 'cpp' | 'java' | 'py' | 'perl' | 'rb' | 'cocoa' | 'csharp' | 'js'
 
 export interface ConstDefinition extends SyntaxNode {
   type: SyntaxType.ConstDefinition;

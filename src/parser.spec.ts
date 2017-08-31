@@ -99,6 +99,7 @@ describe('Parser', () => {
   it('should correctly parse the syntax of a namespace definition', () => {
     const content: string = `
       namespace js test
+      namespace js.ts test
     `;
     const scanner: Scanner = createScanner(content);
     const tokens: Array<Token> = scanner.scan();
@@ -128,7 +129,7 @@ describe('Parser', () => {
             }
           },
           scope: {
-            type: SyntaxType.NamespaceScope,
+            type: SyntaxType.Identifier,
             value: 'js',
             loc: {
               start: {
@@ -153,6 +154,53 @@ describe('Parser', () => {
               line: 2,
               column: 24,
               index: 24
+            }
+          }
+        },
+        {
+          type: SyntaxType.NamespaceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'test',
+            loc: {
+              start: {
+                line: 3,
+                column: 23,
+                index: 47
+              },
+              end: {
+                line: 3,
+                column: 27,
+                index: 51
+              }
+            }
+          },
+          scope: {
+            type: SyntaxType.Identifier,
+            value: 'js.ts',
+            loc: {
+              start: {
+                line: 3,
+                column: 17,
+                index: 41
+              },
+              end: {
+                line: 3,
+                column: 22,
+                index: 46
+              }
+            }
+          },
+          loc: {
+            start: {
+              line: 3,
+              column: 7,
+              index: 31
+            },
+            end: {
+              line: 3,
+              column: 27,
+              index: 51
             }
           }
         }
