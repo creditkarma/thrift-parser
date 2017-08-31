@@ -233,7 +233,14 @@ export function createParser(tkns: Array<Token>): Parser {
     requireValue(params, `List of zero or more fields expected`)
 
     const throws: ThrowsDefinition = parseThrows();
-    const endLoc: TextLocation = (throws !== null) ? throws.loc : params.loc
+    const listSeparator: Token = readListSeparator();
+    const endLoc: TextLocation = (
+      (listSeparator !== null) ? 
+        listSeparator.loc :
+        (throws !== null) ?
+          throws.loc :
+          params.loc
+    );
 
     return {
       type: SyntaxType.FunctionDefinition,
