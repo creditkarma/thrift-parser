@@ -281,6 +281,235 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('should correctly parse the syntax of an enum', () => {
+    const content: string = `
+      enum Test {
+        ONE,
+        TWO
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.EnumDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 12, index: 12 },
+              end: { line: 2, column: 16, index: 16 }
+            }
+          },
+          members: [
+            {
+              type: SyntaxType.EnumMember,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ONE',
+                loc: {
+                  start: { line: 3, column: 9, index: 27 },
+                  end: { line: 3, column: 12, index: 30 }
+                }
+              },
+              initializer: null,
+              loc: {
+                start: { line: 3, column: 9, index: 27 },
+                end: { line: 3, column: 12, index: 30 }
+              }
+            },
+            {
+              type: SyntaxType.EnumMember,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'TWO',
+                loc: {
+                  start: { line: 4, column: 9, index: 40 },
+                  end: { line: 4, column: 12, index: 43 }
+                }
+              },
+              initializer: null,
+              loc: {
+                start: { line: 4, column: 9, index: 40 },
+                end: { line: 4, column: 12, index: 43 }
+              }
+            }
+          ],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 5, column: 8, index: 51 }
+          }
+        }
+      ]
+    }
+
+    assert.deepEqual(thrift, expected)
+  });
+
+  it('should correctly parse the syntax of an enum with initialized member', () => {
+    const content: string = `
+      enum Test {
+        ONE = 2,
+        TWO
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.EnumDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 12, index: 12
+              },
+              end: { line: 2, column: 16, index: 16 }
+            }
+          },
+          members: [
+            {
+              type: SyntaxType.EnumMember,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ONE',
+                loc: {
+                  start: { line: 3, column: 9, index: 27 },
+                  end: { line: 3, column: 12, index: 30 }
+                }
+              },
+              initializer: {
+                type: SyntaxType.IntConstant,
+                value: 2,
+                loc: {
+                  start: { line: 3, column: 15, index: 33 },
+                  end: { line: 3, column: 16, index: 34 }
+                }
+              },
+              loc: {
+                start: { line: 3, column: 9, index: 27 },
+                end: { line: 3, column: 16, index: 34 }
+              }
+            },
+            {
+              type: SyntaxType.EnumMember,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'TWO',
+                loc: {
+                  start: { line: 4, column: 9, index: 44 },
+                  end: { line: 4, column: 12, index: 47 }
+                }
+              },
+              initializer: null,
+              loc: {
+                start: { line: 4, column: 9, index: 44 },
+                end: { line: 4, column: 12, index: 47 }
+              }
+            }
+          ],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 5, column: 8, index: 55 }
+          }
+        }
+      ]
+    }
+
+    assert.deepEqual(thrift, expected)
+  });
+
+  it('should correctly parse the syntax of an enum with member initialized to hex value', () => {
+    const content: string = `
+      enum Test {
+        ONE = 0xaf,
+        TWO
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.EnumDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 12, index: 12
+              },
+              end: { line: 2, column: 16, index: 16 }
+            }
+          },
+          members: [
+            {
+              type: SyntaxType.EnumMember,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ONE',
+                loc: {
+                  start: { line: 3, column: 9, index: 27 },
+                  end: { line: 3, column: 12, index: 30 }
+                }
+              },
+              initializer: {
+                type: SyntaxType.IntConstant,
+                value: 175,
+                loc: {
+                  start: { line: 3, column: 15, index: 33 },
+                  end: { line: 3, column: 19, index: 37 }
+                }
+              },
+              loc: {
+                start: { line: 3, column: 9, index: 27 },
+                end: { line: 3, column: 19, index: 37 }
+              }
+            },
+            {
+              type: SyntaxType.EnumMember,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'TWO',
+                loc: {
+                  start: { line: 4, column: 9, index: 47 },
+                  end: { line: 4, column: 12, index: 50 }
+                }
+              },
+              initializer: null,
+              loc: {
+                start: { line: 4, column: 9, index: 47 },
+                end: { line: 4, column: 12, index: 50 }
+              }
+            }
+          ],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 5, column: 8, index: 58 }
+          }
+        }
+      ]
+    }
+
+    assert.deepEqual(thrift, expected)
+  });
+    
   it('should correctly parse the syntax of a simple service', () => {
     const content: string = `
       service Test {
@@ -689,66 +918,6 @@ describe('Parser', () => {
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 76 }
-          }
-        }
-      ]
-    };
-
-    assert.deepEqual(thrift, expected);
-  });
-
-  it('should correctly parse a simple enum', function() {
-    const content: string = `
-      enum Test {
-        ONE,
-        TWO
-      }
-    `;
-
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
-
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
-
-    const expected: ThriftDocument = {
-      type: SyntaxType.ThriftDocument,
-      body: [
-        {
-          type: SyntaxType.EnumDefinition,
-          name: createIdentifier('Test', {
-            start: { line: 2, column: 12, index: 12 },
-            end: { line: 2, column: 16, index: 16 }
-          }),
-          members: [
-            {
-              type: SyntaxType.EnumMember,
-              name: createIdentifier('ONE', {
-                start: { line: 3, column: 9, index: 27 },
-                end: { line: 3, column: 12, index: 30 }
-              }),
-              initializer: null,
-              loc: {
-                start: { line: 3, column: 9, index: 27 },
-                end: { line: 3, column: 12, index: 30 }
-              }
-            },
-            {
-              type: SyntaxType.EnumMember,
-              name: createIdentifier('TWO', {
-                start: { line: 4, column: 9, index: 40 },
-                end: { line: 4, column: 12, index: 43 }
-              }),
-              initializer: null,
-              loc: {
-                start: { line: 4, column: 9, index: 40 },
-                end: { line: 4, column: 12, index: 43 }
-              }
-            }
-          ],
-          loc: {
-            start: { line: 2, column: 7, index: 7 },
-            end: { line: 5, column: 8, index: 51 }
           }
         }
       ]
