@@ -399,7 +399,7 @@ export function createParser(tkns: Array<Token>): Parser {
   function parseEnumMember(): EnumMember {
     const idToken: Token = consume(SyntaxType.Identifier);
     const equalToken: Token = consume(SyntaxType.EqualToken);
-    const numToken: Token = consume(SyntaxType.IntegerLiteral);
+    const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral);
     var loc: TextLocation = null;
     var initializer: IntConstant = null;
 
@@ -658,7 +658,7 @@ export function createParser(tkns: Array<Token>): Parser {
     while(true) {
       elements.push(parseValue());
 
-      if (check(SyntaxType.CommaToken) || check(SyntaxType.SemicolonToken)) {
+      if (check(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
         advance();
       } else {
         break;
@@ -810,27 +810,33 @@ export function createParser(tkns: Array<Token>): Parser {
   }
 
   // Does the current token match the given type
-  function check(type: SyntaxType): boolean {
-    if (isAtEnd()) {
-      return false;
+  function check(...types: Array<SyntaxType>): boolean {
+    for (let type of types) {
+      if (type === currentToken().type) {
+        return true;
+      }
     }
 
-    return type === currentToken().type;
+    return false;
   }
 
   // Does the current token match the given text
-  function checkText(text: string): boolean {
-    if (isAtEnd()) {
-      return false;
+  function checkText(...strs: Array<string>): boolean {
+    for (let str of strs) {
+      if (str === currentToken().text) {
+        return true;
+      }
     }
-
-    return text === currentToken().text;
+    
+    return false;
   }
 
   // requireToken the current token to match given type and advance, otherwise return null
-  function consume(type: SyntaxType): Token {
-    if (check(type)) {
-      return advance();
+  function consume(...types: Array<SyntaxType>): Token {
+    for (let type of types) {
+      if (check(type)) {
+        return advance();
+      }
     }
 
     return null;
