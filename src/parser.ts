@@ -387,10 +387,19 @@ export function createParser(tkns: Array<Token>): Parser {
 
   function parseEnumMembers(): Array<EnumMember> {
     const members: Array<EnumMember> = [];
-    while (check(SyntaxType.Identifier)) {
-      members.push(parseEnumMember());
-      if (match(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
+    while (!check(SyntaxType.RightBraceToken)) {
+      if (match(SyntaxType.CommentBlock, SyntaxType.CommentLine)) {
         advance();
+      } else {
+        members.push(parseEnumMember());
+
+        // consume list separator if there is one
+        readListSeparator();
+        if (isStatementBeginning(currentToken())) {
+          throw new ParseError(`Closing curly brace expected, but new statement found`);
+        } else if (check(SyntaxType.EOF)) {
+          throw new ParseError(`Closing curly brace expected but reached end of file`);
+        }
       }
     }
 
