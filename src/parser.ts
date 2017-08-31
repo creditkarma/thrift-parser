@@ -195,9 +195,9 @@ export function createParser(tkns: Array<Token>): Parser {
         functions.push(parseFunction());
 
         if (isStatementBeginning(currentToken())) {
-          throw new ParseError(`closing curly brace expected, but new statement found`);
+          throw new ParseError(`Closing curly brace expected, but new statement found`);
         } else if (check(SyntaxType.EOF)) {
-          throw new ParseError(`closing curly brace expected but reached end of file`);
+          throw new ParseError(`Closing curly brace expected but reached end of file`);
         }
       }
     }
@@ -330,10 +330,10 @@ export function createParser(tkns: Array<Token>): Parser {
     const keywordToken: Token = advance();
     const fieldType: FieldType = parseFieldType();
     const idToken: Token = advance();
-    requireValue(idToken, `const definition must have a name`);
+    requireValue(idToken, `Const definition must have a name`);
 
     const initializer: ConstValue = parseValueAssignment();
-    requireValue(initializer, `const must be initialized to a value`);
+    requireValue(initializer, `Const must be initialized to a value`);
 
     return {
       type: SyntaxType.ConstDefinition,
@@ -361,7 +361,7 @@ export function createParser(tkns: Array<Token>): Parser {
     const keywordToken: Token = advance();
     const type: DefinitionType = parseDefinitionType();
     const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `typedef is expected to have name and none found`);
+    requireValue(idToken, `Typedef is expected to have name and none found`);
 
     return {
       type: SyntaxType.TypedefDefinition,
@@ -766,7 +766,7 @@ export function createParser(tkns: Array<Token>): Parser {
 
     const keyType: FieldType = parseFieldType();
     const commaToken: Token = consume(SyntaxType.CommaToken);
-    requireValue(commaToken, `Comma expedted to separate map types <key, value>`);
+    requireValue(commaToken, `Comma expected to separate map types <key, value>`);
 
     const valueType: FieldType = parseFieldType();
     const closeBracket: Token = consume(SyntaxType.GreaterThanToken);
