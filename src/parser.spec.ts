@@ -48,7 +48,7 @@ describe('Parser', () => {
 
   it('should correctly parse the syntax of an include', () => {
     const content: string = `
-      include "test"
+      include 'test'
     `;
     const scanner: Scanner = createScanner(content);
     const tokens: Array<Token> = scanner.scan();
@@ -730,6 +730,256 @@ describe('Parser', () => {
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 49 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
+  it('should correctly parse a service where functions are separated by commas or semicolons', () => {
+    const content: string = `
+      service Test {
+        bool ping()
+        bool foo();
+        string dang(),
+        i32 ding()
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: {
+                line: 2,
+                column: 15,
+                index: 15
+              },
+              end: {
+                line: 2,
+                column: 19,
+                index: 19
+              }
+            }
+          },
+          extends: null,
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ping',
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 14,
+                    index: 35
+                  },
+                  end: {
+                    line: 3,
+                    column: 18,
+                    index: 39
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.BoolKeyword,
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 9,
+                    index: 30
+                  },
+                  end: {
+                    line: 3,
+                    column: 13,
+                    index: 34
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              loc: {
+                start: {
+                  line: 3,
+                  column: 9,
+                  index: 30
+                },
+                end: {
+                  line: 3,
+                  column: 20,
+                  index: 41
+                }
+              }
+            },
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'foo',
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 14,
+                    index: 55
+                  },
+                  end: {
+                    line: 4,
+                    column: 17,
+                    index: 58
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.BoolKeyword,
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 9,
+                    index: 50
+                  },
+                  end: {
+                    line: 4,
+                    column: 13,
+                    index: 54
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              loc: {
+                start: {
+                  line: 4,
+                  column: 9,
+                  index: 50
+                },
+                end: {
+                  line: 4,
+                  column: 20,
+                  index: 61
+                }
+              }
+            },
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'dang',
+                loc: {
+                  start: {
+                    line: 5,
+                    column: 16,
+                    index: 77
+                  },
+                  end: {
+                    line: 5,
+                    column: 20,
+                    index: 81
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.StringKeyword,
+                loc: {
+                  start: {
+                    line: 5,
+                    column: 9,
+                    index: 70
+                  },
+                  end: {
+                    line: 5,
+                    column: 15,
+                    index: 76
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              loc: {
+                start: {
+                  line: 5,
+                  column: 9,
+                  index: 70
+                },
+                end: {
+                  line: 5,
+                  column: 23,
+                  index: 84
+                }
+              }
+            },
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ding',
+                loc: {
+                  start: {
+                    line: 6,
+                    column: 13,
+                    index: 97
+                  },
+                  end: {
+                    line: 6,
+                    column: 17,
+                    index: 101
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.I32Keyword,
+                loc: {
+                  start: {
+                    line: 6,
+                    column: 9,
+                    index: 93
+                  },
+                  end: {
+                    line: 6,
+                    column: 12,
+                    index: 96
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              loc: {
+                start: {
+                  line: 6,
+                  column: 9,
+                  index: 93
+                },
+                end: {
+                  line: 6,
+                  column: 19,
+                  index: 103
+                }
+              }
+            }
+          ],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7
+            },
+            end: {
+              line: 7,
+              column: 8,
+              index: 111
+            }
           }
         }
       ]
