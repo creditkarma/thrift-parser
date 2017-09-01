@@ -186,6 +186,7 @@ export interface ServiceDefinition extends PrimarySyntax {
 export interface FunctionDefinition extends PrimarySyntax {
   type: SyntaxType.FunctionDefinition;
   name: Identifier;
+  oneway: boolean;
   returnType: FunctionType;
   fields: Array<FieldDefinition>;
   throws: Array<FieldDefinition>;
