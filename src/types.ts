@@ -6,6 +6,13 @@ export interface SyntaxNode extends Node {
   loc: TextLocation;
 }
 
+export interface StructLike {
+  name: Identifier;
+  fields: Array<FieldDefinition>;
+  comments: Array<Comment>;
+  loc: TextLocation;
+}
+
 export interface TextLocation {
   start: TextPosition;
   end: TextPosition;

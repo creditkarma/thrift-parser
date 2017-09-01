@@ -4,6 +4,7 @@ import {
   Node,
   Token,
   Comment,
+  StructLike,
   NamespaceScope,
   NamespaceDefinition,
   IncludeDefinition,
@@ -434,7 +435,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // EnumMember → (Identifier ('=' IntConstant)? ListSeparator?)*
   function parseEnumMember(): EnumMember {
-    const idToken: Token = consume(SyntaxType.Identifier);
+    const nameToken: Token = consume(SyntaxType.Identifier);
     const equalToken: Token = consume(SyntaxType.EqualToken);
     const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral);
     var loc: TextLocation = null;
@@ -442,34 +443,35 @@ export function createParser(tokens: Array<Token>): Parser {
 
     if (numToken !== null) {
       initializer = createIntConstant(parseInt(numToken.text), numToken.loc);
-      loc = createTextLocation(idToken.loc.start, initializer.loc.end);
+      loc = createTextLocation(nameToken.loc.start, initializer.loc.end);
     } else {
-      loc = createTextLocation(idToken.loc.start, idToken.loc.end);
+      loc = createTextLocation(nameToken.loc.start, nameToken.loc.end);
     }
 
     return {
       type: SyntaxType.EnumMember,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       initializer,
       comments: getComments(),
       loc
     };
   }
 
-  // StructDefinition → 'struct' Identifier 'xsd_all'? '{' Field* '}'
-  function parseStruct(): StructDefinition {
+  function parseStructLikeInterface(): StructLike {
     const keywordToken: Token = advance();
-    const idToken: Token = advance();
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Struct-like must have an identifier`);
+
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
-    requireValue(openBrace, `Struct body must begin with opening curly brace`);
+    requireValue(openBrace, `Struct-like body must begin with opening curly brace '{'`);
 
     const leadingComments: Array<Comment> = getComments();
     const fields: Array<FieldDefinition> = parseFields();
-    const closeBrace: Token = advance();
+    const closeBrace: Token = consume(SyntaxType.RightBraceToken);
+    requireValue(closeBrace, `Struct-like body must end with a closing curly brace '}'`);
 
     return {
-      type: SyntaxType.StructDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       fields: fields,
       comments: [
         ...leadingComments,
@@ -479,63 +481,49 @@ export function createParser(tokens: Array<Token>): Parser {
         start: keywordToken.loc.start,
         end: closeBrace.loc.end
       }
+    };
+  }
+
+  // StructDefinition → 'struct' Identifier 'xsd_all'? '{' Field* '}'
+  function parseStruct(): StructDefinition {
+    const parsedData: StructLike = parseStructLikeInterface();
+
+    return {
+      type: SyntaxType.StructDefinition,
+      name: parsedData.name,
+      fields: parsedData.fields,
+      comments: parsedData.comments,
+      loc: parsedData.loc
     };
   }
 
   // UnioinDefinition → 'union' Identifier 'xsd_all'? '{' Field* '}'
   function parseUnion(): UnionDefinition {
-    const keywordToken: Token = advance();
-    const idToken: Token = advance();
-    const openBrace: Token = consume(SyntaxType.LeftBraceToken);
-    requireValue(openBrace, `Union body must begin with opening curly brace`);
-
-    const leadingComments: Array<Comment> = getComments();
-    const fields: Array<FieldDefinition> = parseFields();
-    const closeBrace: Token = advance();
+    const parsedData: StructLike = parseStructLikeInterface();
 
     return {
       type: SyntaxType.UnionDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
-      fields: fields.map((next: FieldDefinition) => {
+      name: parsedData.name,
+      fields: parsedData.fields.map((next: FieldDefinition) => {
         // As per the Thrift spec, all union fields are optional
         next.requiredness = 'optional';
         return next;
       }),
-      comments: [
-        ...leadingComments,
-        ...getComments()
-      ],
-      loc: {
-        start: keywordToken.loc.start,
-        end: closeBrace.loc.end
-      }
+      comments: parsedData.comments,
+      loc: parsedData.loc
     };
   }
 
   // ExceptionDefinition → 'exception' Identifier '{' Field* '}'
   function parseException(): ExceptionDefinition {
-    const keywordToken: Token = advance();
-    const idToken: Token = advance();
-    const openBrace: Token = consume(SyntaxType.LeftBraceToken);
-    requireValue(openBrace, `Exception body must begin with opening curly brace '{'`);
-
-    const leadingComments: Array<Comment> = getComments();
-    const fields: Array<FieldDefinition> = parseFields();
-    const closeBrace: Token = advance();
-    requireValue(closeBrace, `Exception body must end with a closing curly brace '}'`)
+    const parsedData: StructLike = parseStructLikeInterface();
 
     return {
       type: SyntaxType.ExceptionDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
-      fields: fields,
-      comments: [
-        ...leadingComments,
-        ...getComments()
-      ],
-      loc: {
-        start: keywordToken.loc.start,
-        end: closeBrace.loc.end
-      }
+      name: parsedData.name,
+      fields: parsedData.fields,
+      comments: parsedData.comments,
+      loc: parsedData.loc
     };
   }
 
