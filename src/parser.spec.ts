@@ -761,6 +761,7 @@ describe('Parser', () => {
               }),
               fields: [],
               throws: [],
+              oneway: false,
               returnType: {
                 type: SyntaxType.BoolKeyword,
                 loc: {
@@ -778,6 +779,66 @@ describe('Parser', () => {
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 49 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
+  it('should correctly parse the syntax of a service with oneway functions', () => {
+    const content: string = `
+      service Test {
+        oneway void test()
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 15, index: 15 },
+              end: { line: 2, column: 19, index: 19 }
+            }
+          },
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: createIdentifier('test', {
+                start: { line: 3, column: 21, index: 42 },
+                end: { line: 3, column: 25, index: 46 }
+              }),
+              fields: [],
+              throws: [],
+              oneway: true,
+              returnType: {
+                type: SyntaxType.VoidKeyword,
+                loc: {
+                  start: { line: 3, column: 16, index: 37 },
+                  end: { line: 3, column: 20, index: 41 }
+                }
+              },
+              loc: {
+                start: { line: 3, column: 16, index: 37 },
+                end: { line: 3, column: 27, index: 48 }
+              }
+            }
+          ],
+          extends: null,
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 4, column: 8, index: 56 }
           }
         }
       ]
@@ -859,6 +920,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              oneway: false,
               loc: {
                 start: {
                   line: 3,
@@ -907,6 +969,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              oneway: false,
               loc: {
                 start: {
                   line: 4,
@@ -955,6 +1018,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              oneway: false,
               loc: {
                 start: {
                   line: 5,
@@ -1003,6 +1067,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              oneway: false,
               loc: {
                 start: {
                   line: 6,
@@ -1071,6 +1136,7 @@ describe('Parser', () => {
               }),
               fields: [],
               throws: [],
+              oneway: false,
               returnType: {
                 type: SyntaxType.BoolKeyword,
                 loc: {
@@ -1128,6 +1194,7 @@ describe('Parser', () => {
               }),
               fields: [],
               throws: [],
+              oneway: false,
               returnType: {
                 type: SyntaxType.Identifier,
                 value: 'TestType',
@@ -1186,6 +1253,7 @@ describe('Parser', () => {
                 end: { line: 3, column: 18, index: 39 }
               }),
               fields: [],
+              oneway: false,
               throws: [
                 {
                   type: SyntaxType.FieldDefinition,
@@ -1428,6 +1496,7 @@ describe('Parser', () => {
                 }
               ],
               throws: [],
+              oneway: false,
               returnType: {
                 type: SyntaxType.VoidKeyword,
                 loc: {

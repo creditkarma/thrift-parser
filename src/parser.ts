@@ -224,8 +224,9 @@ export function createParser(tkns: Array<Token>): Parser {
 
   // Function → 'oneway'? FunctionType Identifier '(' Field* ')' Throws? ListSeparator?
   function parseFunction(): FunctionDefinition {
+    const onewayToken: Token = consume(SyntaxType.OnewayKeyword);
     const returnType: FunctionType = parseFunctionType();
-  
+    
     const idToken: Token = consume(SyntaxType.Identifier);
     requireValue(idToken, `Unable to find function identifier`);
   
@@ -248,6 +249,7 @@ export function createParser(tkns: Array<Token>): Parser {
       returnType,
       fields: params.fields,
       throws: (throws !== null) ? throws.fields : [],
+      oneway: (onewayToken !== null),
       loc: {
         start: returnType.loc.start,
         end: endLoc.end

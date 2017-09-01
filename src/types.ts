@@ -165,6 +165,7 @@ export interface ServiceDefinition extends SyntaxNode {
 export interface FunctionDefinition extends SyntaxNode {
   type: SyntaxType.FunctionDefinition;
   name: Identifier;
+  oneway: boolean;
   returnType: FunctionType;
   fields: Array<FieldDefinition>;
   throws: Array<FieldDefinition>;
