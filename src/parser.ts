@@ -3,6 +3,7 @@ import {
   ThriftStatement,
   Node,
   Token,
+  Comment,
   NamespaceScope,
   NamespaceDefinition,
   IncludeDefinition,
@@ -87,8 +88,8 @@ function requireValue<T>(val: T, msg: string): T {
   return val;
 }
 
-export function createParser(tkns: Array<Token>): Parser {
-  const tokens: Array<Token> = tkns;
+export function createParser(tokens: Array<Token>): Parser {
+  var comments: Array<Comment> = [];
   var currentIndex: number = 0;
 
   function parse(): ThriftDocument {
@@ -141,7 +142,7 @@ export function createParser(tkns: Array<Token>): Parser {
 
       case SyntaxType.CommentBlock:
       case SyntaxType.CommentLine:
-        advance();
+        consumeComments();
         return null;
 
       default:
@@ -158,6 +159,7 @@ export function createParser(tkns: Array<Token>): Parser {
     return {
       type: SyntaxType.IncludeDefinition,
       path: createStringLiteral(pathToken.text, pathToken.loc),
+      comments: getComments(),
       loc: createTextLocation(keywordToken.loc.start, pathToken.loc.end)
     };
   }
@@ -172,6 +174,8 @@ export function createParser(tkns: Array<Token>): Parser {
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
     requireValue(openBrace, `Expected opening curly brace`);
 
+    const leadingComments: Array<Comment> = getComments();
+
     const functions: Array<FunctionDefinition> = parseFunctions();
     const closeBrace: Token = consume(SyntaxType.RightBraceToken);
     requireValue(closeBrace, `Expected closing curly brace`);
@@ -183,6 +187,10 @@ export function createParser(tkns: Array<Token>): Parser {
       name: createIdentifier(idToken.text, idToken.loc),
       extends: extendsId,
       functions,
+      comments: [
+        ...leadingComments,
+        ...getComments()
+      ],
       loc: location
     };
   }
@@ -248,6 +256,7 @@ export function createParser(tkns: Array<Token>): Parser {
       returnType,
       fields: params.fields,
       throws: (throws !== null) ? throws.fields : [],
+      comments: getComments(),
       loc: {
         start: returnType.loc.start,
         end: endLoc.end
@@ -316,6 +325,7 @@ export function createParser(tkns: Array<Token>): Parser {
       type: SyntaxType.NamespaceDefinition,
       scope: createIdentifier(scopeToken.text, scopeToken.loc),
       name: createIdentifier(nameToken.text, nameToken.loc),
+      comments: getComments(),
       loc: createTextLocation(
         keywordToken.loc.start,
         nameToken.loc.end
@@ -337,11 +347,12 @@ export function createParser(tkns: Array<Token>): Parser {
       type: SyntaxType.ConstDefinition,
       name: createIdentifier(idToken.text, idToken.loc),
       fieldType: fieldType,
+      initializer: initializer,
+      comments: getComments(),
       loc: {
         start: keywordToken.loc.start,
         end: initializer.loc.end
       },
-      initializer: initializer
     };
   }
 
@@ -365,6 +376,7 @@ export function createParser(tkns: Array<Token>): Parser {
       type: SyntaxType.TypedefDefinition,
       name: createIdentifier(idToken.text, idToken.loc),
       definitionType: type,
+      comments: getComments(),
       loc: {
         start: keywordToken.loc.start,
         end: idToken.loc.end
@@ -394,6 +406,7 @@ export function createParser(tkns: Array<Token>): Parser {
       type: SyntaxType.EnumDefinition,
       name: createIdentifier(idToken.text, idToken.loc),
       members,
+      comments: getComments(),
       loc
     };
   }
@@ -438,6 +451,7 @@ export function createParser(tkns: Array<Token>): Parser {
       type: SyntaxType.EnumMember,
       name: createIdentifier(idToken.text, idToken.loc),
       initializer,
+      comments: getComments(),
       loc
     };
   }
@@ -449,6 +463,7 @@ export function createParser(tkns: Array<Token>): Parser {
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
     requireValue(openBrace, `Struct body must begin with opening curly brace`);
 
+    const leadingComments: Array<Comment> = getComments();
     const fields: Array<FieldDefinition> = parseFields();
     const closeBrace: Token = advance();
 
@@ -456,6 +471,10 @@ export function createParser(tkns: Array<Token>): Parser {
       type: SyntaxType.StructDefinition,
       name: createIdentifier(idToken.text, idToken.loc),
       fields: fields,
+      comments: [
+        ...leadingComments,
+        ...getComments()
+      ],
       loc: {
         start: keywordToken.loc.start,
         end: closeBrace.loc.end
@@ -470,6 +489,7 @@ export function createParser(tkns: Array<Token>): Parser {
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
     requireValue(openBrace, `Union body must begin with opening curly brace`);
 
+    const leadingComments: Array<Comment> = getComments();
     const fields: Array<FieldDefinition> = parseFields();
     const closeBrace: Token = advance();
 
@@ -481,6 +501,10 @@ export function createParser(tkns: Array<Token>): Parser {
         next.requiredness = 'optional';
         return next;
       }),
+      comments: [
+        ...leadingComments,
+        ...getComments()
+      ],
       loc: {
         start: keywordToken.loc.start,
         end: closeBrace.loc.end
@@ -495,6 +519,7 @@ export function createParser(tkns: Array<Token>): Parser {
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
     requireValue(openBrace, `Exception body must begin with opening curly brace '{'`);
 
+    const leadingComments: Array<Comment> = getComments();
     const fields: Array<FieldDefinition> = parseFields();
     const closeBrace: Token = advance();
     requireValue(closeBrace, `Exception body must end with a closing curly brace '}'`)
@@ -503,6 +528,10 @@ export function createParser(tkns: Array<Token>): Parser {
       type: SyntaxType.ExceptionDefinition,
       name: createIdentifier(idToken.text, idToken.loc),
       fields: fields,
+      comments: [
+        ...leadingComments,
+        ...getComments()
+      ],
       loc: {
         start: keywordToken.loc.start,
         end: closeBrace.loc.end
@@ -557,6 +586,7 @@ export function createParser(tkns: Array<Token>): Parser {
       fieldType: fieldType,
       requiredness: fieldRequired,
       defaultValue: defaultValue,
+      comments: getComments(),
       loc: location
     };
   }
@@ -816,7 +846,27 @@ export function createParser(tkns: Array<Token>): Parser {
     };
   }
 
+  function consumeComments(): void {
+    while (true) {
+      const next: Token = tokens[currentIndex];
+      switch (next.type) {
+        case SyntaxType.CommentBlock:
+        case SyntaxType.CommentLine:
+          comments.push({
+            type: next.type,
+            value: next.text,
+            loc: next.loc
+          });
+          currentIndex++;
+
+        default:
+          return;
+      }
+    }
+  }
+
   function currentToken(): Token {
+    consumeComments();
     return tokens[currentIndex];
   }
 
@@ -887,6 +937,12 @@ export function createParser(tkns: Array<Token>): Parser {
       currentIndex >= tokens.length ||
       currentToken().type === SyntaxType.EOF
     );
+  }
+
+  function getComments(): Array<Comment> {
+    const current: Array<Comment> = comments;
+    comments = [];
+    return current;
   }
 
   return {

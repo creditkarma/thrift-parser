@@ -32,6 +32,26 @@ export type ThriftStatement =
   StructDefinition | EnumDefinition | ExceptionDefinition | UnionDefinition |
   TypedefDefinition | ServiceDefinition;
 
+export type CommentType =
+  SyntaxType.CommentLine | SyntaxType.CommentBlock;
+
+export interface Comment extends SyntaxNode {
+  type: CommentType;
+  value: string;
+}
+
+export interface CommentLine extends Comment {
+  type: SyntaxType.CommentLine;
+}
+
+export interface CommentBlock extends Comment {
+  type: SyntaxType.CommentBlock;
+}
+
+export interface PrimarySyntax extends SyntaxNode {
+  comments: Array<Comment>;
+}
+
 export type FieldType =
   BaseType | ContainerType | Identifier;
 
@@ -77,7 +97,7 @@ export type ConstValue =
   Identifier | StringLiteral | IntConstant | DoubleConstant |
   BooleanLiteral | ConstMap | ConstList;
 
-export interface NamespaceDefinition extends SyntaxNode {
+export interface NamespaceDefinition extends PrimarySyntax {
   type: SyntaxType.NamespaceDefinition;
   scope: Identifier;
   name: Identifier;
@@ -86,7 +106,7 @@ export interface NamespaceDefinition extends SyntaxNode {
 export type NamespaceScope =
   '*' | 'cpp' | 'java' | 'py' | 'perl' | 'rb' | 'cocoa' | 'csharp' | 'js'
 
-export interface ConstDefinition extends SyntaxNode {
+export interface ConstDefinition extends PrimarySyntax {
   type: SyntaxType.ConstDefinition;
   name: Identifier;
   fieldType: FieldType;
@@ -96,17 +116,17 @@ export interface ConstDefinition extends SyntaxNode {
 export type FieldRequired =
   'required' | 'optional';
 
-export interface IncludeDefinition extends SyntaxNode {
+export interface IncludeDefinition extends PrimarySyntax {
   type: SyntaxType.IncludeDefinition;
   path: StringLiteral;
 }
 
-export interface CppIncludeDefinition extends SyntaxNode {
+export interface CppIncludeDefinition extends PrimarySyntax {
   type: SyntaxType.CppIncludeDefinition;
   path: StringLiteral;
 }
 
-export interface InterfaceWithFields extends SyntaxNode {
+export interface InterfaceWithFields extends PrimarySyntax {
   name: Identifier;
   fields: Array<FieldDefinition>;
 }
@@ -123,7 +143,7 @@ export interface ExceptionDefinition extends InterfaceWithFields {
   type: SyntaxType.ExceptionDefinition;
 }
 
-export interface FieldDefinition extends SyntaxNode {
+export interface FieldDefinition extends PrimarySyntax {
   type: SyntaxType.FieldDefinition;
   name: Identifier;
   fieldID: FieldID;
@@ -137,32 +157,32 @@ export interface FieldID extends SyntaxNode {
   value: number;
 }
 
-export interface EnumDefinition extends SyntaxNode {
+export interface EnumDefinition extends PrimarySyntax {
   type: SyntaxType.EnumDefinition;
   name: Identifier;
   members: Array<EnumMember>;
 }
 
-export interface EnumMember extends SyntaxNode {
+export interface EnumMember extends PrimarySyntax {
   type: SyntaxType.EnumMember;
   name: Identifier;
   initializer: IntConstant;
 }
 
-export interface TypedefDefinition extends SyntaxNode {
+export interface TypedefDefinition extends PrimarySyntax {
   type: SyntaxType.TypedefDefinition;
   name: Identifier;
   definitionType: DefinitionType;
 }
 
-export interface ServiceDefinition extends SyntaxNode {
+export interface ServiceDefinition extends PrimarySyntax {
   type: SyntaxType.ServiceDefinition;
   name: Identifier;
   extends: Identifier;
   functions: Array<FunctionDefinition>;
 }
 
-export interface FunctionDefinition extends SyntaxNode {
+export interface FunctionDefinition extends PrimarySyntax {
   type: SyntaxType.FunctionDefinition;
   name: Identifier;
   returnType: FunctionType;

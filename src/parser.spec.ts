@@ -35,9 +35,65 @@ describe('Parser', () => {
               end: { line: 2, column: 21, index: 21 }
             }
           },
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 2, column: 26, index: 26 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
+  it('should correctly parse inline block comments', () => {
+    const content: string = `
+      typedef /* string is name */ string name
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.TypedefDefinition,
+          name: createIdentifier('name', {
+            start: { line: 2, column: 43, index: 43 },
+            end: { line: 2, column: 47, index: 47 }
+          }),
+          definitionType: {
+            type: SyntaxType.StringKeyword,
+            loc: {
+              start: { line: 2, column: 36, index: 36 },
+              end: { line: 2, column: 42, index: 42 }
+            }
+          },
+          comments: [
+            {
+              type: SyntaxType.CommentBlock,
+              value: 'string is name',
+              loc: {
+                start: {
+                  line: 2,
+                  column: 15,
+                  index: 15
+                },
+                end: {
+                  line: 2,
+                  column: 35,
+                  index: 35
+                }
+              }
+            }
+          ],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 2, column: 47, index: 47 }
           }
         }
       ]
@@ -77,6 +133,7 @@ describe('Parser', () => {
               }
             }
           },
+          comments: [],
           loc: {
             start: {
               line: 2,
@@ -144,6 +201,7 @@ describe('Parser', () => {
               }
             }
           },
+          comments: [],
           loc: {
             start: {
               line: 2,
@@ -191,6 +249,7 @@ describe('Parser', () => {
               }
             }
           },
+          comments: [],
           loc: {
             start: {
               line: 3,
@@ -266,6 +325,7 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 29 },
                 end: { line: 3, column: 31, index: 51 }
@@ -298,6 +358,7 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 60 },
                 end: { line: 4, column: 31, index: 82 }
@@ -330,6 +391,7 @@ describe('Parser', () => {
               },
               requiredness: 'optional',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 5, column: 9, index: 91 },
                 end: { line: 5, column: 34, index: 116 }
@@ -362,12 +424,14 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 6, column: 9, index: 125 },
                 end: { line: 6, column: 34, index: 150 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 7, column: 8, index: 158 }
@@ -433,9 +497,28 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 29 },
                 end: { line: 3, column: 32, index: 52 }
+              }
+            }
+          ],
+          comments: [
+            {
+              type: SyntaxType.CommentLine,
+              value: '2: required bool field2,',
+              loc: {
+                start: {
+                  line: 4,
+                  column: 9,
+                  index: 61
+                },
+                end: {
+                  line: 4,
+                  column: 35,
+                  index: 87
+                }
               }
             }
           ],
@@ -488,6 +571,7 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 12, index: 30 }
@@ -504,12 +588,14 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 40 },
                 end: { line: 4, column: 12, index: 43 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 51 }
@@ -552,9 +638,28 @@ describe('Parser', () => {
                 end: { line: 3, column: 12, index: 30 }
               }),
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 12, index: 30 }
+              }
+            }
+          ],
+          comments: [
+            {
+              type: SyntaxType.CommentLine,
+              value: 'TWO',
+              loc: {
+                start: {
+                  line: 4,
+                  column: 9,
+                  index: 40
+                },
+                end: {
+                  line: 4,
+                  column: 14,
+                  index: 45
+                }
               }
             }
           ],
@@ -615,6 +720,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 16, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 16, index: 34 }
@@ -631,12 +737,14 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 44 },
                 end: { line: 4, column: 12, index: 47 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 55 }
@@ -694,6 +802,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 19, index: 37 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 19, index: 37 }
@@ -710,12 +819,14 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 47 },
                 end: { line: 4, column: 12, index: 50 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 58 }
@@ -768,6 +879,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 20, index: 41 }
@@ -775,6 +887,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 49 }
@@ -859,6 +972,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 3,
@@ -907,6 +1021,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 4,
@@ -955,6 +1070,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 5,
@@ -1003,6 +1119,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 6,
@@ -1017,6 +1134,7 @@ describe('Parser', () => {
               }
             }
           ],
+          comments: [],
           loc: {
             start: {
               line: 2,
@@ -1078,6 +1196,24 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [
+                {
+                  type: SyntaxType.CommentLine,
+                  value: 'void ping()',
+                  loc: {
+                    start: {
+                      line: 4,
+                      column: 9,
+                      index: 50
+                    },
+                    end: {
+                      line: 4,
+                      column: 22,
+                      index: 63
+                    }
+                  }
+                }
+              ],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 20, index: 41 }
@@ -1085,9 +1221,253 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 71 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
+  it('should correctly parse complex commenting', () => {
+    const content: string = `
+      // This service does nothing
+      /*
+       * Not even a little bit
+       */
+      service Test {
+        bool /* should this be required? */ ping()
+        # bool foo();
+        // string dang(),
+        i32 ding()
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: {
+                line: 5,
+                column: 15,
+                index: 100
+              },
+              end: {
+                line: 5,
+                column: 19,
+                index: 104
+              }
+            }
+          },
+          extends: null,
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ping',
+                loc: {
+                  start: {
+                    line: 6,
+                    column: 45,
+                    index: 151
+                  },
+                  end: {
+                    line: 6,
+                    column: 49,
+                    index: 155
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.BoolKeyword,
+                loc: {
+                  start: {
+                    line: 6,
+                    column: 9,
+                    index: 115
+                  },
+                  end: {
+                    line: 6,
+                    column: 13,
+                    index: 119
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              comments: [
+                {
+                  type: SyntaxType.CommentBlock,
+                  value: 'should this be required?',
+                  loc: {
+                    start: {
+                      line: 6,
+                      column: 14,
+                      index: 120
+                    },
+                    end: {
+                      line: 6,
+                      column: 44,
+                      index: 150
+                    }
+                  }
+                },
+                {
+                  type: SyntaxType.CommentLine,
+                  value: 'bool foo();',
+                  loc: {
+                    start: {
+                      line: 7,
+                      column: 9,
+                      index: 166
+                    },
+                    end: {
+                      line: 7,
+                      column: 22,
+                      index: 179
+                    }
+                  }
+                },
+                {
+                  type: SyntaxType.CommentLine,
+                  value: 'string dang(),',
+                  loc: {
+                    start: {
+                      line: 8,
+                      column: 9,
+                      index: 188
+                    },
+                    end: {
+                      line: 8,
+                      column: 26,
+                      index: 205
+                    }
+                  }
+                }
+              ],
+              loc: {
+                start: {
+                  line: 6,
+                  column: 9,
+                  index: 115
+                },
+                end: {
+                  line: 6,
+                  column: 51,
+                  index: 157
+                }
+              }
+            },
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ding',
+                loc: {
+                  start: {
+                    line: 9,
+                    column: 13,
+                    index: 218
+                  },
+                  end: {
+                    line: 9,
+                    column: 17,
+                    index: 222
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.I32Keyword,
+                loc: {
+                  start: {
+                    line: 9,
+                    column: 9,
+                    index: 214
+                  },
+                  end: {
+                    line: 9,
+                    column: 12,
+                    index: 217
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              comments: [],
+              loc: {
+                start: {
+                  line: 9,
+                  column: 9,
+                  index: 214
+                },
+                end: {
+                  line: 9,
+                  column: 19,
+                  index: 224
+                }
+              }
+            }
+          ],
+          comments: [
+            {
+              type: SyntaxType.CommentLine,
+              value: 'This service does nothing',
+              loc: {
+                start: {
+                  line: 2,
+                  column: 7,
+                  index: 7
+                },
+                end: {
+                  line: 2,
+                  column: 35,
+                  index: 35
+                }
+              }
+            },
+            {
+              type: SyntaxType.CommentBlock,
+              value: 'Not even a little bit',
+              loc: {
+                start: {
+                  line: 3,
+                  column: 7,
+                  index: 42
+                },
+                end: {
+                  line: 4,
+                  column: 11,
+                  index: 85
+                }
+              }
+            }
+          ],
+          loc: {
+            start: {
+              line: 5,
+              column: 7,
+              index: 92
+            },
+            end: {
+              line: 10,
+              column: 8,
+              index: 232
+            }
           }
         }
       ]
@@ -1136,12 +1516,14 @@ describe('Parser', () => {
                   end: { line: 3, column: 17, index: 38 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 24, index: 45 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 53 }
@@ -1239,6 +1621,7 @@ describe('Parser', () => {
                   },
                   requiredness: null,
                   defaultValue: null,
+                  comments: [],
                   loc: {
                     start: {
                       line: 3,
@@ -1304,6 +1687,7 @@ describe('Parser', () => {
                   },
                   requiredness: null,
                   defaultValue: null,
+                  comments: [],
                   loc: {
                     start: {
                       line: 3,
@@ -1325,6 +1709,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 90, index: 111 }
@@ -1332,6 +1717,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 119 }
@@ -1393,6 +1779,7 @@ describe('Parser', () => {
                       end: { line: 3, column: 25, index: 46 }
                     }
                   },
+                  comments: [],
                   loc: {
                     start: { line: 3, column: 19, index: 40 },
                     end: { line: 3, column: 32, index: 53 }
@@ -1421,6 +1808,7 @@ describe('Parser', () => {
                       end: { line: 3, column: 40, index: 61 }
                     }
                   },
+                  comments: [],
                   loc: {
                     start: { line: 3, column: 33, index: 54 },
                     end: { line: 3, column: 46, index: 67  }
@@ -1435,6 +1823,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 47, index: 68 }
@@ -1442,6 +1831,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 76 }
