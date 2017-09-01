@@ -38,9 +38,6 @@ export type FieldType =
 export type FunctionType =
   FieldType | VoidType;
 
-export type DefinitionType =
-  BaseType | ContainerType
-
 export type KeywordType =
   SyntaxType.StringKeyword | SyntaxType.DoubleKeyword | SyntaxType.BoolKeyword |
   SyntaxType.I8Keyword | SyntaxType.I16Keyword | SyntaxType.I32Keyword |
@@ -152,7 +149,7 @@ export interface EnumMember extends SyntaxNode {
 export interface TypedefDefinition extends SyntaxNode {
   type: SyntaxType.TypedefDefinition;
   name: Identifier;
-  definitionType: DefinitionType;
+  definitionType: FieldType;
 }
 
 export interface ServiceDefinition extends SyntaxNode {

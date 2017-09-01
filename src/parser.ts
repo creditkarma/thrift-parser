@@ -22,7 +22,6 @@ import {
   Identifier,
   SyntaxType,
   TextLocation,
-  DefinitionType,
   FieldType,
   FunctionType,
   FieldRequired,
@@ -354,10 +353,10 @@ export function createParser(tkns: Array<Token>): Parser {
     return null;
   }
 
-  // TypedefDefinition → 'typedef' DefinitionType Identifier
+  // TypedefDefinition → 'typedef' FieldType Identifier
   function parseTypedef(): TypedefDefinition {
     const keywordToken: Token = advance();
-    const type: DefinitionType = parseDefinitionType();
+    const type: FieldType = parseFieldType();
     const idToken: Token = consume(SyntaxType.Identifier);
     requireValue(idToken, `Typedef is expected to have name and none found`);
 
@@ -703,45 +702,23 @@ export function createParser(tkns: Array<Token>): Parser {
 
   // FunctionType → FieldType | 'void'
   function parseFunctionType(): FunctionType {
-    const typeToken: Token = currentToken();
-    switch (typeToken.type) {
-      case SyntaxType.VoidKeyword:
-        advance();
-        return {
-          type: SyntaxType.VoidKeyword,
-          loc: typeToken.loc
-        };
-
-      default:
-        return parseFieldType();
+    const typeToken: Token = consume(SyntaxType.VoidKeyword);
+    if (typeToken !== null) {
+      return {
+        type: SyntaxType.VoidKeyword,
+        loc: typeToken.loc
+      };
+    } else {
+      return parseFieldType();
     }
   }
 
   // FieldType → Identifier | BaseType | ContainerType
   function parseFieldType(): FieldType {
-    const typeToken: Token = currentToken();
+    const typeToken: Token = advance();
     switch (typeToken.type) {
       case SyntaxType.Identifier:
-        advance();
         return createIdentifier(typeToken.text, typeToken.loc);
-
-      default:
-        return parseDefinitionType();
-    }
-  }
-
-  // DefinitionType → BaseType | ContainerType
-  function parseDefinitionType(): DefinitionType {
-    const typeToken: Token = advance();
-    switch(typeToken.type) {
-      case SyntaxType.BoolKeyword:
-      case SyntaxType.StringKeyword:
-      case SyntaxType.I8Keyword:
-      case SyntaxType.I16Keyword:
-      case SyntaxType.I32Keyword:
-      case SyntaxType.I64Keyword:
-      case SyntaxType.DoubleKeyword:
-        return createKeywordFieldType(typeToken.type, typeToken.loc);
 
       case SyntaxType.MapKeyword:
         return parseMapType();
@@ -751,6 +728,15 @@ export function createParser(tkns: Array<Token>): Parser {
 
       case SyntaxType.SetKeyword:
         return parseSetType();
+
+      case SyntaxType.BoolKeyword:
+      case SyntaxType.StringKeyword:
+      case SyntaxType.I8Keyword:
+      case SyntaxType.I16Keyword:
+      case SyntaxType.I32Keyword:
+      case SyntaxType.I64Keyword:
+      case SyntaxType.DoubleKeyword:
+        return createKeywordFieldType(typeToken.type, typeToken.loc);
 
       default:
         throw new ParseError(`FieldType expected`);

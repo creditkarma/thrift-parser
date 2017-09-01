@@ -46,6 +46,40 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('should correctly parse a typedef that references an identifier', () => {
+    const content: string = `
+      typedef MyStruct name
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.TypedefDefinition,
+          name: createIdentifier('name', {
+            start: { line: 2, column: 24, index: 24 },
+            end: { line: 2, column: 28, index: 28 }
+          }),
+          definitionType: createIdentifier('MyStruct', {
+            start: { line: 2, column: 15, index: 15 },
+            end: { line: 2, column: 23, index: 23 }
+          }),
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 2, column: 28, index: 28 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
   it('should correctly parse the syntax of an include', () => {
     const content: string = `
       include 'test'
