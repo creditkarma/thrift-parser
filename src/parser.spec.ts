@@ -1377,6 +1377,125 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('parses a service that extends another service', function() {
+    const content: string = `
+      service ServiceTwo extends ServiceOne {
+        void test()
+      }
+    `;
+
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'ServiceTwo',
+            loc: {
+              start: {
+                line: 2,
+                column: 15,
+                index: 15
+              },
+              end: {
+                line: 2,
+                column: 25,
+                index: 25
+              }
+            }
+          },
+          extends: {
+            type: SyntaxType.Identifier,
+            value: 'ServiceOne',
+            loc: {
+              start: {
+                line: 2,
+                column: 26,
+                index: 26
+              },
+              end: {
+                line: 2,
+                column: 44,
+                index: 44
+              }
+            }
+          },
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'test',
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 14,
+                    index: 60
+                  },
+                  end: {
+                    line: 3,
+                    column: 18,
+                    index: 64
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.VoidKeyword,
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 9,
+                    index: 55
+                  },
+                  end: {
+                    line: 3,
+                    column: 13,
+                    index: 59
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              loc: {
+                start: {
+                  line: 3,
+                  column: 9,
+                  index: 55
+                },
+                end: {
+                  line: 3,
+                  column: 20,
+                  index: 66
+                }
+              }
+            }
+          ],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7
+            },
+            end: {
+              line: 4,
+              column: 8,
+              index: 74
+            }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+  
   it('parses a service containing a function with arguments with mixed FieldIDs', function() {
     const content: string = `
       service Test {

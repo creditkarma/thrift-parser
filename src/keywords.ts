@@ -11,6 +11,7 @@ export const KEYWORDS: KeywordMap = {
   'const': SyntaxType.ConstKeyword,
   'struct': SyntaxType.StructKeyword,
   'service': SyntaxType.ServiceKeyword,
+  'extends': SyntaxType.ExtendsKeyword,
   'throws': SyntaxType.ThrowsKeyword,
   'typedef': SyntaxType.TypedefKeyword,
   'union': SyntaxType.UnionKeyword,
