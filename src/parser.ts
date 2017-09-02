@@ -153,7 +153,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // IncludeDefinition → 'include' StringLiteral
   function parseInclude(): IncludeDefinition {
-    const keywordToken: Token = advance();
+    const keywordToken: Token = consume(SyntaxType.IncludeKeyword);
     const pathToken: Token = consume(SyntaxType.StringLiteral);
     requireValue(pathToken, `Include statement must include a path as string literal`);
 
@@ -167,9 +167,9 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // ServiceDefinition → 'service' Identifier ( 'extends' Identifier )? '{' Function* '}'
   function parseService(): ServiceDefinition {
-    const keywordToken: Token = advance();
-    const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `Unable to find identifier for service`);
+    const keywordToken: Token = consume(SyntaxType.ServiceKeyword);
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Unable to find identifier for service`);
 
     const extendsId: Identifier = parseExtends();
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
@@ -185,7 +185,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
     return {
       type: SyntaxType.ServiceDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       extends: extendsId,
       functions,
       comments: [
@@ -198,13 +198,13 @@ export function createParser(tokens: Array<Token>): Parser {
 
   function parseExtends(): Identifier {
     if (checkText('extends')) {
-      const keywordToken: Token = advance();
-      const idToken: Token = consume(SyntaxType.Identifier);
-      requireValue(idToken, `Identifier expected after 'extends' keyword`);
+      const keywordToken: Token = consume(SyntaxType.Identifier);
+      const nameToken: Token = consume(SyntaxType.Identifier);
+      requireValue(nameToken, `Identifier expected after 'extends' keyword`);
 
       return createIdentifier(
-        idToken.text,
-        createTextLocation(keywordToken.loc.start, idToken.loc.end)
+        nameToken.text,
+        createTextLocation(keywordToken.loc.start, nameToken.loc.end)
       );
     } else {
       return null;
@@ -235,8 +235,8 @@ export function createParser(tokens: Array<Token>): Parser {
   function parseFunction(): FunctionDefinition {
     const returnType: FunctionType = parseFunctionType();
   
-    const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `Unable to find function identifier`);
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Unable to find function identifier`);
   
     const params: ParametersDefinition = parseParameterFields();
     requireValue(params, `List of zero or more fields expected`)
@@ -253,7 +253,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
     return {
       type: SyntaxType.FunctionDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       returnType,
       fields: params.fields,
       throws: (throws !== null) ? throws.fields : [],
@@ -297,7 +297,7 @@ export function createParser(tokens: Array<Token>): Parser {
   // Throws → 'throws' '(' Field* ')'
   function parseThrows(): ThrowsDefinition {
     if (check(SyntaxType.ThrowsKeyword)) {
-      const keywordToken: Token = advance();
+      const keywordToken: Token = consume(SyntaxType.ThrowsKeyword);
       const params: ParametersDefinition = parseParameterFields();
 
       return {
@@ -315,7 +315,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // Namespace → 'namespace' ( NamespaceScope Identifier )
   function parseNamespace(): NamespaceDefinition {
-    const keywordToken: Token = advance();
+    const keywordToken: Token = consume(SyntaxType.NamespaceKeyword);
     const scopeToken: Token = consume(SyntaxType.Identifier);
     requireValue(scopeToken, `Unable to find scope identifier for namespace`);
     
@@ -336,17 +336,17 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // ConstDefinition → 'const' FieldType Identifier '=' ConstValue ListSeparator?
   function parseConst(): ConstDefinition {
-    const keywordToken: Token = advance();
+    const keywordToken: Token = consume(SyntaxType.Identifier);
     const fieldType: FieldType = parseFieldType();
-    const idToken: Token = advance();
-    requireValue(idToken, `Const definition must have a name`);
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Const definition must have a name`);
 
     const initializer: ConstValue = parseValueAssignment();
     requireValue(initializer, `Const must be initialized to a value`);
 
     return {
       type: SyntaxType.ConstDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       fieldType: fieldType,
       initializer: initializer,
       comments: getComments(),
@@ -368,28 +368,28 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // TypedefDefinition → 'typedef' DefinitionType Identifier
   function parseTypedef(): TypedefDefinition {
-    const keywordToken: Token = advance();
+    const keywordToken: Token = consume(SyntaxType.TypedefKeyword);
     const type: DefinitionType = parseDefinitionType();
-    const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `Typedef is expected to have name and none found`);
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Typedef is expected to have name and none found`);
 
     return {
       type: SyntaxType.TypedefDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       definitionType: type,
       comments: getComments(),
       loc: {
         start: keywordToken.loc.start,
-        end: idToken.loc.end
+        end: nameToken.loc.end
       }
     };
   }
 
   // EnumDefinition → 'enum' Identifier '{' EnumMember* '}'
   function parseEnum(): EnumDefinition {
-    const keywordToken: Token = advance();
-    const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `Expected identifier for enum definition`);
+    const keywordToken: Token = consume(SyntaxType.EnumKeyword);
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Expected identifier for enum definition`);
     
     const openBrace: Token = consume(SyntaxType.LeftBraceToken);
     requireValue(openBrace, `Expected opening brace`);
@@ -405,7 +405,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
     return {
       type: SyntaxType.EnumDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       members,
       comments: getComments(),
       loc
@@ -436,6 +436,8 @@ export function createParser(tokens: Array<Token>): Parser {
   // EnumMember → (Identifier ('=' IntConstant)? ListSeparator?)*
   function parseEnumMember(): EnumMember {
     const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `EnumMember must have identifier`);
+
     const equalToken: Token = consume(SyntaxType.EqualToken);
     const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral);
     var loc: TextLocation = null;
@@ -458,7 +460,7 @@ export function createParser(tokens: Array<Token>): Parser {
   }
 
   function parseStructLikeInterface(): StructLike {
-    const keywordToken: Token = advance();
+    const keywordToken: Token = consume(SyntaxType.StructKeyword);
     const nameToken: Token = consume(SyntaxType.Identifier);
     requireValue(nameToken, `Struct-like must have an identifier`);
 
@@ -553,8 +555,8 @@ export function createParser(tokens: Array<Token>): Parser {
     const fieldID: FieldID = parseFieldId();
     const fieldRequired: FieldRequired = parserequireValuedness();
     const fieldType: FieldType = parseFieldType();
-    const idToken: Token = consume(SyntaxType.Identifier);
-    requireValue(idToken, `Unable to find identifier for field`);
+    const nameToken: Token = consume(SyntaxType.Identifier);
+    requireValue(nameToken, `Unable to find identifier for field`);
 
     const defaultValue: ConstValue = parseValueAssignment();
     const listSeparator: Token = readListSeparator();
@@ -563,13 +565,13 @@ export function createParser(tokens: Array<Token>): Parser {
         listSeparator.loc :
         (defaultValue !== null) ?
           defaultValue.loc :
-          idToken.loc
+          nameToken.loc
     );
     const location: TextLocation = createTextLocation(startLoc.start, endLoc.end);
 
     return {
       type: SyntaxType.FieldDefinition,
-      name: createIdentifier(idToken.text, idToken.loc),
+      name: createIdentifier(nameToken.text, nameToken.loc),
       fieldID: fieldID,
       fieldType: fieldType,
       requiredness: fieldRequired,
@@ -606,8 +608,8 @@ export function createParser(tokens: Array<Token>): Parser {
       currentToken().type === SyntaxType.IntegerLiteral &&
       peek().type === SyntaxType.ColonToken
     ) {
-      const fieldIDToken: Token = advance();
-      const colonToken: Token = advance();
+      const fieldIDToken: Token = consume(SyntaxType.IntegerLiteral);
+      const colonToken: Token = consume(SyntaxType.ColonToken);
 
       // return value of number token
       return createFieldID(
@@ -619,6 +621,7 @@ export function createParser(tokens: Array<Token>): Parser {
     }
   }
 
+  // ConstValue → Literal | ConstMap | ConstList
   function parseValue(): ConstValue {
     const next: Token = advance();
     switch(next.type) {
