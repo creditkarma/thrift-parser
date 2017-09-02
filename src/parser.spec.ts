@@ -1272,7 +1272,12 @@ describe('Parser', () => {
     const content: string = `
       // This service does nothing
       /*
-       * Not even a little bit
+       * This is a multi-line
+       * comment for testing
+       */
+      /*
+       Another muliti-line
+       comment for testing
        */
       service Test {
         bool /* should this be required? */ ping()
@@ -1297,14 +1302,14 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: {
-                line: 5,
+                line: 9,
                 column: 15,
-                index: 100
+                index: 201
               },
               end: {
-                line: 5,
+                line: 9,
                 column: 19,
-                index: 104
+                index: 205
               }
             }
           },
@@ -1317,14 +1322,14 @@ describe('Parser', () => {
                 value: 'ping',
                 loc: {
                   start: {
-                    line: 6,
+                    line: 10,
                     column: 45,
-                    index: 151
+                    index: 252
                   },
                   end: {
-                    line: 6,
+                    line: 10,
                     column: 49,
-                    index: 155
+                    index: 256
                   }
                 }
               },
@@ -1332,14 +1337,14 @@ describe('Parser', () => {
                 type: SyntaxType.BoolKeyword,
                 loc: {
                   start: {
-                    line: 6,
+                    line: 10,
                     column: 9,
-                    index: 115
+                    index: 216
                   },
                   end: {
-                    line: 6,
+                    line: 10,
                     column: 13,
-                    index: 119
+                    index: 220
                   }
                 }
               },
@@ -1351,14 +1356,14 @@ describe('Parser', () => {
                   value: 'should this be required?',
                   loc: {
                     start: {
-                      line: 6,
+                      line: 10,
                       column: 14,
-                      index: 120
+                      index: 221
                     },
                     end: {
-                      line: 6,
+                      line: 10,
                       column: 44,
-                      index: 150
+                      index: 251
                     }
                   }
                 },
@@ -1367,14 +1372,14 @@ describe('Parser', () => {
                   value: 'bool foo();',
                   loc: {
                     start: {
-                      line: 7,
+                      line: 11,
                       column: 9,
-                      index: 166
+                      index: 267
                     },
                     end: {
-                      line: 7,
+                      line: 11,
                       column: 22,
-                      index: 179
+                      index: 280
                     }
                   }
                 },
@@ -1383,28 +1388,28 @@ describe('Parser', () => {
                   value: 'string dang(),',
                   loc: {
                     start: {
-                      line: 8,
+                      line: 12,
                       column: 9,
-                      index: 188
+                      index: 289
                     },
                     end: {
-                      line: 8,
+                      line: 12,
                       column: 26,
-                      index: 205
+                      index: 306
                     }
                   }
                 }
               ],
               loc: {
                 start: {
-                  line: 6,
+                  line: 10,
                   column: 9,
-                  index: 115
+                  index: 216
                 },
                 end: {
-                  line: 6,
+                  line: 10,
                   column: 51,
-                  index: 157
+                  index: 258
                 }
               }
             },
@@ -1415,14 +1420,14 @@ describe('Parser', () => {
                 value: 'ding',
                 loc: {
                   start: {
-                    line: 9,
+                    line: 13,
                     column: 13,
-                    index: 218
+                    index: 319
                   },
                   end: {
-                    line: 9,
+                    line: 13,
                     column: 17,
-                    index: 222
+                    index: 323
                   }
                 }
               },
@@ -1430,14 +1435,14 @@ describe('Parser', () => {
                 type: SyntaxType.I32Keyword,
                 loc: {
                   start: {
-                    line: 9,
+                    line: 13,
                     column: 9,
-                    index: 214
+                    index: 315
                   },
                   end: {
-                    line: 9,
+                    line: 13,
                     column: 12,
-                    index: 217
+                    index: 318
                   }
                 }
               },
@@ -1446,14 +1451,14 @@ describe('Parser', () => {
               comments: [],
               loc: {
                 start: {
-                  line: 9,
+                  line: 13,
                   column: 9,
-                  index: 214
+                  index: 315
                 },
                 end: {
-                  line: 9,
+                  line: 13,
                   column: 19,
-                  index: 224
+                  index: 325
                 }
               }
             }
@@ -1477,7 +1482,7 @@ describe('Parser', () => {
             },
             {
               type: SyntaxType.CommentBlock,
-              value: 'Not even a little bit',
+              value: 'This is a multi-line\n comment for testing',
               loc: {
                 start: {
                   line: 3,
@@ -1485,23 +1490,39 @@ describe('Parser', () => {
                   index: 42
                 },
                 end: {
-                  line: 4,
+                  line: 5,
                   column: 11,
-                  index: 85
+                  index: 113
+                }
+              }
+            },
+            {
+              type: SyntaxType.CommentBlock,
+              value: 'Another muliti-line\n comment for testing',
+              loc: {
+                start: {
+                  line: 6,
+                  column: 7,
+                  index: 120
+                },
+                end: {
+                  line: 8,
+                  column: 11,
+                  index: 186
                 }
               }
             }
           ],
           loc: {
             start: {
-              line: 5,
+              line: 9,
               column: 7,
-              index: 92
+              index: 193
             },
             end: {
-              line: 10,
+              line: 14,
               column: 8,
-              index: 232
+              index: 333
             }
           }
         }
