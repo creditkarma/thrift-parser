@@ -685,6 +685,78 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('should correctly parse the syntax of an exception', () => {
+    const content: string = `
+      exception Test {
+        1: required string message;
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ExceptionDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 17, index: 17 },
+              end: { line: 2, column: 21, index: 21 }
+            }
+          },
+          fields: [
+            {
+              type: SyntaxType.FieldDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'message',
+                loc: {
+                  start: { line: 3, column: 28, index: 51 },
+                  end: { line: 3, column: 35, index: 58 }
+                }
+              },
+              fieldID: {
+                type: SyntaxType.FieldID,
+                value: 1,
+                loc: {
+                  start: { line: 3, column: 9, index: 32 },
+                  end: { line: 3, column: 11, index: 34 }
+                }
+              },
+              fieldType: {
+                type: SyntaxType.StringKeyword,
+                loc: {
+                  start: { line: 3, column: 21, index: 44 },
+                  end: { line: 3, column: 27, index: 50 }
+                }
+              },
+              requiredness: 'required',
+              defaultValue: null,
+              comments: [],
+              loc: {
+                start: { line: 3, column: 9, index: 32 },
+                end: { line: 3, column: 36, index: 59 }
+              }
+            }
+          ],
+          comments: [],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 4, column: 8, index: 67 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+  
   it('should correctly parse the syntax of a struct with commented fields', () => {
     const content: string = `
       struct Test {
