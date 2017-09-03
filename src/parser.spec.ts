@@ -9,6 +9,213 @@ import {
 } from './factory';
 
 describe('Parser', () => {
+  it('should correctly parse the syntax of a const', () => {
+    const content: string = `
+      const map<string,string> MAP_CONST = {'hello': 'world', 'foo': 'bar' }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ConstDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'MAP_CONST',
+            loc: {
+              start: {
+                line: 2,
+                column: 32,
+                index: 32
+              },
+              end: {
+                line: 2,
+                column: 41,
+                index: 41
+              }
+            }
+          },
+          fieldType: {
+            type: SyntaxType.MapType,
+            keyType: {
+              type: SyntaxType.StringKeyword,
+              loc: {
+                start: {
+                  line: 2,
+                  column: 17,
+                  index: 17
+                },
+                end: {
+                  line: 2,
+                  column: 23,
+                  index: 23
+                }
+              }
+            },
+            valueType: {
+              type: SyntaxType.StringKeyword,
+              loc: {
+                start: {
+                  line: 2,
+                  column: 24,
+                  index: 24
+                },
+                end: {
+                  line: 2,
+                  column: 30,
+                  index: 30
+                }
+              }
+            },
+            loc: {
+              start: {
+                line: 2,
+                column: 16,
+                index: 16
+              },
+              end: {
+                line: 2,
+                column: 31,
+                index: 31
+              }
+            }
+          },
+          initializer: {
+            type: SyntaxType.ConstMap,
+            properties: [
+              {
+                type: SyntaxType.PropertyAssignment,
+                name: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'hello',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 45,
+                      index: 45
+                    },
+                    end: {
+                      line: 2,
+                      column: 52,
+                      index: 52
+                    }
+                  }
+                },
+                initializer: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'world',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 54,
+                      index: 54
+                    },
+                    end: {
+                      line: 2,
+                      column: 61,
+                      index: 61
+                    }
+                  }
+                },
+                loc: {
+                  start: {
+                    line: 2,
+                    column: 45,
+                    index: 45
+                  },
+                  end: {
+                    line: 2,
+                    column: 61,
+                    index: 61
+                  }
+                }
+              },
+              {
+                type: SyntaxType.PropertyAssignment,
+                name: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'foo',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 63,
+                      index: 63
+                    },
+                    end: {
+                      line: 2,
+                      column: 68,
+                      index: 68
+                    }
+                  }
+                },
+                initializer: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'bar',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 70,
+                      index: 70
+                    },
+                    end: {
+                      line: 2,
+                      column: 75,
+                      index: 75
+                    }
+                  }
+                },
+                loc: {
+                  start: {
+                    line: 2,
+                    column: 63,
+                    index: 63
+                  },
+                  end: {
+                    line: 2,
+                    column: 75,
+                    index: 75
+                  }
+                }
+              }
+            ],
+            loc: {
+              start: {
+                line: 2,
+                column: 45,
+                index: 45
+              },
+              end: {
+                line: 2,
+                column: 77,
+                index: 77
+              }
+            }
+          },
+          comments: [],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7
+            },
+            end: {
+              line: 2,
+              column: 77,
+              index: 77
+            }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+  
   it('should correctly parse the syntax of a typedef definition', () => {
     const content: string = `
       typedef string name

@@ -335,7 +335,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
   // ConstDefinition → 'const' FieldType Identifier '=' ConstValue ListSeparator?
   function parseConst(): ConstDefinition {
-    const keywordToken: Token = consume(SyntaxType.Identifier);
+    const keywordToken: Token = consume(SyntaxType.ConstKeyword);
     const fieldType: FieldType = parseFieldType();
     const nameToken: Token = consume(SyntaxType.Identifier);
     requireValue(nameToken, `Const definition must have a name`);
@@ -760,7 +760,7 @@ export function createParser(tokens: Array<Token>): Parser {
         return createKeywordFieldType(typeToken.type, typeToken.loc);
 
       default:
-        throw new ParseError(`FieldType expected`);
+        throw new ParseError(`FieldType expected but found: ${typeToken.type}`);
     }
   }
 
