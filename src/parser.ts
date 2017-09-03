@@ -460,7 +460,7 @@ export function createParser(tokens: Array<Token>): Parser {
   }
 
   function parseStructLikeInterface(): StructLike {
-    const keywordToken: Token = consume(SyntaxType.StructKeyword);
+    const keywordToken: Token = consume(SyntaxType.StructKeyword, SyntaxType.UnionKeyword, SyntaxType.ExceptionKeyword);
     const nameToken: Token = consume(SyntaxType.Identifier);
     requireValue(nameToken, `Struct-like must have an identifier`);
 
