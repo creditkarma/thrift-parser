@@ -828,6 +828,14 @@ export function createParser(tokens: Array<Token>): Parser {
       const next: Token = tokens[currentIndex];
       switch (next.type) {
         case SyntaxType.CommentBlock:
+          comments.push({
+            type: next.type,
+            value: next.text.split('\n'),
+            loc: next.loc
+          });
+          currentIndex++;
+          break;
+
         case SyntaxType.CommentLine:
           comments.push({
             type: next.type,
@@ -835,6 +843,7 @@ export function createParser(tokens: Array<Token>): Parser {
             loc: next.loc
           });
           currentIndex++;
+          break;
 
         default:
           return;

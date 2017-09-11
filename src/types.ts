@@ -42,17 +42,17 @@ export type ThriftStatement =
 export type CommentType =
   SyntaxType.CommentLine | SyntaxType.CommentBlock;
 
-export interface Comment extends SyntaxNode {
-  type: CommentType;
+export type Comment =
+  CommentLine | CommentBlock;
+
+export interface CommentLine extends SyntaxNode {
+  type: SyntaxType.CommentLine;
   value: string;
 }
 
-export interface CommentLine extends Comment {
-  type: SyntaxType.CommentLine;
-}
-
-export interface CommentBlock extends Comment {
+export interface CommentBlock extends SyntaxNode {
   type: SyntaxType.CommentBlock;
+  value: Array<string>;
 }
 
 export interface PrimarySyntax extends SyntaxNode {

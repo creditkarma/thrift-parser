@@ -215,7 +215,7 @@ describe('Parser', () => {
 
     assert.deepEqual(thrift, expected);
   });
-  
+
   it('should correctly parse the syntax of a typedef definition', () => {
     const content: string = `
       typedef string name
@@ -318,7 +318,9 @@ describe('Parser', () => {
           comments: [
             {
               type: SyntaxType.CommentBlock,
-              value: 'string is name',
+              value: [
+                'string is name'
+              ],
               loc: {
                 start: {
                   line: 2,
@@ -756,7 +758,7 @@ describe('Parser', () => {
 
     assert.deepEqual(thrift, expected);
   });
-  
+
   it('should correctly parse the syntax of a struct with commented fields', () => {
     const content: string = `
       struct Test {
@@ -1632,7 +1634,9 @@ describe('Parser', () => {
               comments: [
                 {
                   type: SyntaxType.CommentBlock,
-                  value: 'should this be required?',
+                  value: [
+                    'should this be required?'
+                  ],
                   loc: {
                     start: {
                       line: 10,
@@ -1761,7 +1765,10 @@ describe('Parser', () => {
             },
             {
               type: SyntaxType.CommentBlock,
-              value: 'This is a multi-line\n comment for testing',
+              value: [
+                'This is a multi-line',
+                ' comment for testing'
+              ],
               loc: {
                 start: {
                   line: 3,
@@ -1777,7 +1784,10 @@ describe('Parser', () => {
             },
             {
               type: SyntaxType.CommentBlock,
-              value: 'Another muliti-line\n comment for testing',
+              value: [
+                'Another muliti-line',
+                ' comment for testing'
+              ],
               loc: {
                 start: {
                   line: 6,

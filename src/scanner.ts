@@ -263,7 +263,7 @@ export function createScanner(src: string) {
 
   function singleLineComment(): void {
     var comment: string = '';
-    
+
     if (current() === '#') {
       advance();
     } else {
