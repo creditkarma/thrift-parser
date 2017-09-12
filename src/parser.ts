@@ -5,7 +5,6 @@ import {
   Token,
   Comment,
   StructLike,
-  NamespaceScope,
   NamespaceDefinition,
   IncludeDefinition,
   ConstDefinition,
@@ -312,7 +311,7 @@ export function createParser(tokens: Array<Token>): Parser {
     return null;
   }
 
-  // Namespace → 'namespace' ( NamespaceScope Identifier )
+  // Namespace → 'namespace' ( Identifier Identifier )
   function parseNamespace(): NamespaceDefinition {
     const keywordToken: Token = consume(SyntaxType.NamespaceKeyword);
     const scopeToken: Token = consume(SyntaxType.Identifier);

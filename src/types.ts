@@ -107,9 +107,6 @@ export interface NamespaceDefinition extends PrimarySyntax {
   name: Identifier;
 }
 
-export type NamespaceScope =
-  '*' | 'cpp' | 'java' | 'py' | 'perl' | 'rb' | 'cocoa' | 'csharp' | 'js'
-
 export interface ConstDefinition extends PrimarySyntax {
   type: SyntaxType.ConstDefinition;
   name: Identifier;
@@ -250,7 +247,6 @@ export const enum SyntaxType {
   ThriftDocument = 'ThriftDocument',
 
   Identifier = 'Identifier',
-  NamespaceScope = 'NamespaceScope',
   FieldID = 'FieldID',
 
   // Statements
