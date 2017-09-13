@@ -294,6 +294,7 @@ export const enum SyntaxType {
   CppIncludeKeyword = 'CppIncludeKeyword',
   ExceptionKeyword = 'ExceptionKeyword',
   ServiceKeyword = 'ServiceKeyword',
+  ExtendsKeyword = 'ExtendsKeyword',
   RequiredKeyword = 'RequiredKeyword',
   OptionalKeyword = 'OptionalKeyword',
   FalseKeyword = 'FalseKeyword',
