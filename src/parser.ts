@@ -233,11 +233,16 @@ export function createParser(tokens: Array<Token>): Parser {
   function parseFunction(): FunctionDefinition {
     const onewayToken: Token = consume(SyntaxType.OnewayKeyword);
     const returnType: FunctionType = parseFunctionType();
+
+    if (onewayToken !== null && returnType.type !== SyntaxType.VoidKeyword) {
+      throw new ParseError(`Oneway keyword must be followed by a void return type`);
+    }
+
     const nameToken: Token = consume(SyntaxType.Identifier);
     requireValue(nameToken, `Unable to find function identifier`);
 
     const params: ParametersDefinition = parseParameterFields();
-    requireValue(params, `List of zero or more fields expected`)
+    requireValue(params, `List of zero or more fields expected`);
 
     const throws: ThrowsDefinition = parseThrows();
     const listSeparator: Token = readListSeparator();
