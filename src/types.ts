@@ -98,8 +98,8 @@ export interface MapType extends SyntaxNode {
 }
 
 export type ConstValue =
-  Identifier | StringLiteral | IntConstant | DoubleConstant |
-  BooleanLiteral | ConstMap | ConstList;
+  StringLiteral | IntConstant | DoubleConstant | BooleanLiteral |
+  ConstMap | ConstList;
 
 export interface NamespaceDefinition extends PrimarySyntax {
   type: SyntaxType.NamespaceDefinition;
@@ -274,7 +274,7 @@ export const enum SyntaxType {
   MapType = 'MapType',
   ListType = 'ListType',
 
-    // Values
+  // Values
   ConstValue = 'ConstValue',
   IntConstant = 'IntConstant',
   DoubleConstant = 'DoubleConstant',
