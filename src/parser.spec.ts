@@ -1250,6 +1250,7 @@ describe('Parser', () => {
               }),
               fields: [],
               throws: [],
+              comments: [],
               oneway: true,
               returnType: {
                 type: SyntaxType.VoidKeyword,
@@ -1265,6 +1266,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 56 }
@@ -1275,6 +1277,20 @@ describe('Parser', () => {
 
     assert.deepEqual(thrift, expected);
   });
+
+  it('should throw if oneway keyword is not followed by void type', () => {
+    const content: string = `
+      service Test {
+        oneway string test()
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+
+    assert.throws(() => parser.parse());
+  })
 
   it('should correctly parse a service where functions are separated by commas or semicolons', () => {
     const content: string = `
@@ -1697,6 +1713,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              oneway: false,
               comments: [
                 {
                   type: SyntaxType.CommentBlock,
@@ -1798,6 +1815,7 @@ describe('Parser', () => {
               fields: [],
               throws: [],
               comments: [],
+              oneway: false,
               loc: {
                 start: {
                   line: 13,
@@ -2229,6 +2247,7 @@ describe('Parser', () => {
               fields: [],
               throws: [],
               comments: [],
+              oneway: false,
               loc: {
                 start: {
                   line: 3,
