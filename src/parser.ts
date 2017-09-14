@@ -311,7 +311,7 @@ export function createParser(tokens: Array<Token>): Parser {
     return null;
   }
 
-  // Namespace → 'namespace' ( Identifier Identifier )
+  // Namespace → 'namespace' ( NamespaceScope Identifier )
   function parseNamespace(): NamespaceDefinition {
     const keywordToken: Token = consume(SyntaxType.NamespaceKeyword);
     const scopeToken: Token = consume(SyntaxType.Identifier);

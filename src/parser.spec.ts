@@ -923,7 +923,7 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected)
   });
 
-  it('should correctly parse an enum with field commented out', function() {
+  it('should correctly parse an enum with field commented out', () => {
     const content: string = `
       enum Test {
         ONE,
@@ -1821,7 +1821,7 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
-  it('should correctly parse a service containing a function with custom type', function() {
+  it('should correctly parse a service containing a function with custom type', () => {
     const content: string = `
       service Test {
         TestType test()
@@ -2195,7 +2195,7 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
-  it('parses a service containing a function with arguments with mixed FieldIDs', function() {
+  it('parses a service containing a function with arguments with mixed FieldIDs', () => {
     const content: string = `
       service Test {
         void test(string test1, 1: bool test2)

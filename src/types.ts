@@ -148,9 +148,9 @@ export interface FieldDefinition extends PrimarySyntax {
   type: SyntaxType.FieldDefinition;
   name: Identifier;
   fieldID: FieldID;
-  fieldType: FieldType;
-  requiredness: FieldRequired;
-  defaultValue: ConstValue;
+  fieldType: FunctionType;
+  requiredness: FieldRequired | null;
+  defaultValue: ConstValue | null;
 }
 
 export interface FieldID extends SyntaxNode {
@@ -167,7 +167,7 @@ export interface EnumDefinition extends PrimarySyntax {
 export interface EnumMember extends PrimarySyntax {
   type: SyntaxType.EnumMember;
   name: Identifier;
-  initializer: IntConstant;
+  initializer: IntConstant | null;
 }
 
 export interface TypedefDefinition extends PrimarySyntax {
@@ -179,7 +179,7 @@ export interface TypedefDefinition extends PrimarySyntax {
 export interface ServiceDefinition extends PrimarySyntax {
   type: SyntaxType.ServiceDefinition;
   name: Identifier;
-  extends: Identifier;
+  extends: Identifier | null;
   functions: Array<FunctionDefinition>;
 }
 

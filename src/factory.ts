@@ -22,7 +22,8 @@ import {
   TextLocation,
   TextPosition,
   StructDefinition,
-  FieldDefinition
+  FieldDefinition,
+  FunctionType
 } from './types';
 
 export function createTextLocation(start: TextPosition, end: TextPosition): TextLocation {
@@ -54,7 +55,7 @@ export function createFieldDefinition(
   name: Identifier,
   fieldID: FieldID,
   requiredness: FieldRequired,
-  fieldType: FieldType,
+  fieldType: FunctionType,
   loc: TextLocation,
   defaultValue: ConstValue = null,
   comments: Array<Comment> = []
