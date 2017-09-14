@@ -196,7 +196,7 @@ export function createParser(tokens: Array<Token>): Parser {
 
   function parseExtends(): Identifier {
     if (checkText('extends')) {
-      const keywordToken: Token = consume(SyntaxType.Identifier);
+      const keywordToken: Token = consume(SyntaxType.ExtendsKeyword);
       const nameToken: Token = consume(SyntaxType.Identifier);
       requireValue(nameToken, `Identifier expected after 'extends' keyword`);
 
