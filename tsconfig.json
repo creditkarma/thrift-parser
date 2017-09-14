@@ -8,7 +8,6 @@
     "outDir": "./dist",
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "listEmittedFiles": true,
     "pretty": true,
     "removeComments": false,
     "lib": [

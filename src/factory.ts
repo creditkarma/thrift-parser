@@ -1,5 +1,6 @@
 import {
   Token,
+  Comment,
   Identifier,
   FieldType,
   FieldRequired,
@@ -21,7 +22,8 @@ import {
   TextLocation,
   TextPosition,
   StructDefinition,
-  FieldDefinition
+  FieldDefinition,
+  FunctionType
 } from './types';
 
 export function createTextLocation(start: TextPosition, end: TextPosition): TextLocation {
@@ -53,9 +55,10 @@ export function createFieldDefinition(
   name: Identifier,
   fieldID: FieldID,
   requiredness: FieldRequired,
-  fieldType: FieldType,
-  defaultValue: ConstValue,
-  loc: TextLocation
+  fieldType: FunctionType,
+  loc: TextLocation,
+  defaultValue: ConstValue = null,
+  comments: Array<Comment> = []
 ): FieldDefinition {
   return {
     type: SyntaxType.FieldDefinition,
@@ -64,6 +67,7 @@ export function createFieldDefinition(
     requiredness,
     fieldType,
     defaultValue,
+    comments,
     loc
   };
 }
@@ -76,11 +80,17 @@ export function createFieldID(value: number, loc: TextLocation): FieldID {
   };
 }
 
-export function createStructDefinition(name: Identifier, fields: Array<FieldDefinition>, loc: TextLocation): StructDefinition {
+export function createStructDefinition(
+  name: Identifier,
+  fields: Array<FieldDefinition>,
+  loc: TextLocation,
+  comments: Array<Comment> = []
+): StructDefinition {
   return {
     type: SyntaxType.StructDefinition,
     name,
     fields,
+    comments,
     loc
   };
 }

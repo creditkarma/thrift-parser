@@ -9,6 +9,213 @@ import {
 } from './factory';
 
 describe('Parser', () => {
+  it('should correctly parse the syntax of a const', () => {
+    const content: string = `
+      const map<string,string> MAP_CONST = {'hello': 'world', 'foo': 'bar' }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ConstDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'MAP_CONST',
+            loc: {
+              start: {
+                line: 2,
+                column: 32,
+                index: 32
+              },
+              end: {
+                line: 2,
+                column: 41,
+                index: 41
+              }
+            }
+          },
+          fieldType: {
+            type: SyntaxType.MapType,
+            keyType: {
+              type: SyntaxType.StringKeyword,
+              loc: {
+                start: {
+                  line: 2,
+                  column: 17,
+                  index: 17
+                },
+                end: {
+                  line: 2,
+                  column: 23,
+                  index: 23
+                }
+              }
+            },
+            valueType: {
+              type: SyntaxType.StringKeyword,
+              loc: {
+                start: {
+                  line: 2,
+                  column: 24,
+                  index: 24
+                },
+                end: {
+                  line: 2,
+                  column: 30,
+                  index: 30
+                }
+              }
+            },
+            loc: {
+              start: {
+                line: 2,
+                column: 16,
+                index: 16
+              },
+              end: {
+                line: 2,
+                column: 31,
+                index: 31
+              }
+            }
+          },
+          initializer: {
+            type: SyntaxType.ConstMap,
+            properties: [
+              {
+                type: SyntaxType.PropertyAssignment,
+                name: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'hello',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 45,
+                      index: 45
+                    },
+                    end: {
+                      line: 2,
+                      column: 52,
+                      index: 52
+                    }
+                  }
+                },
+                initializer: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'world',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 54,
+                      index: 54
+                    },
+                    end: {
+                      line: 2,
+                      column: 61,
+                      index: 61
+                    }
+                  }
+                },
+                loc: {
+                  start: {
+                    line: 2,
+                    column: 45,
+                    index: 45
+                  },
+                  end: {
+                    line: 2,
+                    column: 61,
+                    index: 61
+                  }
+                }
+              },
+              {
+                type: SyntaxType.PropertyAssignment,
+                name: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'foo',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 63,
+                      index: 63
+                    },
+                    end: {
+                      line: 2,
+                      column: 68,
+                      index: 68
+                    }
+                  }
+                },
+                initializer: {
+                  type: SyntaxType.StringLiteral,
+                  value: 'bar',
+                  loc: {
+                    start: {
+                      line: 2,
+                      column: 70,
+                      index: 70
+                    },
+                    end: {
+                      line: 2,
+                      column: 75,
+                      index: 75
+                    }
+                  }
+                },
+                loc: {
+                  start: {
+                    line: 2,
+                    column: 63,
+                    index: 63
+                  },
+                  end: {
+                    line: 2,
+                    column: 75,
+                    index: 75
+                  }
+                }
+              }
+            ],
+            loc: {
+              start: {
+                line: 2,
+                column: 45,
+                index: 45
+              },
+              end: {
+                line: 2,
+                column: 77,
+                index: 77
+              }
+            }
+          },
+          comments: [],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7
+            },
+            end: {
+              line: 2,
+              column: 77,
+              index: 77
+            }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
   it('should correctly parse the syntax of a typedef definition', () => {
     const content: string = `
       typedef string name
@@ -35,6 +242,7 @@ describe('Parser', () => {
               end: { line: 2, column: 21, index: 21 }
             }
           },
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 2, column: 26, index: 26 }
@@ -69,9 +277,67 @@ describe('Parser', () => {
             start: { line: 2, column: 15, index: 15 },
             end: { line: 2, column: 23, index: 23 }
           }),
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 2, column: 28, index: 28 }
+          }
+        }
+      ]
+    }
+
+    assert.deepEqual(thrift, expected)
+  });
+
+  it('should correctly parse inline block comments', () => {
+    const content: string = `
+      typedef /* string is name */ string name
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.TypedefDefinition,
+          name: createIdentifier('name', {
+            start: { line: 2, column: 43, index: 43 },
+            end: { line: 2, column: 47, index: 47 }
+          }),
+          definitionType: {
+            type: SyntaxType.StringKeyword,
+            loc: {
+              start: { line: 2, column: 36, index: 36 },
+              end: { line: 2, column: 42, index: 42 }
+            }
+          },
+          comments: [
+            {
+              type: SyntaxType.CommentBlock,
+              value: [
+                'string is name'
+              ],
+              loc: {
+                start: {
+                  line: 2,
+                  column: 15,
+                  index: 15
+                },
+                end: {
+                  line: 2,
+                  column: 35,
+                  index: 35
+                }
+              }
+            }
+          ],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 2, column: 47, index: 47 }
           }
         }
       ]
@@ -111,6 +377,7 @@ describe('Parser', () => {
               }
             }
           },
+          comments: [],
           loc: {
             start: {
               line: 2,
@@ -178,6 +445,7 @@ describe('Parser', () => {
               }
             }
           },
+          comments: [],
           loc: {
             start: {
               line: 2,
@@ -225,6 +493,7 @@ describe('Parser', () => {
               }
             }
           },
+          comments: [],
           loc: {
             start: {
               line: 3,
@@ -300,6 +569,7 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 29 },
                 end: { line: 3, column: 31, index: 51 }
@@ -332,6 +602,7 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 60 },
                 end: { line: 4, column: 31, index: 82 }
@@ -364,6 +635,7 @@ describe('Parser', () => {
               },
               requiredness: 'optional',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 5, column: 9, index: 91 },
                 end: { line: 5, column: 34, index: 116 }
@@ -396,15 +668,89 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 6, column: 9, index: 125 },
                 end: { line: 6, column: 34, index: 150 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 7, column: 8, index: 158 }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
+  it('should correctly parse the syntax of an exception', () => {
+    const content: string = `
+      exception Test {
+        1: required string message;
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ExceptionDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: { line: 2, column: 17, index: 17 },
+              end: { line: 2, column: 21, index: 21 }
+            }
+          },
+          fields: [
+            {
+              type: SyntaxType.FieldDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'message',
+                loc: {
+                  start: { line: 3, column: 28, index: 51 },
+                  end: { line: 3, column: 35, index: 58 }
+                }
+              },
+              fieldID: {
+                type: SyntaxType.FieldID,
+                value: 1,
+                loc: {
+                  start: { line: 3, column: 9, index: 32 },
+                  end: { line: 3, column: 11, index: 34 }
+                }
+              },
+              fieldType: {
+                type: SyntaxType.StringKeyword,
+                loc: {
+                  start: { line: 3, column: 21, index: 44 },
+                  end: { line: 3, column: 27, index: 50 }
+                }
+              },
+              requiredness: 'required',
+              defaultValue: null,
+              comments: [],
+              loc: {
+                start: { line: 3, column: 9, index: 32 },
+                end: { line: 3, column: 36, index: 59 }
+              }
+            }
+          ],
+          comments: [],
+          loc: {
+            start: { line: 2, column: 7, index: 7 },
+            end: { line: 4, column: 8, index: 67 }
           }
         }
       ]
@@ -467,9 +813,28 @@ describe('Parser', () => {
               },
               requiredness: 'required',
               defaultValue: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 29 },
                 end: { line: 3, column: 32, index: 52 }
+              }
+            }
+          ],
+          comments: [
+            {
+              type: SyntaxType.CommentLine,
+              value: '2: required bool field2,',
+              loc: {
+                start: {
+                  line: 4,
+                  column: 9,
+                  index: 61
+                },
+                end: {
+                  line: 4,
+                  column: 35,
+                  index: 87
+                }
               }
             }
           ],
@@ -522,6 +887,7 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 12, index: 30 }
@@ -538,12 +904,14 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 40 },
                 end: { line: 4, column: 12, index: 43 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 51 }
@@ -555,7 +923,7 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected)
   });
 
-  it('should correctly parse an enum with field commented out', function() {
+  it('should correctly parse an enum with field commented out', () => {
     const content: string = `
       enum Test {
         ONE,
@@ -586,9 +954,28 @@ describe('Parser', () => {
                 end: { line: 3, column: 12, index: 30 }
               }),
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 12, index: 30 }
+              }
+            }
+          ],
+          comments: [
+            {
+              type: SyntaxType.CommentLine,
+              value: 'TWO',
+              loc: {
+                start: {
+                  line: 4,
+                  column: 9,
+                  index: 40
+                },
+                end: {
+                  line: 4,
+                  column: 14,
+                  index: 45
+                }
               }
             }
           ],
@@ -649,6 +1036,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 16, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 16, index: 34 }
@@ -665,12 +1053,14 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 44 },
                 end: { line: 4, column: 12, index: 47 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 55 }
@@ -728,6 +1118,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 19, index: 37 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
                 end: { line: 3, column: 19, index: 37 }
@@ -744,12 +1135,14 @@ describe('Parser', () => {
                 }
               },
               initializer: null,
+              comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 47 },
                 end: { line: 4, column: 12, index: 50 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 58 }
@@ -760,7 +1153,7 @@ describe('Parser', () => {
 
     assert.deepEqual(thrift, expected)
   });
-    
+
   it('should correctly parse the syntax of a simple service', () => {
     const content: string = `
       service Test {
@@ -802,6 +1195,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 20, index: 41 }
@@ -809,6 +1203,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 49 }
@@ -893,6 +1288,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 3,
@@ -941,6 +1337,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 4,
@@ -989,6 +1386,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 5,
@@ -1037,6 +1435,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 6,
@@ -1051,6 +1450,7 @@ describe('Parser', () => {
               }
             }
           ],
+          comments: [],
           loc: {
             start: {
               line: 2,
@@ -1112,6 +1512,24 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [
+                {
+                  type: SyntaxType.CommentLine,
+                  value: 'void ping()',
+                  loc: {
+                    start: {
+                      line: 4,
+                      column: 9,
+                      index: 50
+                    },
+                    end: {
+                      line: 4,
+                      column: 22,
+                      index: 63
+                    }
+                  }
+                }
+              ],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 20, index: 41 }
@@ -1119,6 +1537,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 5, column: 8, index: 71 }
@@ -1130,7 +1549,279 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
-  it('should correctly parse a service containing a function with custom type', function() {
+  it('should correctly parse complex commenting', () => {
+    const content: string = `
+      // This service does nothing
+      /*
+       * This is a multi-line
+       * comment for testing
+       */
+      /*
+       Another muliti-line
+       comment for testing
+       */
+      service Test {
+        bool /* should this be required? */ ping()
+        # bool foo();
+        // string dang(),
+        i32 ding()
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: {
+                line: 9,
+                column: 15,
+                index: 201
+              },
+              end: {
+                line: 9,
+                column: 19,
+                index: 205
+              }
+            }
+          },
+          extends: null,
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ping',
+                loc: {
+                  start: {
+                    line: 10,
+                    column: 45,
+                    index: 252
+                  },
+                  end: {
+                    line: 10,
+                    column: 49,
+                    index: 256
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.BoolKeyword,
+                loc: {
+                  start: {
+                    line: 10,
+                    column: 9,
+                    index: 216
+                  },
+                  end: {
+                    line: 10,
+                    column: 13,
+                    index: 220
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              comments: [
+                {
+                  type: SyntaxType.CommentBlock,
+                  value: [
+                    'should this be required?'
+                  ],
+                  loc: {
+                    start: {
+                      line: 10,
+                      column: 14,
+                      index: 221
+                    },
+                    end: {
+                      line: 10,
+                      column: 44,
+                      index: 251
+                    }
+                  }
+                },
+                {
+                  type: SyntaxType.CommentLine,
+                  value: 'bool foo();',
+                  loc: {
+                    start: {
+                      line: 11,
+                      column: 9,
+                      index: 267
+                    },
+                    end: {
+                      line: 11,
+                      column: 22,
+                      index: 280
+                    }
+                  }
+                },
+                {
+                  type: SyntaxType.CommentLine,
+                  value: 'string dang(),',
+                  loc: {
+                    start: {
+                      line: 12,
+                      column: 9,
+                      index: 289
+                    },
+                    end: {
+                      line: 12,
+                      column: 26,
+                      index: 306
+                    }
+                  }
+                }
+              ],
+              loc: {
+                start: {
+                  line: 10,
+                  column: 9,
+                  index: 216
+                },
+                end: {
+                  line: 10,
+                  column: 51,
+                  index: 258
+                }
+              }
+            },
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'ding',
+                loc: {
+                  start: {
+                    line: 13,
+                    column: 13,
+                    index: 319
+                  },
+                  end: {
+                    line: 13,
+                    column: 17,
+                    index: 323
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.I32Keyword,
+                loc: {
+                  start: {
+                    line: 13,
+                    column: 9,
+                    index: 315
+                  },
+                  end: {
+                    line: 13,
+                    column: 12,
+                    index: 318
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              comments: [],
+              loc: {
+                start: {
+                  line: 13,
+                  column: 9,
+                  index: 315
+                },
+                end: {
+                  line: 13,
+                  column: 19,
+                  index: 325
+                }
+              }
+            }
+          ],
+          comments: [
+            {
+              type: SyntaxType.CommentLine,
+              value: 'This service does nothing',
+              loc: {
+                start: {
+                  line: 2,
+                  column: 7,
+                  index: 7
+                },
+                end: {
+                  line: 2,
+                  column: 35,
+                  index: 35
+                }
+              }
+            },
+            {
+              type: SyntaxType.CommentBlock,
+              value: [
+                'This is a multi-line',
+                ' comment for testing'
+              ],
+              loc: {
+                start: {
+                  line: 3,
+                  column: 7,
+                  index: 42
+                },
+                end: {
+                  line: 5,
+                  column: 11,
+                  index: 113
+                }
+              }
+            },
+            {
+              type: SyntaxType.CommentBlock,
+              value: [
+                'Another muliti-line',
+                ' comment for testing'
+              ],
+              loc: {
+                start: {
+                  line: 6,
+                  column: 7,
+                  index: 120
+                },
+                end: {
+                  line: 8,
+                  column: 11,
+                  index: 186
+                }
+              }
+            }
+          ],
+          loc: {
+            start: {
+              line: 9,
+              column: 7,
+              index: 193
+            },
+            end: {
+              line: 14,
+              column: 8,
+              index: 333
+            }
+          }
+        }
+      ]
+    };
+
+    assert.deepEqual(thrift, expected);
+  });
+
+  it('should correctly parse a service containing a function with custom type', () => {
     const content: string = `
       service Test {
         TestType test()
@@ -1170,12 +1861,14 @@ describe('Parser', () => {
                   end: { line: 3, column: 17, index: 38 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 24, index: 45 }
               }
             }
           ],
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 53 }
@@ -1273,6 +1966,7 @@ describe('Parser', () => {
                   },
                   requiredness: null,
                   defaultValue: null,
+                  comments: [],
                   loc: {
                     start: {
                       line: 3,
@@ -1338,6 +2032,7 @@ describe('Parser', () => {
                   },
                   requiredness: null,
                   defaultValue: null,
+                  comments: [],
                   loc: {
                     start: {
                       line: 3,
@@ -1359,6 +2054,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 90, index: 111 }
@@ -1366,6 +2062,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 119 }
@@ -1463,6 +2160,7 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
+              comments: [],
               loc: {
                 start: {
                   line: 3,
@@ -1477,6 +2175,7 @@ describe('Parser', () => {
               }
             }
           ],
+          comments: [],
           loc: {
             start: {
               line: 2,
@@ -1495,8 +2194,8 @@ describe('Parser', () => {
 
     assert.deepEqual(thrift, expected);
   });
-  
-  it('parses a service containing a function with arguments with mixed FieldIDs', function() {
+
+  it('parses a service containing a function with arguments with mixed FieldIDs', () => {
     const content: string = `
       service Test {
         void test(string test1, 1: bool test2)
@@ -1546,6 +2245,7 @@ describe('Parser', () => {
                       end: { line: 3, column: 25, index: 46 }
                     }
                   },
+                  comments: [],
                   loc: {
                     start: { line: 3, column: 19, index: 40 },
                     end: { line: 3, column: 32, index: 53 }
@@ -1574,6 +2274,7 @@ describe('Parser', () => {
                       end: { line: 3, column: 40, index: 61 }
                     }
                   },
+                  comments: [],
                   loc: {
                     start: { line: 3, column: 33, index: 54 },
                     end: { line: 3, column: 46, index: 67  }
@@ -1588,6 +2289,7 @@ describe('Parser', () => {
                   end: { line: 3, column: 13, index: 34 }
                 }
               },
+              comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 47, index: 68 }
@@ -1595,6 +2297,7 @@ describe('Parser', () => {
             }
           ],
           extends: null,
+          comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 76 }
