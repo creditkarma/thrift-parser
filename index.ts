@@ -4,6 +4,7 @@ import { Parser, createParser } from './src/parser';
 import { organize } from './src/organizer';
 
 export * from './src/types';
+export * from './src/factory';
 export { createScanner } from './src/scanner';
 export { createParser } from './src/parser';
 
