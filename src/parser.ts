@@ -761,6 +761,7 @@ export function createParser(tokens: Array<Token>): Parser {
         return parseSetType();
 
       case SyntaxType.BoolKeyword:
+      case SyntaxType.ByteKeyword:
       case SyntaxType.StringKeyword:
       case SyntaxType.I8Keyword:
       case SyntaxType.I16Keyword:

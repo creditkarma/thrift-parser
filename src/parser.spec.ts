@@ -1,3 +1,4 @@
+import * as fs from 'fs'
 import { assert } from 'chai';
 import { createScanner, Scanner } from './scanner';
 import { createParser, Parser } from './parser';
@@ -9,6 +10,17 @@ import {
 } from './factory';
 
 describe('Parser', () => {
+  it('should parse complex.thrift', () => {
+    const content: string = fs.readFileSync('./fixtures/complex.thrift', 'utf-8');
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    // This AST is large, but it contains 38 statements
+    assert.deepEqual(thrift.body.length, 38)
+  });
+
   it('should correctly parse the syntax of a const', () => {
     const content: string = `
       const map<string,string> MAP_CONST = {'hello': 'world', 'foo': 'bar' }
