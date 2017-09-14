@@ -42,11 +42,11 @@ export function createIdentifier(value: string, loc: TextLocation): Identifier {
   return { type: SyntaxType.Identifier, value, loc };
 }
 
-export function creataePropertyAssignment(key: ConstValue, value: ConstValue, loc: TextLocation): PropertyAssignment {
+export function creataePropertyAssignment(name: ConstValue, initializer: ConstValue, loc: TextLocation): PropertyAssignment {
   return {
     type: SyntaxType.PropertyAssignment,
-    name: key,
-    initializer: value,
+    name,
+    initializer,
     loc
   };
 }
