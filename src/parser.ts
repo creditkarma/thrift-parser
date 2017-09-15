@@ -262,6 +262,11 @@ export function createParser(tokens: Array<Token>): Parser {
       throws: (throws !== null) ? throws.fields : [],
       comments: getComments(),
       oneway: (onewayToken !== null),
+      modifiers: (
+        (onewayToken !== null) ?
+          [ onewayToken ] :
+          []
+      ),
       loc: {
         start: returnType.loc.start,
         end: endLoc.end

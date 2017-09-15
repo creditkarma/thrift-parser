@@ -1197,6 +1197,7 @@ describe('Parser', () => {
                 }
               },
               comments: [],
+              modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 20, index: 41 }
@@ -1250,7 +1251,6 @@ describe('Parser', () => {
               }),
               fields: [],
               throws: [],
-              comments: [],
               oneway: true,
               returnType: {
                 type: SyntaxType.VoidKeyword,
@@ -1259,14 +1259,33 @@ describe('Parser', () => {
                   end: { line: 3, column: 20, index: 41 }
                 }
               },
+              comments: [],
+              modifiers: [
+                {
+                  type: SyntaxType.OnewayKeyword,
+                  text: 'oneway',
+                  loc: {
+                    start: {
+                      line: 3,
+                      column: 9,
+                      index: 30
+                    },
+                    end: {
+                      line: 3,
+                      column: 15,
+                      index: 36
+                    }
+                  }
+                }
+              ],
               loc: {
                 start: { line: 3, column: 16, index: 37 },
                 end: { line: 3, column: 27, index: 48 }
               }
             }
           ],
-          extends: null,
           comments: [],
+          extends: null,
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 56 }
@@ -1367,6 +1386,7 @@ describe('Parser', () => {
               throws: [],
               comments: [],
               oneway: false,
+              modifiers: [],
               loc: {
                 start: {
                   line: 3,
@@ -1417,6 +1437,7 @@ describe('Parser', () => {
               throws: [],
               comments: [],
               oneway: false,
+              modifiers: [],
               loc: {
                 start: {
                   line: 4,
@@ -1467,6 +1488,7 @@ describe('Parser', () => {
               throws: [],
               comments: [],
               oneway: false,
+              modifiers: [],
               loc: {
                 start: {
                   line: 5,
@@ -1517,6 +1539,7 @@ describe('Parser', () => {
               throws: [],
               comments: [],
               oneway: false,
+              modifiers: [],
               loc: {
                 start: {
                   line: 6,
@@ -1612,6 +1635,7 @@ describe('Parser', () => {
                   }
                 }
               ],
+              modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 20, index: 41 }
@@ -1713,7 +1737,6 @@ describe('Parser', () => {
               },
               fields: [],
               throws: [],
-              oneway: false,
               comments: [
                 {
                   type: SyntaxType.CommentBlock,
@@ -1766,6 +1789,8 @@ describe('Parser', () => {
                   }
                 }
               ],
+              oneway: false,
+              modifiers: [],
               loc: {
                 start: {
                   line: 10,
@@ -1816,6 +1841,7 @@ describe('Parser', () => {
               throws: [],
               comments: [],
               oneway: false,
+              modifiers: [],
               loc: {
                 start: {
                   line: 13,
@@ -1947,6 +1973,7 @@ describe('Parser', () => {
                 }
               },
               comments: [],
+              modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 24, index: 45 }
@@ -2141,6 +2168,7 @@ describe('Parser', () => {
                 }
               },
               comments: [],
+              modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 90, index: 111 }
@@ -2248,6 +2276,7 @@ describe('Parser', () => {
               throws: [],
               comments: [],
               oneway: false,
+              modifiers: [],
               loc: {
                 start: {
                   line: 3,
@@ -2378,6 +2407,7 @@ describe('Parser', () => {
                 }
               },
               comments: [],
+              modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
                 end: { line: 3, column: 47, index: 68 }

@@ -190,6 +190,7 @@ export interface FunctionDefinition extends PrimarySyntax {
   returnType: FunctionType;
   fields: Array<FieldDefinition>;
   throws: Array<FieldDefinition>;
+  modifiers: Array<Token>;
 }
 
 export interface ParametersDefinition extends SyntaxNode {
