@@ -103,6 +103,8 @@ export function createDebugger(source: string): Debugger {
     },
 
     print(): void {
+      console.log(`Parse Failure: ${errors.length} errors found:`);
+      console.log();
       errors.forEach((err: FormattedError): void => {
         const prefix: string = `${err.line} | `;
 
