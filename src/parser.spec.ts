@@ -1297,6 +1297,250 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
+  it('should correctly parse the syntax of a service with mixed oneway functions', () => {
+    const content: string = `
+      service Test {
+        oneway void test()
+        i32 sendMessage(1: string msg)
+      }
+    `;
+    const scanner: Scanner = createScanner(content);
+    const tokens: Array<Token> = scanner.scan();
+
+    const parser: Parser = createParser(tokens);
+    const thrift: ThriftDocument = parser.parse();
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ServiceDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: {
+                line: 2,
+                column: 15,
+                index: 15
+              },
+              end: {
+                line: 2,
+                column: 19,
+                index: 19
+              }
+            }
+          },
+          extends: null,
+          functions: [
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'test',
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 21,
+                    index: 42
+                  },
+                  end: {
+                    line: 3,
+                    column: 25,
+                    index: 46
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.VoidKeyword,
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 16,
+                    index: 37
+                  },
+                  end: {
+                    line: 3,
+                    column: 20,
+                    index: 41
+                  }
+                }
+              },
+              fields: [],
+              throws: [],
+              comments: [],
+              oneway: true,
+              modifiers: [
+                {
+                  type: SyntaxType.OnewayKeyword,
+                  text: 'oneway',
+                  loc: {
+                    start: {
+                      line: 3,
+                      column: 9,
+                      index: 30
+                    },
+                    end: {
+                      line: 3,
+                      column: 15,
+                      index: 36
+                    }
+                  }
+                }
+              ],
+              loc: {
+                start: {
+                  line: 3,
+                  column: 16,
+                  index: 37
+                },
+                end: {
+                  line: 3,
+                  column: 27,
+                  index: 48
+                }
+              }
+            },
+            {
+              type: SyntaxType.FunctionDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'sendMessage',
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 13,
+                    index: 61
+                  },
+                  end: {
+                    line: 4,
+                    column: 24,
+                    index: 72
+                  }
+                }
+              },
+              returnType: {
+                type: SyntaxType.I32Keyword,
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 9,
+                    index: 57
+                  },
+                  end: {
+                    line: 4,
+                    column: 12,
+                    index: 60
+                  }
+                }
+              },
+              fields: [
+                {
+                  type: SyntaxType.FieldDefinition,
+                  name: {
+                    type: SyntaxType.Identifier,
+                    value: 'msg',
+                    loc: {
+                      start: {
+                        line: 4,
+                        column: 35,
+                        index: 83
+                      },
+                      end: {
+                        line: 4,
+                        column: 38,
+                        index: 86
+                      }
+                    }
+                  },
+                  fieldID: {
+                    type: SyntaxType.FieldID,
+                    value: 1,
+                    loc: {
+                      start: {
+                        line: 4,
+                        column: 25,
+                        index: 73
+                      },
+                      end: {
+                        line: 4,
+                        column: 27,
+                        index: 75
+                      }
+                    }
+                  },
+                  fieldType: {
+                    type: SyntaxType.StringKeyword,
+                    loc: {
+                      start: {
+                        line: 4,
+                        column: 28,
+                        index: 76
+                      },
+                      end: {
+                        line: 4,
+                        column: 34,
+                        index: 82
+                      }
+                    }
+                  },
+                  requiredness: null,
+                  defaultValue: null,
+                  comments: [],
+                  loc: {
+                    start: {
+                      line: 4,
+                      column: 25,
+                      index: 73
+                    },
+                    end: {
+                      line: 4,
+                      column: 38,
+                      index: 86
+                    }
+                  }
+                }
+              ],
+              throws: [],
+              comments: [],
+              oneway: false,
+              modifiers: [],
+              loc: {
+                start: {
+                  line: 4,
+                  column: 9,
+                  index: 57
+                },
+                end: {
+                  line: 4,
+                  column: 39,
+                  index: 87
+                }
+              }
+            }
+          ],
+          comments: [],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7
+            },
+            end: {
+              line: 5,
+              column: 8,
+              index: 95
+            }
+          }
+        }
+      ]
+    };
+
+    console.log('actual: ', JSON.stringify(thrift, null, 2));
+
+    assert.deepEqual(thrift, expected);
+  });
+
   it('should throw if oneway keyword is not followed by void type', () => {
     const content: string = `
       service Test {
