@@ -1536,8 +1536,6 @@ describe('Parser', () => {
       ]
     };
 
-    console.log('actual: ', JSON.stringify(thrift, null, 2));
-
     assert.deepEqual(thrift, expected);
   });
 
