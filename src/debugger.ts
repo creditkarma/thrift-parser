@@ -20,7 +20,7 @@ export interface FormattedError {
 }
 
 export function noopReporter(err: ThriftError): void {
-  throw new Error(err.message);
+  throw new Error(`${err.type}: Line: ${err.loc.start.line}: ${err.message}`);
 }
 
 export function getSourceLine(line: number, source: string): string {
@@ -54,7 +54,7 @@ function padLeft(num: number, str: string): string {
   return str;
 }
 
-export function indicatorForLocaction(loc: TextLocation): string {
+function indicatorForLocaction(loc: TextLocation): string {
   var indicator: string = padLeft(loc.start.column, '^');
   return indicator;
 }
@@ -110,7 +110,7 @@ export function createDebugger(source: string): Debugger {
 
         console.log();
         console.log(`${errorType(err.type)}\n`);
-        console.log(`Message: ${err.message}`)
+        console.log(`Message: ${err.message}`);
         console.log();
         console.log(`${prefix}${err.sourceLine}`);
         console.log(padStart(prefix.length, err.locIndicator));

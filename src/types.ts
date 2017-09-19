@@ -307,7 +307,6 @@ export const enum SyntaxType {
   CommentLine = 'CommentLine',
   CommentBlock = 'CommentBlock',
   StringLiteral = 'StringLiteral',
-  NumberLiteral = 'NumberLiteral',
   IntegerLiteral = 'IntegerLiteral',
   FloatLiteral = 'FloatLiteral',
   HexLiteral = 'HexLiteral',

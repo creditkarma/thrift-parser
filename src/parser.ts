@@ -371,6 +371,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
     const initializer: ConstValue = parseValueAssignment();
     requireValue(initializer, `Const must be initialized to a value`);
+    readListSeparator();
 
     return {
       type: SyntaxType.ConstDefinition,
