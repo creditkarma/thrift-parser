@@ -113,7 +113,7 @@ export interface MapType extends SyntaxNode {
 
 export type ConstValue =
   StringLiteral | IntConstant | DoubleConstant | BooleanLiteral |
-  ConstMap | ConstList;
+  ConstMap | ConstList | Identifier;
 
 export interface NamespaceDefinition extends PrimarySyntax {
   type: SyntaxType.NamespaceDefinition;
@@ -161,7 +161,7 @@ export interface ExceptionDefinition extends InterfaceWithFields {
 export interface FieldDefinition extends PrimarySyntax {
   type: SyntaxType.FieldDefinition;
   name: Identifier;
-  fieldID: FieldID;
+  fieldID: FieldID | null;
   fieldType: FunctionType;
   requiredness: FieldRequired | null;
   defaultValue: ConstValue | null;
@@ -256,7 +256,6 @@ export interface PropertyAssignment extends SyntaxNode {
 export interface Identifier extends SyntaxNode {
   type: SyntaxType.Identifier;
   value: string;
-  loc: TextLocation;
 }
 
 export const enum ErrorType {

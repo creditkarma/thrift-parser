@@ -655,6 +655,9 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
   function parseValue(): ConstValue {
     const next: Token = advance();
     switch(next.type) {
+      case SyntaxType.Identifier:
+        return createIdentifier(next.text, next.loc);
+
       case SyntaxType.StringLiteral:
         return createStringLiteral(next.text, next.loc);
 
