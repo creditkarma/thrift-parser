@@ -8,6 +8,7 @@
     "outDir": "./dist",
     "noImplicitAny": true,
     "noImplicitThis": true,
+    "noUnusedLocals": true,
     "pretty": true,
     "removeComments": false,
     "lib": [

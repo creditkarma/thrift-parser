@@ -3,15 +3,7 @@ import { assert } from 'chai';
 import { createScanner, Scanner } from './scanner';
 import { createParser, Parser } from './parser';
 import { Token, SyntaxType, ThriftDocument } from './types';
-import {
-  createTextPosition,
-  createIdentifier,
-  createStringLiteral
-} from './factory';
-import {
-  Debugger,
-  createDebugger
-} from './debugger';
+import { createIdentifier } from './factory';
 
 describe('Parser', () => {
   it('should parse complex.thrift', () => {

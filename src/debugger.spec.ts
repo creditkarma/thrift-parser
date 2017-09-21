@@ -1,12 +1,6 @@
 import { assert } from 'chai';
 import { ParseError, ErrorType } from './types';
 import {
-  createTextPosition,
-  createIdentifier,
-  createStringLiteral
-} from './factory';
-import {
-  Debugger,
   FormattedError,
   getSourceLine,
   formatError

@@ -28,10 +28,6 @@ function isAlphaOrUnderscore(value: string): boolean {
   );
 }
 
-function isAlphaNumeric(value: string): boolean {
-  return isDigit(value) || isAlpha(value);
-}
-
 function isValidIdentifier(value: string): boolean {
   return (
     isAlphaOrUnderscore(value) ||

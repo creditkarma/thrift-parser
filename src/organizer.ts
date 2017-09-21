@@ -68,8 +68,8 @@ export function organize(raw: ThriftDocument): ThriftDocument {
         break;
 
       default:
-        const _msg: never = next;
-        throw new Error(`Unexpected statement type found: ${next}`);
+        const msg: never = next;
+        throw new Error(`Unexpected statement type found: ${msg}`);
     }
   }
 

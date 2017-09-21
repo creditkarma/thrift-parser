@@ -1,7 +1,6 @@
 import {
   ThriftDocument,
   ThriftStatement,
-  Node,
   Token,
   Comment,
   StructLike,
@@ -26,7 +25,6 @@ import {
   FieldType,
   FunctionType,
   FieldRequired,
-  BaseType,
   MapType,
   SetType,
   ListType,
@@ -34,7 +32,6 @@ import {
   ConstMap,
   ConstList,
   IntConstant,
-  DoubleConstant,
   PropertyAssignment
 } from './types';
 
@@ -49,8 +46,6 @@ import {
   createConstList,
   createKeywordFieldType,
   createMapFieldType,
-  createSetFieldType,
-  createListFieldType,
   creataePropertyAssignment,
   createFieldID,
   createParseError
@@ -464,11 +459,12 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     requireValue(nameToken, `EnumMember must have identifier`);
 
     const equalToken: Token = consume(SyntaxType.EqualToken);
-    const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral);
+
     var loc: TextLocation = null;
     var initializer: IntConstant = null;
-
-    if (numToken !== null) {
+    if (equalToken !== null) {
+      const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral);
+      requireValue(numToken, `Equals token "=" must be followed by an Integer`);
       initializer = createIntConstant(parseInt(numToken.text), numToken.loc);
       loc = createTextLocation(nameToken.loc.start, initializer.loc.end);
     } else {
@@ -609,7 +605,6 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
   // ListSeparator → ',' | ';'
   function readListSeparator(): Token {
-    const current: Token = currentToken();
     if (check(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
       return advance();
     }
@@ -895,10 +890,6 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return tokens[currentIndex + 1];
   }
 
-  function peekNext(): Token {
-    return tokens[currentIndex + 2];
-  }
-
   // Does the current token match the given type
   function check(...types: Array<SyntaxType>): boolean {
     for (let type of types) {
@@ -927,14 +918,6 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       if (check(type)) {
         return advance();
       }
-    }
-
-    return null;
-  }
-
-  function consumeText(text: string): Token {
-    if (checkText(text)) {
-      return advance();
     }
 
     return null;

@@ -35,10 +35,11 @@ export function resolveOptions(args: Array<string>): ParseOptions {
 
       case '--outDir':
         options.outDir = args[(index + 1)];
+        index += 2;
 
       case '--fastFail':
-        options.fastFail = args[(index + 1)] === 'true'
-        index += 2
+        options.fastFail = args[(index + 1)] === 'true';
+        index += 2;
         break;
 
       default:

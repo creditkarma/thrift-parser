@@ -26,7 +26,6 @@ import {
   FunctionType,
   ParseError,
   ScanError,
-  ThriftError,
   ErrorType
 } from './types';
 
