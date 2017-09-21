@@ -253,10 +253,6 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const onewayToken: Token = consume(SyntaxType.OnewayKeyword);
     const returnType: FunctionType = parseFunctionType();
 
-    if (onewayToken !== null && returnType.type !== SyntaxType.VoidKeyword) {
-      reportError(`Oneway keyword must be followed by a void return type`);
-    }
-
     const nameToken: Token = consume(SyntaxType.Identifier);
     requireValue(nameToken, `Unable to find function identifier`);
 

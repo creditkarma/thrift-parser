@@ -1554,20 +1554,6 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected);
   });
 
-  it('should throw if oneway keyword is not followed by void type', () => {
-    const content: string = `
-      service Test {
-        oneway string test()
-      }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
-
-    const parser: Parser = createParser(tokens);
-
-    assert.throws(() => parser.parse());
-  })
-
   it('should correctly parse a service where functions are separated by commas or semicolons', () => {
     const content: string = `
       service Test {
