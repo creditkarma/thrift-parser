@@ -14,12 +14,14 @@ export { createParser } from './parser';
 export interface ParseOptions {
   fastFail: boolean;
   rootDir: string;
+  outDir: string;
   files: Array<string>;
 }
 
 export const defaultOptions: ParseOptions = {
   fastFail: false,
   rootDir: '.',
+  outDir: '.',
   files: []
 };
 

@@ -12,6 +12,7 @@ export function resolveOptions(args: Array<string>): ParseOptions {
   const options: ParseOptions = {
     fastFail: false,
     rootDir: '.',
+    outDir: 'thrift-json',
     files: []
   };
 
@@ -31,6 +32,9 @@ export function resolveOptions(args: Array<string>): ParseOptions {
         } catch(e) {
           throw new Error(`Provided root directory "${options.rootDir}" doesn't exist`);
         }
+
+      case '--outDir':
+        options.outDir = args[(index + 1)];
 
       case '--fastFail':
         options.fastFail = args[(index + 1)] === 'true'
