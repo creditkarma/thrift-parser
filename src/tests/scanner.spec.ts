@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import { createScanner, Scanner } from './scanner';
-import { Token, SyntaxType } from './types';
+import { createScanner, Scanner } from '../main/scanner';
+import { Token, SyntaxType } from '../main/types';
 
 describe('Scanner', () => {
   it('should correctly recognize floats', () => {

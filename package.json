@@ -4,14 +4,23 @@
   "description": "A parser for Thrift written in TypeScript",
   "main": "./dist/index.js",
   "bin": {
-    "thrift-parser": "./dist/src/bin/index.js"
+    "thrift-parser": "./dist/src/main/bin/index.js"
   },
   "types": "./dist/index.d.ts",
+  "keywords": [
+    "Thrift",
+    "TypeScript"
+  ],
   "scripts": {
     "build": "rm -rf ./dist; tsc",
-    "test:cli": "ts-node ./src/bin/index.ts ./fixtures/errors.thrift",
+    "test:cli": "ts-node ./src/main/bin/index.ts ./fixtures/errors.thrift",
     "test": "NODE_ENV=test mocha --opts mocha.opts",
-    "coverage": "NODE_ENV=test nyc mocha --opts mocha.cover.opts"
+    "coverage": "NODE_ENV=test nyc mocha --opts mocha.cover.opts",
+    "prepublish": "npm run build",
+    "release:patch": "npm version patch && npm run release:publish",
+    "release:minor": "npm version minor && npm run release:publish",
+    "release:major": "npm version major && npm run release:publish",
+    "release:publish": "npm publish && git push --follow-tags"
   },
   "files": [
     "dist/"
@@ -31,5 +40,18 @@
     "nyc": "^11.1.0",
     "ts-node": "^3.3.0",
     "typescript": "^2.4.2"
+  },
+  "nyc": {
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "src/tests/"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "all": true
   }
 }

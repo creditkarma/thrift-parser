@@ -1,10 +1,10 @@
 import { assert } from 'chai';
-import { ParseError, ErrorType } from './types';
+import { ParseError, ErrorType } from '../main/types';
 import {
   FormattedError,
   getSourceLine,
   formatError
-} from './debugger';
+} from '../main/debugger';
 
 describe('Debugger', () => {
   describe('getSourceLine', () => {

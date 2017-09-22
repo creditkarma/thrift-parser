@@ -1,9 +1,9 @@
 import * as fs from 'fs'
 import { assert } from 'chai';
-import { createScanner, Scanner } from './scanner';
-import { createParser, Parser } from './parser';
-import { Token, SyntaxType, ThriftDocument } from './types';
-import { createIdentifier } from './factory';
+import { createScanner, Scanner } from '../main/scanner';
+import { createParser, Parser } from '../main/parser';
+import { Token, SyntaxType, ThriftDocument } from '../main/types';
+import { createIdentifier } from '../main/factory';
 
 describe('Parser', () => {
   it('should parse complex.thrift', () => {

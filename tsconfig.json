@@ -22,7 +22,7 @@
   },
   "files": [
     "./index.ts",
-    "./src/bin/index.ts"
+    "./src/main/bin/index.ts"
   ],
   "exclude": [
     "node_modules",
