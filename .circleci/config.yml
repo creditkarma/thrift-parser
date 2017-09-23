@@ -16,10 +16,14 @@ jobs:
           paths:
             - ./node_modules
   npm_token:
+    docker:
+      - image: circleci/node:6.10.3
     steps:
       - run:
         command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
   publish:
+    docker:
+      - image: circleci/node:6.10.3
     steps:
       - run:
           name: publish-npm
