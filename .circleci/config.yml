@@ -15,8 +15,24 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-  deployment:
-    npm:
-      tag: /v[0-9]+(\.[0-9]+)*/
-          commands:
-        - npm publish
+  npm_token:
+    steps:
+      - run:
+        command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
+  publish:
+    steps:
+      - run:
+          name: publish-npm
+          command: npm publish
+
+  workflows:
+    version: 2
+    build_publish:
+        jobs:
+          - build
+          - publish:
+              requires:
+                - build
+                - npm_token
+              filters:
+                tag: /(v)?[0-9]+(\.[0-9]+)*/
