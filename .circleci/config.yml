@@ -29,7 +29,6 @@ workflows:
   version: 2
   build_publish:
       jobs:
-        - build
         - publish:
             requires:
               - build
