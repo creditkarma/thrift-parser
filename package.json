@@ -20,7 +20,7 @@
     "release:patch": "npm version patch && npm run release:publish",
     "release:minor": "npm version minor && npm run release:publish",
     "release:major": "npm version major && npm run release:publish",
-    "release:publish": "npm publish && git push --follow-tags"
+    "release:publish": "git push --follow-tags"
   },
   "files": [
     "dist/"
