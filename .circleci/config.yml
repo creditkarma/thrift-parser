@@ -25,14 +25,14 @@ jobs:
           name: publish-npm
           command: npm publish
 
-  workflows:
-    version: 2
-    build_publish:
-        jobs:
-          - build
-          - publish:
-              requires:
-                - build
-                - npm_token
-              filters:
-                tag: /(v)?[0-9]+(\.[0-9]+)*/
+workflows:
+  version: 2
+  build_publish:
+      jobs:
+        - build
+        - publish:
+            requires:
+              - build
+              - npm_token
+            filters:
+              tag: /(v)?[0-9]+(\.[0-9]+)*/
