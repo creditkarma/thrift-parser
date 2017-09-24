@@ -40,4 +40,5 @@ workflows:
               - build
               - npm_token
             filters:
-              tag: /(v)?[0-9]+(\.[0-9]+)*/
+              tags:
+                only: /(v)?[0-9]+(\.[0-9]+)*/
