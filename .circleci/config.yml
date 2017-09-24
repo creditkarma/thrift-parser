@@ -33,6 +33,8 @@ workflows:
   version: 2
   build_publish:
       jobs:
+        - build
+        - npm_token
         - publish:
             requires:
               - build
