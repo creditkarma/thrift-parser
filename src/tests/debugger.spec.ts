@@ -1,28 +1,28 @@
-import { assert } from 'chai';
-import { ParseError, ErrorType } from '../main/types';
+import { assert } from 'chai'
 import {
+  formatError,
   FormattedError,
   getSourceLine,
-  formatError
-} from '../main/debugger';
+} from '../main/debugger'
+import { ErrorType, ParseError } from '../main/types'
 
 describe('Debugger', () => {
   describe('getSourceLine', () => {
     it('should get the line of source for a given line number', () => {
-      const source: string = `one line\n two line\n three line\n four line\n`;
-      const expected: string = ` two line`;
-      const actual: string = getSourceLine(2, source);
+      const source: string = `one line\n two line\n three line\n four line\n`
+      const expected: string = ` two line`
+      const actual: string = getSourceLine(2, source)
 
-      assert.equal(actual, expected);
-    });
+      assert.equal(actual, expected)
+    })
 
     it('should return null for out-of-bounds line request', () => {
-      const source: string = `one line\n two line\n three line\n four line\n`;
-      const expected: string = null;
-      const actual: string = getSourceLine(21, source);
+      const source: string = `one line\n two line\n three line\n four line\n`
+      const expected: string = null
+      const actual: string = getSourceLine(21, source)
 
-      assert.equal(actual, expected);
-    });
+      assert.equal(actual, expected)
+    })
   })
 
   describe('formatError', () => {
@@ -34,26 +34,26 @@ describe('Debugger', () => {
           3: optional double field3
           4: required string field4
         }
-      `;
+      `
       const parseError: ParseError = {
         type: ErrorType.ParseError,
         message: 'Missing field type',
         loc: {
           start: { line: 4, column: 23, index: 78 },
-          end: { line: 4, column: 23, index: 78 }
-        }
-      };
+          end: { line: 4, column: 23, index: 78 },
+        },
+      }
       const expected: FormattedError = {
         sourceLine: `          2: required field2`,
         locIndicator: `                      ^`,
         line: 4,
         column: 23,
         message: `Missing field type`,
-        type: ErrorType.ParseError
-      };
-      const actual: FormattedError = formatError(parseError, source);
+        type: ErrorType.ParseError,
+      }
+      const actual: FormattedError = formatError(parseError, source)
 
-      assert.deepEqual(actual, expected);
-    });
+      assert.deepEqual(actual, expected)
+    })
   })
-});
+})

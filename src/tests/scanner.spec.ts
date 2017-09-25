@@ -1,14 +1,14 @@
-import { assert } from 'chai';
-import { createScanner, Scanner } from '../main/scanner';
-import { Token, SyntaxType } from '../main/types';
+import { assert } from 'chai'
+import { createScanner, Scanner } from '../main/scanner'
+import { SyntaxType, Token } from '../main/types'
 
 describe('Scanner', () => {
   it('should correctly recognize floats', () => {
     const content = `
       5.12
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -18,14 +18,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 11,
-            index: 11
-          }
-        }
+            index: 11,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -34,26 +34,26 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 16
+            index: 16,
           },
           end: {
             line: 3,
             column: 5,
-            index: 16
-          }
-        }
-      }
-    ];
+            index: 16,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly recognize strings with double quotes', () => {
     const content = `
       "this is a test"
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -63,14 +63,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 23,
-            index: 23
-          }
-        }
+            index: 23,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -79,26 +79,26 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 28
+            index: 28,
           },
           end: {
             line: 3,
             column: 5,
-            index: 28
-          }
-        }
-      }
-    ];
+            index: 28,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly recognize strings with single quotes', () => {
     const content = `
       'this is a test'
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -108,14 +108,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 23,
-            index: 23
-          }
-        }
+            index: 23,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -124,26 +124,26 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 28
+            index: 28,
           },
           end: {
             line: 3,
             column: 5,
-            index: 28
-          }
-        }
-      }
-    ];
+            index: 28,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly recognize hex values', () => {
     const content = `
       0xfff
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -153,14 +153,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 12,
-            index: 12
-          }
-        }
+            index: 12,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -169,26 +169,26 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 17
+            index: 17,
           },
           end: {
             line: 3,
             column: 5,
-            index: 17
-          }
-        }
-      }
-    ];
+            index: 17,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly recognize e-notation', () => {
     const content = `
       5e6
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -198,14 +198,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 10,
-            index: 10
-          }
-        }
+            index: 10,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -214,26 +214,26 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 15
+            index: 15,
           },
           end: {
             line: 3,
             column: 5,
-            index: 15
-          }
-        }
-      }
-    ];
+            index: 15,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly recognize more complex e-notation', () => {
     const content = `
       5.2e-6
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -243,14 +243,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 13,
-            index: 13
-          }
-        }
+            index: 13,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -259,28 +259,28 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 18
+            index: 18,
           },
           end: {
             line: 3,
             column: 5,
-            index: 18
-          }
-        }
-      }
-    ];
+            index: 18,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly return the tokens for a struct', () => {
     const content: string = `
       struct MyStruct {
         1: required i32 id
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -290,14 +290,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 13,
-            index: 13
-          }
-        }
+            index: 13,
+          },
+        },
       },
       {
         type: SyntaxType.Identifier,
@@ -306,14 +306,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 14,
-            index: 14
+            index: 14,
           },
           end: {
             line: 2,
             column: 22,
-            index: 22
-          }
-        }
+            index: 22,
+          },
+        },
       },
       {
         type: SyntaxType.LeftBraceToken,
@@ -322,14 +322,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 23,
-            index: 23
+            index: 23,
           },
           end: {
             line: 2,
             column: 24,
-            index: 24
-          }
-        }
+            index: 24,
+          },
+        },
       },
       {
         type: SyntaxType.IntegerLiteral,
@@ -338,14 +338,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 9,
-            index: 33
+            index: 33,
           },
           end: {
             line: 3,
             column: 10,
-            index: 34
-          }
-        }
+            index: 34,
+          },
+        },
       },
       {
         type: SyntaxType.ColonToken,
@@ -354,14 +354,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 10,
-            index: 34
+            index: 34,
           },
           end: {
             line: 3,
             column: 11,
-            index: 35
-          }
-        }
+            index: 35,
+          },
+        },
       },
       {
         type: SyntaxType.RequiredKeyword,
@@ -370,14 +370,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 12,
-            index: 36
+            index: 36,
           },
           end: {
             line: 3,
             column: 20,
-            index: 44
-          }
-        }
+            index: 44,
+          },
+        },
       },
       {
         type: SyntaxType.I32Keyword,
@@ -386,14 +386,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 21,
-            index: 45
+            index: 45,
           },
           end: {
             line: 3,
             column: 24,
-            index: 48
-          }
-        }
+            index: 48,
+          },
+        },
       },
       {
         type: SyntaxType.Identifier,
@@ -402,14 +402,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 25,
-            index: 49
+            index: 49,
           },
           end: {
             line: 3,
             column: 27,
-            index: 51
-          }
-        }
+            index: 51,
+          },
+        },
       },
       {
         type: SyntaxType.RightBraceToken,
@@ -418,14 +418,14 @@ describe('Scanner', () => {
           start: {
             line: 4,
             column: 7,
-            index: 58
+            index: 58,
           },
           end: {
             line: 4,
             column: 8,
-            index: 59
-          }
-        }
+            index: 59,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -434,28 +434,28 @@ describe('Scanner', () => {
           start: {
             line: 5,
             column: 4,
-            index: 64
+            index: 64,
           },
           end: {
             line: 5,
             column: 5,
-            index: 64
-          }
-        }
-      }
-    ];
+            index: 64,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it(`should remove pointer syntax '&' from the list of tokens`, () => {
     const content: string = `
       struct MyStruct {
         1: required MyStruct & nextItem
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -465,14 +465,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 13,
-            index: 13
-          }
-        }
+            index: 13,
+          },
+        },
       },
       {
         type: SyntaxType.Identifier,
@@ -481,14 +481,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 14,
-            index: 14
+            index: 14,
           },
           end: {
             line: 2,
             column: 22,
-            index: 22
-          }
-        }
+            index: 22,
+          },
+        },
       },
       {
         type: SyntaxType.LeftBraceToken,
@@ -497,14 +497,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 23,
-            index: 23
+            index: 23,
           },
           end: {
             line: 2,
             column: 24,
-            index: 24
-          }
-        }
+            index: 24,
+          },
+        },
       },
       {
         type: SyntaxType.IntegerLiteral,
@@ -513,14 +513,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 9,
-            index: 33
+            index: 33,
           },
           end: {
             line: 3,
             column: 10,
-            index: 34
-          }
-        }
+            index: 34,
+          },
+        },
       },
       {
         type: SyntaxType.ColonToken,
@@ -529,14 +529,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 10,
-            index: 34
+            index: 34,
           },
           end: {
             line: 3,
             column: 11,
-            index: 35
-          }
-        }
+            index: 35,
+          },
+        },
       },
       {
         type: SyntaxType.RequiredKeyword,
@@ -545,14 +545,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 12,
-            index: 36
+            index: 36,
           },
           end: {
             line: 3,
             column: 20,
-            index: 44
-          }
-        }
+            index: 44,
+          },
+        },
       },
       {
         type: SyntaxType.Identifier,
@@ -561,14 +561,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 21,
-            index: 45
+            index: 45,
           },
           end: {
             line: 3,
             column: 29,
-            index: 53
-          }
-        }
+            index: 53,
+          },
+        },
       },
       {
         type: SyntaxType.Identifier,
@@ -577,14 +577,14 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 32,
-            index: 56
+            index: 56,
           },
           end: {
             line: 3,
             column: 40,
-            index: 64
-          }
-        }
+            index: 64,
+          },
+        },
       },
       {
         type: SyntaxType.RightBraceToken,
@@ -593,14 +593,14 @@ describe('Scanner', () => {
           start: {
             line: 4,
             column: 7,
-            index: 71
+            index: 71,
           },
           end: {
             line: 4,
             column: 8,
-            index: 72
-          }
-        }
+            index: 72,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -609,26 +609,26 @@ describe('Scanner', () => {
           start: {
             line: 5,
             column: 4,
-            index: 77
+            index: 77,
           },
           end: {
             line: 5,
             column: 5,
-            index: 77
-          }
-        }
-      }
-    ];
+            index: 77,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it(`should correctly handle single-line comments with '//'`, () => {
     const content: string = `
       // This is a struct
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -638,14 +638,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 26,
-            index: 26
-          }
-        }
+            index: 26,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -654,26 +654,26 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 31
+            index: 31,
           },
           end: {
             line: 3,
             column: 5,
-            index: 31
-          }
-        }
-      }
-    ];
+            index: 31,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it(`should correctly handle single-line comments with '#'`, () => {
     const content: string = `
       # This is a struct
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -683,14 +683,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 25,
-            index: 25
-          }
-        }
+            index: 25,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -699,28 +699,28 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 30
+            index: 30,
           },
           end: {
             line: 3,
             column: 5,
-            index: 30
-          }
-        }
-      }
-    ];
+            index: 30,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it(`should correctly handle multi-line comments with '/* ... */'`, () => {
     const content: string = `
       /* This is a struct
        * it does things
        */
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -730,14 +730,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 4,
             column: 11,
-            index: 60
-          }
-        }
+            index: 60,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -746,26 +746,26 @@ describe('Scanner', () => {
           start: {
             line: 5,
             column: 4,
-            index: 65
+            index: 65,
           },
           end: {
             line: 5,
             column: 5,
-            index: 65
-          }
-        }
-      }
-    ];
+            index: 65,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly return tokens for a simple const', () => {
     const content = `
       const string test = 'hello world'
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -775,14 +775,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 12,
-            index: 12
-          }
-        }
+            index: 12,
+          },
+        },
       },
       {
         type: SyntaxType.StringKeyword,
@@ -791,14 +791,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 13,
-            index: 13
+            index: 13,
           },
           end: {
             line: 2,
             column: 19,
-            index: 19
-          }
-        }
+            index: 19,
+          },
+        },
       },
       {
         type: SyntaxType.Identifier,
@@ -807,14 +807,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 20,
-            index: 20
+            index: 20,
           },
           end: {
             line: 2,
             column: 24,
-            index: 24
-          }
-        }
+            index: 24,
+          },
+        },
       },
       {
         type: SyntaxType.EqualToken,
@@ -823,14 +823,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 25,
-            index: 25
+            index: 25,
           },
           end: {
             line: 2,
             column: 26,
-            index: 26
-          }
-        }
+            index: 26,
+          },
+        },
       },
       {
         type: SyntaxType.StringLiteral,
@@ -839,14 +839,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 27,
-            index: 27
+            index: 27,
           },
           end: {
             line: 2,
             column: 40,
-            index: 40
-          }
-        }
+            index: 40,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -855,26 +855,26 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 45
+            index: 45,
           },
           end: {
             line: 3,
             column: 5,
-            index: 45
-          }
-        }
-      }
-    ];
+            index: 45,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
+    assert.deepEqual(tokens, expected)
+  })
 
   it('should correctly handle assignment to hex values', () => {
     const content = `
       const i32 test = 0xf
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
     const expected: Array<Token> = [
       {
@@ -884,14 +884,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 7,
-            index: 7
+            index: 7,
           },
           end: {
             line: 2,
             column: 12,
-            index: 12
-          }
-        }
+            index: 12,
+          },
+        },
       },
       {
         type: SyntaxType.I32Keyword,
@@ -900,14 +900,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 13,
-            index: 13
+            index: 13,
           },
           end: {
             line: 2,
             column: 16,
-            index: 16
-          }
-        }
+            index: 16,
+          },
+        },
       },
       {
         type: SyntaxType.Identifier,
@@ -916,14 +916,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 17,
-            index: 17
+            index: 17,
           },
           end: {
             line: 2,
             column: 21,
-            index: 21
-          }
-        }
+            index: 21,
+          },
+        },
       },
       {
         type: SyntaxType.EqualToken,
@@ -932,14 +932,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 22,
-            index: 22
+            index: 22,
           },
           end: {
             line: 2,
             column: 23,
-            index: 23
-          }
-        }
+            index: 23,
+          },
+        },
       },
       {
         type: SyntaxType.HexLiteral,
@@ -948,14 +948,14 @@ describe('Scanner', () => {
           start: {
             line: 2,
             column: 24,
-            index: 24
+            index: 24,
           },
           end: {
             line: 2,
             column: 27,
-            index: 27
-          }
-        }
+            index: 27,
+          },
+        },
       },
       {
         type: SyntaxType.EOF,
@@ -964,17 +964,17 @@ describe('Scanner', () => {
           start: {
             line: 3,
             column: 4,
-            index: 32
+            index: 32,
           },
           end: {
             line: 3,
             column: 5,
-            index: 32
-          }
-        }
-      }
-    ];
+            index: 32,
+          },
+        },
+      },
+    ]
 
-    assert.deepEqual(tokens, expected);
-  });
-});
+    assert.deepEqual(tokens, expected)
+  })
+})

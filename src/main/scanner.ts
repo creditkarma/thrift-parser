@@ -1,23 +1,23 @@
-import { createToken, createScanError } from './factory';
-import { Token, SyntaxType, TextLocation } from './types';
-import { KEYWORDS } from './keywords';
 import {
   ErrorReporter,
-  noopReporter
-} from './debugger';
+  noopReporter,
+} from './debugger'
+import { createScanError, createToken } from './factory'
+import { KEYWORDS } from './keywords'
+import { SyntaxType, TextLocation, Token } from './types'
 
 function isDigit(value: string): boolean {
   return (
     value >= '0' &&
     value <= '9'
-  );
+  )
 }
 
 function isAlpha(value: string): boolean {
   return (
     (value >= 'a' && value <= 'z') ||
     (value >= 'A' && value <= 'Z')
-  );
+  )
 }
 
 // The first character of an Identifier can be a letter or underscore
@@ -25,7 +25,7 @@ function isAlphaOrUnderscore(value: string): boolean {
   return (
     isAlpha(value) ||
     (value === '_')
-  );
+  )
 }
 
 function isValidIdentifier(value: string): boolean {
@@ -34,7 +34,7 @@ function isValidIdentifier(value: string): boolean {
     isDigit(value) ||
     (value === '.') ||
     (value === '-')
-  );
+  )
 }
 
 function isHexDigit(value: string): boolean {
@@ -42,7 +42,7 @@ function isHexDigit(value: string): boolean {
     (value >= '0' && value <= '9') ||
     (value >= 'A' && value <= 'F') ||
     (value >= 'a' && value <= 'f')
-  );
+  )
 }
 
 function isWhiteSpace(char: string): boolean {
@@ -51,236 +51,236 @@ function isWhiteSpace(char: string): boolean {
     case '\r':
     case '\t':
     case '\n':
-      return true;
+      return true
 
     default:
-      return false;
+      return false
   }
 }
 
 class ScanError extends Error {
-  public message: string;
-  public loc: TextLocation;
+  public message: string
+  public loc: TextLocation
   constructor(msg: string, loc: TextLocation) {
-    super(msg);
-    this.message = msg;
-    this.loc = loc;
+    super(msg)
+    this.message = msg
+    this.loc = loc
   }
 }
 
 export interface Scanner {
-  scan(): Array<Token>;
-  syncronize(): void;
+  scan(): Array<Token>
+  syncronize(): void
 }
 
 export function createScanner(src: string, report: ErrorReporter = noopReporter) {
-  const source: string = src;
-  const tokens: Array<Token> = [];
-  var line: number = 1;
-  var column: number = 1;
-  var startLine: number = 1;
-  var startColumn: number = 1;
-  var startIndex: number = 0;
-  var currentIndex: number = 0;
+  const source: string = src
+  const tokens: Array<Token> = []
+  let line: number = 1
+  let column: number = 1
+  let startLine: number = 1
+  let startColumn: number = 1
+  let startIndex: number = 0
+  let currentIndex: number = 0
 
   function scan(): Array<Token> {
     while (!isAtEnd()) {
       try {
-        startIndex = currentIndex;
-        startLine = line;
-        startColumn = column;
-        scanToken();
+        startIndex = currentIndex
+        startLine = line
+        startColumn = column
+        scanToken()
       } catch (e) {
-        report(createScanError(e.message, e.loc));
+        report(createScanError(e.message, e.loc))
       }
     }
 
-    startIndex = currentIndex;
-    addToken(SyntaxType.EOF);
+    startIndex = currentIndex
+    addToken(SyntaxType.EOF)
 
-    return tokens;
+    return tokens
   }
 
   // Find the beginning of the next word to restart parse after error
   function syncronize(): void {
     while (!isAtEnd() && !isWhiteSpace(current())) {
-      advance();
+      advance()
     }
   }
 
   function scanToken(): void {
-    const next = advance();
+    const next = advance()
     switch (next) {
       case ' ':
       case '\r':
       case '\t':
         // Ignore whitespace.
-        break;
+        break
 
       case '\n':
-        nextLine();
-        break;
+        nextLine()
+        break
 
       case '&':
         // Thirft supports (undocumented by the grammar) a syntax for c-style pointers
         // Pointers are indicated by the '&' token. As these are not relevant to JavaScript we
         // drop them here. This may not be the best thing to do, perhaps should leave them in
         // the parse tree and allow consumers to deal.
-        break;
+        break
 
       case '=':
-        addToken(SyntaxType.EqualToken);
-        break;
+        addToken(SyntaxType.EqualToken)
+        break
 
       case '(':
-        addToken(SyntaxType.LeftParenToken);
-        break;
+        addToken(SyntaxType.LeftParenToken)
+        break
 
       case ')':
-        addToken(SyntaxType.RightParenToken);
-        break;
+        addToken(SyntaxType.RightParenToken)
+        break
 
       case '{':
-        addToken(SyntaxType.LeftBraceToken);
-        break;
+        addToken(SyntaxType.LeftBraceToken)
+        break
 
       case '}':
-        addToken(SyntaxType.RightBraceToken);
-        break;
+        addToken(SyntaxType.RightBraceToken)
+        break
 
       case '[':
-        addToken(SyntaxType.LeftBracketToken);
-        break;
+        addToken(SyntaxType.LeftBracketToken)
+        break
 
       case ']':
-        addToken(SyntaxType.RightBracketToken);
-        break;
+        addToken(SyntaxType.RightBracketToken)
+        break
 
       case ';':
-        addToken(SyntaxType.SemicolonToken);
-        break;
+        addToken(SyntaxType.SemicolonToken)
+        break
 
       case ',':
-        addToken(SyntaxType.CommaToken);
-        break;
+        addToken(SyntaxType.CommaToken)
+        break
 
       // Strings can use single or double quotes
       case '"':
       case '\'':
-        string();
-        break;
+        string()
+        break
 
       case ':':
-        addToken(SyntaxType.ColonToken);
-        break;
+        addToken(SyntaxType.ColonToken)
+        break
 
       case '#':
-        singleLineComment();
-        break;
+        singleLineComment()
+        break
 
       case '/':
         if (peek() === '/') {
-          singleLineComment();
+          singleLineComment()
         }
         else if (peek() === '*') {
-          multilineComment();
+          multilineComment()
         }
         else {
-          reportError(`Unexpected token: ${next}`);
+          reportError(`Unexpected token: ${next}`)
         }
-        break;
+        break
 
       case '<':
-        addToken(SyntaxType.LessThanToken);
-        break;
+        addToken(SyntaxType.LessThanToken)
+        break
 
       case '>':
-        addToken(SyntaxType.GreaterThanToken);
-        break;
+        addToken(SyntaxType.GreaterThanToken)
+        break
 
       case '-':
-        addToken(SyntaxType.MinusToken);
-        break;
+        addToken(SyntaxType.MinusToken)
+        break
 
       default:
         if (isDigit(next)) {
-          number();
+          number()
         }
         else if (isAlphaOrUnderscore(next)) {
-          identifier();
+          identifier()
         }
         else if (isValidIdentifier(next)) {
-          reportError(`Invalid identifier '${next}': Identifiers must begin with a letter or underscore`);
+          reportError(`Invalid identifier '${next}': Identifiers must begin with a letter or underscore`)
         }
         else {
-          reportError(`Unexpected token: ${next}`);
+          reportError(`Unexpected token: ${next}`)
         }
     }
   }
 
   function identifier(): void {
     while (!isAtEnd() && peek() !== '\n' && isValidIdentifier(peek())) {
-      advance();
+      advance()
     }
 
-    const literal: string = source.substring(startIndex, currentIndex);
-    const type: SyntaxType = KEYWORDS[literal];
+    const literal: string = source.substring(startIndex, currentIndex)
+    const type: SyntaxType = KEYWORDS[literal]
 
     if (type == null) {
-      addToken(SyntaxType.Identifier, literal);
+      addToken(SyntaxType.Identifier, literal)
     }
     else {
-      addToken(type, literal);
+      addToken(type, literal)
     }
   }
 
   function number(): void {
     if (current() === '0' && (consume('x') || consume('X'))) {
-      hexadecimal();
+      hexadecimal()
     } else {
-      integer();
+      integer()
 
       if (peek() === 'e' || peek() === 'E') {
-        enotation();
+        enotation()
       } else if (peek() === '.' && isDigit(peekNext())) {
-        float();
+        float()
       } else {
-        commitToken(SyntaxType.IntegerLiteral);
+        commitToken(SyntaxType.IntegerLiteral)
       }
     }
   }
 
   function hexadecimal(): void {
-    while(
+    while (
       !isAtEnd() &&
       peek() !== '\n' &&
       isHexDigit(peek())
     ) {
-      advance();
+      advance()
     }
 
-    commitToken(SyntaxType.HexLiteral);
+    commitToken(SyntaxType.HexLiteral)
   }
 
   function enotation(): void {
-    consume('e') || consume('E');
-    consume('-') || consume('+');
+    consume('e') || consume('E')
+    consume('-') || consume('+')
     if (isDigit(peek())) {
-      integer();
-      commitToken(SyntaxType.ExponentialLiteral);
+      integer()
+      commitToken(SyntaxType.ExponentialLiteral)
     } else {
-      reportError(`Invalid use of e-notation`);
+      reportError(`Invalid use of e-notation`)
     }
   }
 
   function float(): void {
-    consume('.');
-    integer();
+    consume('.')
+    integer()
 
     if (peek() === 'e' || peek() === 'E') {
-      enotation();
+      enotation()
     } else {
-      commitToken(SyntaxType.FloatLiteral);
+      commitToken(SyntaxType.FloatLiteral)
     }
   }
 
@@ -290,40 +290,40 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
       peek() !== '\n' &&
       (isDigit(peek()))
     ) {
-      advance();
+      advance()
     }
   }
 
   function singleLineComment(): void {
-    var comment: string = '';
+    let comment: string = ''
 
     if (current() === '#') {
-      advance();
+      advance()
     } else {
-      advance();
-      advance();
+      advance()
+      advance()
     }
 
     // A comment goes until the end of the line.
     while (peek() !== '\n' && !isAtEnd()) {
-      comment += current();
-      advance();
+      comment += current()
+      advance()
     }
 
-    comment += current();
+    comment += current()
 
-    addToken(SyntaxType.CommentLine, comment.trim());
+    addToken(SyntaxType.CommentLine, comment.trim())
   }
 
   function multilineComment(): void {
-    var comment: string = '';
-    var cursor: number = 0;
-    advance();
-    advance();
+    let comment: string = ''
+    let cursor: number = 0
+    advance()
+    advance()
 
     while (true) {
       if (peek() === '\n') {
-        nextLine();
+        nextLine()
       }
 
       if (
@@ -335,21 +335,21 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
          * We're only keeping the text of the comment without the extranious formatting.
          */
       } else {
-        comment += current();
-        cursor += 1;
+        comment += current()
+        cursor += 1
       }
 
-      advance();
+      advance()
 
       // A comment goes until we find a comment terminator (*/).
       if ((peek() === '*' && peekNext() === '/') || isAtEnd()) {
-        advance();
-        advance();
-        break;
+        advance()
+        advance()
+        break
       }
     }
 
-    addToken(SyntaxType.CommentBlock, comment.trim());
+    addToken(SyntaxType.CommentBlock, comment.trim())
   }
 
   function string(): void {
@@ -359,63 +359,63 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
       peek() !== '\''
     ) {
       if (peek() === '\n') {
-        nextLine();
+        nextLine()
       }
 
-      advance();
+      advance()
     }
 
     if (isAtEnd() && previous() !== '"') {
-      reportError(`Strings must be terminated with '"'`);
+      reportError(`Strings must be terminated with '"'`)
     }
     else {
       // advance past closing "
-      advance();
+      advance()
       // We use "+ 1" and "- 1" to remove the quote markes from the string
-      const literal: string = source.substring(startIndex + 1, currentIndex - 1);
-      addToken(SyntaxType.StringLiteral, literal);
+      const literal: string = source.substring(startIndex + 1, currentIndex - 1)
+      addToken(SyntaxType.StringLiteral, literal)
     }
   }
 
   function consume(text: string): boolean {
     if (peek() === text) {
-      advance();
-      return true;
+      advance()
+      return true
     }
 
-    return false;
+    return false
   }
 
   function advance(): string {
-    currentIndex++;
-    column++;
-    return source.charAt(currentIndex - 1);
+    currentIndex++
+    column++
+    return source.charAt(currentIndex - 1)
   }
 
   function previous(): string {
-    return source.charAt(currentIndex - 2);
+    return source.charAt(currentIndex - 2)
   }
 
   function current(): string {
-    return source.charAt(currentIndex - 1);
+    return source.charAt(currentIndex - 1)
   }
 
   function peek(): string {
-    return source.charAt(currentIndex);
+    return source.charAt(currentIndex)
   }
 
   function peekNext(): string {
-    return source.charAt(currentIndex + 1);
+    return source.charAt(currentIndex + 1)
   }
 
   function nextLine() {
-    line++;
-    column = 1;
+    line++
+    column = 1
   }
 
   function commitToken(type: SyntaxType): void {
-    const literal: string = source.substring(startIndex, currentIndex);
-    addToken(type, literal);
+    const literal: string = source.substring(startIndex, currentIndex)
+    addToken(type, literal)
   }
 
   function currentLocation(): TextLocation {
@@ -423,31 +423,31 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
       start: {
         line: startLine,
         column: startColumn,
-        index: startIndex
+        index: startIndex,
       },
       end: {
-        line: line,
-        column: column,
-        index: currentIndex
-      }
+        line,
+        column,
+        index: currentIndex,
+      },
     }
   }
 
   function addToken(type: SyntaxType, value: string = ''): void {
-    const loc: TextLocation = currentLocation();
-    tokens.push(createToken(type, value, loc));
+    const loc: TextLocation = currentLocation()
+    tokens.push(createToken(type, value, loc))
   }
 
   function isAtEnd(): boolean {
-    return currentIndex >= source.length;
+    return currentIndex >= source.length
   }
 
   function reportError(msg: string): void {
-    throw new ScanError(msg, currentLocation());
+    throw new ScanError(msg, currentLocation())
   }
 
   return {
     scan,
-    syncronize
-  };
+    syncronize,
+  }
 }
