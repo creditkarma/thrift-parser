@@ -1,3 +1,4 @@
+import * as os from 'os'
 import { ErrorType, TextLocation, ThriftError } from './types'
 
 export type ErrorReporter = (err: ThriftError) => void
@@ -6,6 +7,7 @@ export interface Debugger {
   report: ErrorReporter
   hasError(): boolean
   getErrors(): Array<ThriftError>
+  getFormattedErrors(): Array<FormattedError>
   print(): void
 }
 
@@ -22,30 +24,6 @@ export function noopReporter(err: ThriftError): void {
   throw new Error(`${err.type}: Line: ${err.loc.start.line}: ${err.message}`)
 }
 
-export function getSourceLine(line: number, source: string): string {
-  let currentIndex: number = 0
-  let currentLine: number = 1
-  let currentText: string = ''
-
-  while (currentLine <= line) {
-    if (currentIndex < source.length) {
-      const nextChar: string = source.charAt(currentIndex++)
-      if (nextChar === '\n') {
-        currentLine++
-        if (currentLine <= line) {
-          currentText = ''
-        }
-      } else {
-        currentText += nextChar
-      }
-    } else {
-      return null
-    }
-  }
-
-  return currentText
-}
-
 function padLeft(num: number, str: string): string {
   while (str.length < num) {
     str = ' ' + str
@@ -56,17 +34,6 @@ function padLeft(num: number, str: string): string {
 function indicatorForLocaction(loc: TextLocation): string {
   const indicator: string = padLeft(loc.start.column, '^')
   return indicator
-}
-
-export function formatError(err: ThriftError, source: string): FormattedError {
-  return {
-    sourceLine: getSourceLine(err.loc.start.line, source),
-    locIndicator: indicatorForLocaction(err.loc),
-    line: err.loc.start.line,
-    column: err.loc.start.column,
-    message: err.message,
-    type: err.type,
-  }
 }
 
 function padStart(length: number, str: string): string {
@@ -89,8 +56,24 @@ function errorType(type: ErrorType): string {
 }
 
 export function createDebugger(source: string): Debugger {
+  const sourceLines: Array<string> = source.split(os.EOL)
   const formattedErrors: Array<FormattedError> = []
   const rawErrors: Array<ThriftError> = []
+
+  function getSourceLine(lineNumber: number): string {
+    return sourceLines[(lineNumber - 1)]
+  }
+
+  function formatError(err: ThriftError): FormattedError {
+    return {
+      sourceLine: getSourceLine(err.loc.start.line),
+      locIndicator: indicatorForLocaction(err.loc),
+      line: err.loc.start.line,
+      column: err.loc.start.column,
+      message: err.message,
+      type: err.type,
+    }
+  }
 
   return {
     hasError(): boolean {
@@ -101,9 +84,14 @@ export function createDebugger(source: string): Debugger {
       return rawErrors
     },
 
+    getFormattedErrors(): Array<FormattedError> {
+      return formattedErrors
+    },
+
     report(err: ThriftError): void {
-      const formattedError: FormattedError = formatError(err, source)
+      const formattedError: FormattedError = formatError(err)
       formattedErrors.push(formattedError)
+      rawErrors.push(err)
     },
 
     print(): void {
