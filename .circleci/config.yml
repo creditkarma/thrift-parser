@@ -26,6 +26,8 @@ jobs:
     docker:
       - image: circleci/node:6.10.3
     steps:
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: publish-npm
           command: npm publish
