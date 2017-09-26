@@ -2,9 +2,9 @@
   "name": "@creditkarma/thrift-parser",
   "version": "0.0.10",
   "description": "A parser for Thrift written in TypeScript",
-  "main": "./dist/index.js",
+  "main": "./dist/main/index.js",
   "bin": {
-    "thrift-parser": "./dist/src/main/bin/index.js"
+    "thrift-parser": "./dist/main/bin/index.js"
   },
   "types": "./dist/index.d.ts",
   "keywords": [

@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -21,7 +22,7 @@
     ]
   },
   "files": [
-    "./index.ts",
+    "./src/main/index.ts",
     "./src/main/bin/index.ts"
   ],
   "exclude": [
