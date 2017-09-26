@@ -33,6 +33,9 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ./
+      - filters:
+          tags:
+            only: /(v)?[0-9]+(\.[0-9]+)*/
       - run:
           name: npm-token
           command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
@@ -48,6 +51,3 @@ workflows:
         - publish:
             requires:
               - build
-            filters:
-              tags:
-                only: /(v)?[0-9]+(\.[0-9]+)*/
