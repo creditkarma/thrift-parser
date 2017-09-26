@@ -12,8 +12,11 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: install-npm-wee
+          name: install-npm
           command: npm install
+      - run:
+          name: build
+          command: npm run build
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
@@ -23,9 +26,10 @@ jobs:
           root: ./
           # Must be relative path from root
           paths:
-            - dist/*
+            - dist
             - LICENSE
             - package.json
+            - README.md
 
   publish:
     <<: *defaults
