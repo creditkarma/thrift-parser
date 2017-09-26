@@ -12,9 +12,6 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: install-npm
-          command: npm install
-      - run:
           name: build
           command: npm run build
       - persist_to_workspace:
