@@ -6,6 +6,7 @@ defaults: &defaults
 version: 2
 jobs:
   build:
+    <<: *defaults
     steps:
       - checkout
       - restore_cache:
@@ -22,12 +23,14 @@ jobs:
           root: ./
 
   npm_token:
+    <<: *defaults
     steps:
       - run:
           name: npm-token
           command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
 
   publish:
+    <<: *defaults
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
