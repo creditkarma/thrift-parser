@@ -34,14 +34,9 @@ jobs:
   test:
     <<: *defaults
     steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: ./
+      - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: ./
       - run:
           name: npm-test
           command: npm test
