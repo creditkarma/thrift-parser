@@ -29,9 +29,6 @@ jobs:
 
   publish:
     <<: *defaults
-    filters:
-        tags:
-          only: /(v)?[0-9]+(\.[0-9]+)*/
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
@@ -51,3 +48,6 @@ workflows:
         - publish:
             requires:
               - build
+            filters:
+              tags:
+                only: /(v)?[0-9]+(\.[0-9]+)*/
