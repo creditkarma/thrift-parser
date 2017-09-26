@@ -23,9 +23,9 @@ jobs:
           root: ./
           # Must be relative path from root
           paths:
-            - ./dist
-            - ./LICENSE
-            - ./package.json
+            - dist/*
+            - LICENSE
+            - package.json
 
   publish:
     <<: *defaults
