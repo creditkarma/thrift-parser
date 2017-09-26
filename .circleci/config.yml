@@ -1,9 +1,11 @@
+defaults: &defaults
+  working_directory: ~/thrift-parser
+  docker:
+    - image: circleci/node:6.10.3
+
 version: 2
 jobs:
   build:
-    working_directory: ~/thrift-parser
-    docker:
-      - image: circleci/node:6.10.3
     steps:
       - checkout
       - restore_cache:
@@ -15,20 +17,21 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: ./
+
   npm_token:
-    docker:
-      - image: circleci/node:6.10.3
     steps:
       - run:
           name: npm-token
           command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
+
   publish:
-    docker:
-      - image: circleci/node:6.10.3
     steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ./
       - run:
           name: publish-npm
           command: npm publish
