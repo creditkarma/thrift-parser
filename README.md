@@ -85,3 +85,12 @@ $ npm start
 By default this will start ASTExplorer on localhost:8080
 
 There is a dropdown to select the language you want to use, choose 'Thrift IDL'
+
+## Contributing
+
+For more information about contributing new features and bug fixes, see our [Contribution Guidelines](https://github.com/creditkarma/CONTRIBUTING.md).
+External contributors must sign Contributor License Agreement (CLA)
+
+## License
+
+This project is licensed under [Apache License Version 2.0](./LICENSE)

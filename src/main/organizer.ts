@@ -1,75 +1,73 @@
 import {
-  ThriftDocument,
-  ThriftStatement,
-  NamespaceDefinition,
-  IncludeDefinition,
   ConstDefinition,
   EnumDefinition,
-  StructDefinition,
-  UnionDefinition,
   ExceptionDefinition,
-  TypedefDefinition,
+  IncludeDefinition,
+  NamespaceDefinition,
   ServiceDefinition,
-  SyntaxType
-} from './types';
+  StructDefinition,
+  SyntaxType,
+  ThriftDocument,
+  TypedefDefinition,
+  UnionDefinition,
+} from './types'
 
 export function organize(raw: ThriftDocument): ThriftDocument {
-  const namespaces: Array<NamespaceDefinition> = [];
-  const includes: Array<IncludeDefinition> = [];
-  const constants: Array<ConstDefinition> = [];
-  const enums: Array<EnumDefinition> = [];
-  const typedefs: Array<TypedefDefinition> = [];
-  const structs: Array<StructDefinition> = [];
-  const unions: Array<UnionDefinition> = [];
-  const exceptions: Array<ExceptionDefinition> = [];
-  const services: Array<ServiceDefinition> = [];
+  const namespaces: Array<NamespaceDefinition> = []
+  const includes: Array<IncludeDefinition> = []
+  const constants: Array<ConstDefinition> = []
+  const enums: Array<EnumDefinition> = []
+  const typedefs: Array<TypedefDefinition> = []
+  const structs: Array<StructDefinition> = []
+  const unions: Array<UnionDefinition> = []
+  const exceptions: Array<ExceptionDefinition> = []
+  const services: Array<ServiceDefinition> = []
 
-  for (let i = 0; i < raw.body.length; i++) {
-    const next: ThriftStatement = raw.body[i];
-    switch(next.type) {
+  for (const next of raw.body) {
+    switch (next.type) {
       case SyntaxType.NamespaceDefinition:
-        namespaces.push(next);
-        break;
+        namespaces.push(next)
+        break
 
       case SyntaxType.IncludeDefinition:
-        includes.push(next);
-        break;
+        includes.push(next)
+        break
 
       case SyntaxType.CppIncludeDefinition:
         // We're not generating C++
-        break;
+        break
 
       case SyntaxType.ConstDefinition:
-        constants.push(next);
-        break;
+        constants.push(next)
+        break
 
       case SyntaxType.EnumDefinition:
-        enums.push(next);
-        break;
+        enums.push(next)
+        break
 
       case SyntaxType.StructDefinition:
-        structs.push(next);
-        break;
+        structs.push(next)
+        break
 
       case SyntaxType.UnionDefinition:
-        unions.push(next);
-        break;
+        unions.push(next)
+        break
 
       case SyntaxType.ExceptionDefinition:
-        exceptions.push(next);
-        break;
+        exceptions.push(next)
+        break
 
       case SyntaxType.TypedefDefinition:
-        typedefs.push(next);
-        break;
+        typedefs.push(next)
+        break
 
       case SyntaxType.ServiceDefinition:
-        services.push(next);
-        break;
+        services.push(next)
+        break
 
       default:
-        const msg: never = next;
-        throw new Error(`Unexpected statement type found: ${msg}`);
+        const msg: never = next
+        throw new Error(`Unexpected statement type found: ${msg}`)
     }
   }
 
@@ -86,6 +84,6 @@ export function organize(raw: ThriftDocument): ThriftDocument {
       ...exceptions,
       ...services,
     ],
-    tokens: raw.tokens
-  };
+    tokens: raw.tokens,
+  }
 }

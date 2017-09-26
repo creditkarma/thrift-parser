@@ -1,31 +1,31 @@
+import { assert } from 'chai'
 import * as fs from 'fs'
-import { assert } from 'chai';
-import { createScanner, Scanner } from '../main/scanner';
-import { createParser, Parser } from '../main/parser';
-import { Token, SyntaxType, ThriftDocument } from '../main/types';
-import { createIdentifier } from '../main/factory';
+import { createIdentifier } from '../main/factory'
+import { createParser, Parser } from '../main/parser'
+import { createScanner, Scanner } from '../main/scanner'
+import { SyntaxType, ThriftDocument, Token } from '../main/types'
 
 describe('Parser', () => {
   it('should parse complex.thrift', () => {
-    const content: string = fs.readFileSync('./fixtures/complex.thrift', 'utf-8');
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const content: string = fs.readFileSync('./fixtures/complex.thrift', 'utf-8')
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     // This AST is large, but it contains 38 statements
     assert.deepEqual(thrift.body.length, 38)
-  });
+  })
 
   it('should correctly parse the syntax of a const', () => {
     const content: string = `
       const map<string,string> MAP_CONST = {'hello': 'world', 'foo': 'bar' }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -39,14 +39,14 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 32,
-                index: 32
+                index: 32,
               },
               end: {
                 line: 2,
                 column: 41,
-                index: 41
-              }
-            }
+                index: 41,
+              },
+            },
           },
           fieldType: {
             type: SyntaxType.MapType,
@@ -56,14 +56,14 @@ describe('Parser', () => {
                 start: {
                   line: 2,
                   column: 17,
-                  index: 17
+                  index: 17,
                 },
                 end: {
                   line: 2,
                   column: 23,
-                  index: 23
-                }
-              }
+                  index: 23,
+                },
+              },
             },
             valueType: {
               type: SyntaxType.StringKeyword,
@@ -71,27 +71,27 @@ describe('Parser', () => {
                 start: {
                   line: 2,
                   column: 24,
-                  index: 24
+                  index: 24,
                 },
                 end: {
                   line: 2,
                   column: 30,
-                  index: 30
-                }
-              }
+                  index: 30,
+                },
+              },
             },
             loc: {
               start: {
                 line: 2,
                 column: 16,
-                index: 16
+                index: 16,
               },
               end: {
                 line: 2,
                 column: 31,
-                index: 31
-              }
-            }
+                index: 31,
+              },
+            },
           },
           initializer: {
             type: SyntaxType.ConstMap,
@@ -105,14 +105,14 @@ describe('Parser', () => {
                     start: {
                       line: 2,
                       column: 45,
-                      index: 45
+                      index: 45,
                     },
                     end: {
                       line: 2,
                       column: 52,
-                      index: 52
-                    }
-                  }
+                      index: 52,
+                    },
+                  },
                 },
                 initializer: {
                   type: SyntaxType.StringLiteral,
@@ -121,27 +121,27 @@ describe('Parser', () => {
                     start: {
                       line: 2,
                       column: 54,
-                      index: 54
+                      index: 54,
                     },
                     end: {
                       line: 2,
                       column: 61,
-                      index: 61
-                    }
-                  }
+                      index: 61,
+                    },
+                  },
                 },
                 loc: {
                   start: {
                     line: 2,
                     column: 45,
-                    index: 45
+                    index: 45,
                   },
                   end: {
                     line: 2,
                     column: 61,
-                    index: 61
-                  }
-                }
+                    index: 61,
+                  },
+                },
               },
               {
                 type: SyntaxType.PropertyAssignment,
@@ -152,14 +152,14 @@ describe('Parser', () => {
                     start: {
                       line: 2,
                       column: 63,
-                      index: 63
+                      index: 63,
                     },
                     end: {
                       line: 2,
                       column: 68,
-                      index: 68
-                    }
-                  }
+                      index: 68,
+                    },
+                  },
                 },
                 initializer: {
                   type: SyntaxType.StringLiteral,
@@ -168,71 +168,71 @@ describe('Parser', () => {
                     start: {
                       line: 2,
                       column: 70,
-                      index: 70
+                      index: 70,
                     },
                     end: {
                       line: 2,
                       column: 75,
-                      index: 75
-                    }
-                  }
+                      index: 75,
+                    },
+                  },
                 },
                 loc: {
                   start: {
                     line: 2,
                     column: 63,
-                    index: 63
+                    index: 63,
                   },
                   end: {
                     line: 2,
                     column: 75,
-                    index: 75
-                  }
-                }
-              }
+                    index: 75,
+                  },
+                },
+              },
             ],
             loc: {
               start: {
                 line: 2,
                 column: 45,
-                index: 45
+                index: 45,
               },
               end: {
                 line: 2,
                 column: 77,
-                index: 77
-              }
-            }
+                index: 77,
+              },
+            },
           },
           comments: [],
           loc: {
             start: {
               line: 2,
               column: 7,
-              index: 7
+              index: 7,
             },
             end: {
               line: 2,
               column: 77,
-              index: 77
-            }
-          }
-        }
-      ]
-    };
+              index: 77,
+            },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a typedef definition', () => {
     const content: string = `
       typedef string name
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -241,36 +241,36 @@ describe('Parser', () => {
           type: SyntaxType.TypedefDefinition,
           name: createIdentifier('name', {
             start: { line: 2, column: 22, index: 22 },
-            end: { line: 2, column: 26, index: 26 }
+            end: { line: 2, column: 26, index: 26 },
           }),
           definitionType: {
             type: SyntaxType.StringKeyword,
             loc: {
               start: { line: 2, column: 15, index: 15 },
-              end: { line: 2, column: 21, index: 21 }
-            }
+              end: { line: 2, column: 21, index: 21 },
+            },
           },
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 2, column: 26, index: 26 }
-          }
-        }
-      ]
-    };
+            end: { line: 2, column: 26, index: 26 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse a typedef that references an identifier', () => {
     const content: string = `
       typedef MyStruct name
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -279,33 +279,33 @@ describe('Parser', () => {
           type: SyntaxType.TypedefDefinition,
           name: createIdentifier('name', {
             start: { line: 2, column: 24, index: 24 },
-            end: { line: 2, column: 28, index: 28 }
+            end: { line: 2, column: 28, index: 28 },
           }),
           definitionType: createIdentifier('MyStruct', {
             start: { line: 2, column: 15, index: 15 },
-            end: { line: 2, column: 23, index: 23 }
+            end: { line: 2, column: 23, index: 23 },
           }),
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 2, column: 28, index: 28 }
-          }
-        }
-      ]
+            end: { line: 2, column: 28, index: 28 },
+          },
+        },
+      ],
     }
 
     assert.deepEqual(thrift, expected)
-  });
+  })
 
   it('should correctly parse inline block comments', () => {
     const content: string = `
       typedef /* string is name */ string name
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -314,55 +314,55 @@ describe('Parser', () => {
           type: SyntaxType.TypedefDefinition,
           name: createIdentifier('name', {
             start: { line: 2, column: 43, index: 43 },
-            end: { line: 2, column: 47, index: 47 }
+            end: { line: 2, column: 47, index: 47 },
           }),
           definitionType: {
             type: SyntaxType.StringKeyword,
             loc: {
               start: { line: 2, column: 36, index: 36 },
-              end: { line: 2, column: 42, index: 42 }
-            }
+              end: { line: 2, column: 42, index: 42 },
+            },
           },
           comments: [
             {
               type: SyntaxType.CommentBlock,
               value: [
-                'string is name'
+                'string is name',
               ],
               loc: {
                 start: {
                   line: 2,
                   column: 15,
-                  index: 15
+                  index: 15,
                 },
                 end: {
                   line: 2,
                   column: 35,
-                  index: 35
-                }
-              }
-            }
+                  index: 35,
+                },
+              },
+            },
           ],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 2, column: 47, index: 47 }
-          }
-        }
-      ]
-    };
+            end: { line: 2, column: 47, index: 47 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of an include', () => {
     const content: string = `
       include 'test'
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -376,45 +376,45 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 15,
-                index: 15
+                index: 15,
               },
               end: {
                 line: 2,
                 column: 21,
-                index: 21
-              }
-            }
+                index: 21,
+              },
+            },
           },
           comments: [],
           loc: {
             start: {
               line: 2,
               column: 7,
-              index: 7
+              index: 7,
             },
             end: {
               line: 2,
               column: 21,
-              index: 21
-            }
-          }
-        }
-      ]
-    };
+              index: 21,
+            },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a namespace definition', () => {
     const content: string = `
       namespace js test
       namespace js.ts test
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -428,14 +428,14 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 20,
-                index: 20
+                index: 20,
               },
               end: {
                 line: 2,
                 column: 24,
-                index: 24
-              }
-            }
+                index: 24,
+              },
+            },
           },
           scope: {
             type: SyntaxType.Identifier,
@@ -444,28 +444,28 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 17,
-                index: 17
+                index: 17,
               },
               end: {
                 line: 2,
                 column: 19,
-                index: 19
-              }
-            }
+                index: 19,
+              },
+            },
           },
           comments: [],
           loc: {
             start: {
               line: 2,
               column: 7,
-              index: 7
+              index: 7,
             },
             end: {
               line: 2,
               column: 24,
-              index: 24
-            }
-          }
+              index: 24,
+            },
+          },
         },
         {
           type: SyntaxType.NamespaceDefinition,
@@ -476,14 +476,14 @@ describe('Parser', () => {
               start: {
                 line: 3,
                 column: 23,
-                index: 47
+                index: 47,
               },
               end: {
                 line: 3,
                 column: 27,
-                index: 51
-              }
-            }
+                index: 51,
+              },
+            },
           },
           scope: {
             type: SyntaxType.Identifier,
@@ -492,34 +492,34 @@ describe('Parser', () => {
               start: {
                 line: 3,
                 column: 17,
-                index: 41
+                index: 41,
               },
               end: {
                 line: 3,
                 column: 22,
-                index: 46
-              }
-            }
+                index: 46,
+              },
+            },
           },
           comments: [],
           loc: {
             start: {
               line: 3,
               column: 7,
-              index: 31
+              index: 31,
             },
             end: {
               line: 3,
               column: 27,
-              index: 51
-            }
-          }
-        }
-      ]
-    };
+              index: 51,
+            },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a struct', () => {
     const content: string = `
@@ -529,12 +529,12 @@ describe('Parser', () => {
         3: optional double field3
         4: required string field4
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -546,8 +546,8 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 14, index: 14 },
-              end: { line: 2, column: 18, index: 18 }
-            }
+              end: { line: 2, column: 18, index: 18 },
+            },
           },
           fields: [
             {
@@ -557,31 +557,31 @@ describe('Parser', () => {
                 value: 'field1',
                 loc: {
                   start: { line: 3, column: 25, index: 45 },
-                  end: { line: 3, column: 31, index: 51 }
-                }
+                  end: { line: 3, column: 31, index: 51 },
+                },
               },
               fieldID: {
                 type: SyntaxType.FieldID,
                 value: 1,
                 loc: {
                   start: { line: 3, column: 9, index: 29 },
-                  end: { line: 3, column: 11, index: 31 }
-                }
+                  end: { line: 3, column: 11, index: 31 },
+                },
               },
               fieldType: {
                 type: SyntaxType.I32Keyword,
                 loc: {
                   start: { line: 3, column: 21, index: 41 },
-                  end: { line: 3, column: 24, index: 44 }
-                }
+                  end: { line: 3, column: 24, index: 44 },
+                },
               },
               requiredness: 'required',
               defaultValue: null,
               comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 29 },
-                end: { line: 3, column: 31, index: 51 }
-              }
+                end: { line: 3, column: 31, index: 51 },
+              },
             },
             {
               type: SyntaxType.FieldDefinition,
@@ -590,31 +590,31 @@ describe('Parser', () => {
                 value: 'field2',
                 loc: {
                   start: { line: 4, column: 25, index: 76 },
-                  end: { line: 4, column: 31, index: 82 }
-                }
+                  end: { line: 4, column: 31, index: 82 },
+                },
               },
               fieldID: {
                 type: SyntaxType.FieldID,
                 value: 2,
                 loc: {
                   start: { line: 4, column: 9, index: 60 },
-                  end: { line: 4, column: 11, index: 62 }
-                }
+                  end: { line: 4, column: 11, index: 62 },
+                },
               },
               fieldType: {
                 type: SyntaxType.I64Keyword,
                 loc: {
                   start: { line: 4, column: 21, index: 72 },
-                  end: { line: 4, column: 24, index: 75 }
-                }
+                  end: { line: 4, column: 24, index: 75 },
+                },
               },
               requiredness: 'required',
               defaultValue: null,
               comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 60 },
-                end: { line: 4, column: 31, index: 82 }
-              }
+                end: { line: 4, column: 31, index: 82 },
+              },
             },
             {
               type: SyntaxType.FieldDefinition,
@@ -623,31 +623,31 @@ describe('Parser', () => {
                 value: 'field3',
                 loc: {
                   start: { line: 5, column: 28, index: 110 },
-                  end: { line: 5, column: 34, index: 116 }
-                }
+                  end: { line: 5, column: 34, index: 116 },
+                },
               },
               fieldID: {
                 type: SyntaxType.FieldID,
                 value: 3,
                 loc: {
                   start: { line: 5, column: 9, index: 91 },
-                  end: { line: 5, column: 11, index: 93 }
-                }
+                  end: { line: 5, column: 11, index: 93 },
+                },
               },
               fieldType: {
                 type: SyntaxType.DoubleKeyword,
                 loc: {
                   start: { line: 5, column: 21, index: 103 },
-                  end: { line: 5, column: 27, index: 109 }
-                }
+                  end: { line: 5, column: 27, index: 109 },
+                },
               },
               requiredness: 'optional',
               defaultValue: null,
               comments: [],
               loc: {
                 start: { line: 5, column: 9, index: 91 },
-                end: { line: 5, column: 34, index: 116 }
-              }
+                end: { line: 5, column: 34, index: 116 },
+              },
             },
             {
               type: SyntaxType.FieldDefinition,
@@ -656,56 +656,56 @@ describe('Parser', () => {
                 value: 'field4',
                 loc: {
                   start: { line: 6, column: 28, index: 144 },
-                  end: { line: 6, column: 34, index: 150 }
-                }
+                  end: { line: 6, column: 34, index: 150 },
+                },
               },
               fieldID: {
                 type: SyntaxType.FieldID,
                 value: 4,
                 loc: {
                   start: { line: 6, column: 9, index: 125 },
-                  end: { line: 6, column: 11, index: 127 }
-                }
+                  end: { line: 6, column: 11, index: 127 },
+                },
               },
               fieldType: {
                 type: SyntaxType.StringKeyword,
                 loc: {
                   start: { line: 6, column: 21, index: 137 },
-                  end: { line: 6, column: 27, index: 143 }
-                }
+                  end: { line: 6, column: 27, index: 143 },
+                },
               },
               requiredness: 'required',
               defaultValue: null,
               comments: [],
               loc: {
                 start: { line: 6, column: 9, index: 125 },
-                end: { line: 6, column: 34, index: 150 }
-              }
-            }
+                end: { line: 6, column: 34, index: 150 },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 7, column: 8, index: 158 }
-          }
-        }
-      ]
-    };
+            end: { line: 7, column: 8, index: 158 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of an exception', () => {
     const content: string = `
       exception Test {
         1: required string message;
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -717,8 +717,8 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 17, index: 17 },
-              end: { line: 2, column: 21, index: 21 }
-            }
+              end: { line: 2, column: 21, index: 21 },
+            },
           },
           fields: [
             {
@@ -728,44 +728,44 @@ describe('Parser', () => {
                 value: 'message',
                 loc: {
                   start: { line: 3, column: 28, index: 51 },
-                  end: { line: 3, column: 35, index: 58 }
-                }
+                  end: { line: 3, column: 35, index: 58 },
+                },
               },
               fieldID: {
                 type: SyntaxType.FieldID,
                 value: 1,
                 loc: {
                   start: { line: 3, column: 9, index: 32 },
-                  end: { line: 3, column: 11, index: 34 }
-                }
+                  end: { line: 3, column: 11, index: 34 },
+                },
               },
               fieldType: {
                 type: SyntaxType.StringKeyword,
                 loc: {
                   start: { line: 3, column: 21, index: 44 },
-                  end: { line: 3, column: 27, index: 50 }
-                }
+                  end: { line: 3, column: 27, index: 50 },
+                },
               },
               requiredness: 'required',
               defaultValue: null,
               comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 32 },
-                end: { line: 3, column: 36, index: 59 }
-              }
-            }
+                end: { line: 3, column: 36, index: 59 },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 4, column: 8, index: 67 }
-          }
-        }
-      ]
-    };
+            end: { line: 4, column: 8, index: 67 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a struct with commented fields', () => {
     const content: string = `
@@ -773,12 +773,12 @@ describe('Parser', () => {
         1: required i32 field1,
         # 2: required bool field2,
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -790,8 +790,8 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 14, index: 14 },
-              end: { line: 2, column: 18, index: 18 }
-            }
+              end: { line: 2, column: 18, index: 18 },
+            },
           },
           fields: [
             {
@@ -801,32 +801,32 @@ describe('Parser', () => {
                 value: 'field1',
                 loc: {
                   start: { line: 3, column: 25, index: 45 },
-                  end: { line: 3, column: 31, index: 51 }
-                }
+                  end: { line: 3, column: 31, index: 51 },
+                },
               },
               fieldID: {
                 type: SyntaxType.FieldID,
                 value: 1,
                 loc: {
                   start: { line: 3, column: 9, index: 29 },
-                  end: { line: 3, column: 11, index: 31 }
-                }
+                  end: { line: 3, column: 11, index: 31 },
+                },
               },
               fieldType: {
                 type: SyntaxType.I32Keyword,
                 loc: {
                   start: { line: 3, column: 21, index: 41 },
-                  end: { line: 3, column: 24, index: 44 }
-                }
+                  end: { line: 3, column: 24, index: 44 },
+                },
               },
               requiredness: 'required',
               defaultValue: null,
               comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 29 },
-                end: { line: 3, column: 32, index: 52 }
-              }
-            }
+                end: { line: 3, column: 32, index: 52 },
+              },
+            },
           ],
           comments: [
             {
@@ -836,26 +836,26 @@ describe('Parser', () => {
                 start: {
                   line: 4,
                   column: 9,
-                  index: 61
+                  index: 61,
                 },
                 end: {
                   line: 4,
                   column: 35,
-                  index: 87
-                }
-              }
-            }
+                  index: 87,
+                },
+              },
+            },
           ],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 5, column: 8, index: 95 }
-          }
-        }
-      ]
-    };
+            end: { line: 5, column: 8, index: 95 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of an enum', () => {
     const content: string = `
@@ -863,12 +863,12 @@ describe('Parser', () => {
         ONE,
         TWO
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -880,8 +880,8 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 12, index: 12 },
-              end: { line: 2, column: 16, index: 16 }
-            }
+              end: { line: 2, column: 16, index: 16 },
+            },
           },
           members: [
             {
@@ -891,15 +891,15 @@ describe('Parser', () => {
                 value: 'ONE',
                 loc: {
                   start: { line: 3, column: 9, index: 27 },
-                  end: { line: 3, column: 12, index: 30 }
-                }
+                  end: { line: 3, column: 12, index: 30 },
+                },
               },
               initializer: null,
               comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
-                end: { line: 3, column: 12, index: 30 }
-              }
+                end: { line: 3, column: 12, index: 30 },
+              },
             },
             {
               type: SyntaxType.EnumMember,
@@ -908,28 +908,28 @@ describe('Parser', () => {
                 value: 'TWO',
                 loc: {
                   start: { line: 4, column: 9, index: 40 },
-                  end: { line: 4, column: 12, index: 43 }
-                }
+                  end: { line: 4, column: 12, index: 43 },
+                },
               },
               initializer: null,
               comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 40 },
-                end: { line: 4, column: 12, index: 43 }
-              }
-            }
+                end: { line: 4, column: 12, index: 43 },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 5, column: 8, index: 51 }
-          }
-        }
-      ]
+            end: { line: 5, column: 8, index: 51 },
+          },
+        },
+      ],
     }
 
     assert.deepEqual(thrift, expected)
-  });
+  })
 
   it('should correctly parse an enum with field commented out', () => {
     const content: string = `
@@ -937,12 +937,12 @@ describe('Parser', () => {
         ONE,
         # TWO
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -951,22 +951,22 @@ describe('Parser', () => {
           type: SyntaxType.EnumDefinition,
           name: createIdentifier('Test', {
             start: { line: 2, column: 12, index: 12 },
-            end: { line: 2, column: 16, index: 16 }
+            end: { line: 2, column: 16, index: 16 },
           }),
           members: [
             {
               type: SyntaxType.EnumMember,
               name: createIdentifier('ONE', {
                 start: { line: 3, column: 9, index: 27 },
-                end: { line: 3, column: 12, index: 30 }
+                end: { line: 3, column: 12, index: 30 },
               }),
               initializer: null,
               comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
-                end: { line: 3, column: 12, index: 30 }
-              }
-            }
+                end: { line: 3, column: 12, index: 30 },
+              },
+            },
           ],
           comments: [
             {
@@ -976,26 +976,26 @@ describe('Parser', () => {
                 start: {
                   line: 4,
                   column: 9,
-                  index: 40
+                  index: 40,
                 },
                 end: {
                   line: 4,
                   column: 14,
-                  index: 45
-                }
-              }
-            }
+                  index: 45,
+                },
+              },
+            },
           ],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 5, column: 8, index: 53 }
-          }
-        }
-      ]
-    };
+            end: { line: 5, column: 8, index: 53 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of an enum with initialized member', () => {
     const content: string = `
@@ -1003,12 +1003,12 @@ describe('Parser', () => {
         ONE = 2,
         TWO
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1019,10 +1019,10 @@ describe('Parser', () => {
             type: SyntaxType.Identifier,
             value: 'Test',
             loc: {
-              start: { line: 2, column: 12, index: 12
+              start: { line: 2, column: 12, index: 12,
               },
-              end: { line: 2, column: 16, index: 16 }
-            }
+              end: { line: 2, column: 16, index: 16 },
+            },
           },
           members: [
             {
@@ -1032,22 +1032,22 @@ describe('Parser', () => {
                 value: 'ONE',
                 loc: {
                   start: { line: 3, column: 9, index: 27 },
-                  end: { line: 3, column: 12, index: 30 }
-                }
+                  end: { line: 3, column: 12, index: 30 },
+                },
               },
               initializer: {
                 type: SyntaxType.IntConstant,
                 value: 2,
                 loc: {
                   start: { line: 3, column: 15, index: 33 },
-                  end: { line: 3, column: 16, index: 34 }
-                }
+                  end: { line: 3, column: 16, index: 34 },
+                },
               },
               comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
-                end: { line: 3, column: 16, index: 34 }
-              }
+                end: { line: 3, column: 16, index: 34 },
+              },
             },
             {
               type: SyntaxType.EnumMember,
@@ -1056,28 +1056,28 @@ describe('Parser', () => {
                 value: 'TWO',
                 loc: {
                   start: { line: 4, column: 9, index: 44 },
-                  end: { line: 4, column: 12, index: 47 }
-                }
+                  end: { line: 4, column: 12, index: 47 },
+                },
               },
               initializer: null,
               comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 44 },
-                end: { line: 4, column: 12, index: 47 }
-              }
-            }
+                end: { line: 4, column: 12, index: 47 },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 5, column: 8, index: 55 }
-          }
-        }
-      ]
+            end: { line: 5, column: 8, index: 55 },
+          },
+        },
+      ],
     }
 
     assert.deepEqual(thrift, expected)
-  });
+  })
 
   it('should correctly parse the syntax of an enum with member initialized to hex value', () => {
     const content: string = `
@@ -1085,12 +1085,12 @@ describe('Parser', () => {
         ONE = 0xaf,
         TWO
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1101,10 +1101,10 @@ describe('Parser', () => {
             type: SyntaxType.Identifier,
             value: 'Test',
             loc: {
-              start: { line: 2, column: 12, index: 12
+              start: { line: 2, column: 12, index: 12,
               },
-              end: { line: 2, column: 16, index: 16 }
-            }
+              end: { line: 2, column: 16, index: 16 },
+            },
           },
           members: [
             {
@@ -1114,22 +1114,22 @@ describe('Parser', () => {
                 value: 'ONE',
                 loc: {
                   start: { line: 3, column: 9, index: 27 },
-                  end: { line: 3, column: 12, index: 30 }
-                }
+                  end: { line: 3, column: 12, index: 30 },
+                },
               },
               initializer: {
                 type: SyntaxType.IntConstant,
                 value: 175,
                 loc: {
                   start: { line: 3, column: 15, index: 33 },
-                  end: { line: 3, column: 19, index: 37 }
-                }
+                  end: { line: 3, column: 19, index: 37 },
+                },
               },
               comments: [],
               loc: {
                 start: { line: 3, column: 9, index: 27 },
-                end: { line: 3, column: 19, index: 37 }
-              }
+                end: { line: 3, column: 19, index: 37 },
+              },
             },
             {
               type: SyntaxType.EnumMember,
@@ -1138,40 +1138,40 @@ describe('Parser', () => {
                 value: 'TWO',
                 loc: {
                   start: { line: 4, column: 9, index: 47 },
-                  end: { line: 4, column: 12, index: 50 }
-                }
+                  end: { line: 4, column: 12, index: 50 },
+                },
               },
               initializer: null,
               comments: [],
               loc: {
                 start: { line: 4, column: 9, index: 47 },
-                end: { line: 4, column: 12, index: 50 }
-              }
-            }
+                end: { line: 4, column: 12, index: 50 },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 5, column: 8, index: 58 }
-          }
-        }
-      ]
+            end: { line: 5, column: 8, index: 58 },
+          },
+        },
+      ],
     }
 
     assert.deepEqual(thrift, expected)
-  });
+  })
 
   it('should correctly parse the syntax of a simple service', () => {
     const content: string = `
       service Test {
         bool test()
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1183,15 +1183,15 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 15, index: 15 },
-              end: { line: 2, column: 19, index: 19 }
-            }
+              end: { line: 2, column: 19, index: 19 },
+            },
           },
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
                 start: { line: 3, column: 14, index: 35 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 18, index: 39 },
               }),
               fields: [],
               throws: [],
@@ -1200,41 +1200,41 @@ describe('Parser', () => {
                 type: SyntaxType.BoolKeyword,
                 loc: {
                   start: { line: 3, column: 9, index: 30 },
-                  end: { line: 3, column: 13, index: 34 }
-                }
+                  end: { line: 3, column: 13, index: 34 },
+                },
               },
               comments: [],
               modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 20, index: 41 }
-              }
-            }
+                end: { line: 3, column: 20, index: 41 },
+              },
+            },
           ],
           extends: null,
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 4, column: 8, index: 49 }
-          }
-        }
-      ]
-    };
+            end: { line: 4, column: 8, index: 49 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a service with oneway functions', () => {
     const content: string = `
       service Test {
         oneway void test()
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1246,15 +1246,15 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 15, index: 15 },
-              end: { line: 2, column: 19, index: 19 }
-            }
+              end: { line: 2, column: 19, index: 19 },
+            },
           },
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
                 start: { line: 3, column: 21, index: 42 },
-                end: { line: 3, column: 25, index: 46 }
+                end: { line: 3, column: 25, index: 46 },
               }),
               fields: [],
               throws: [],
@@ -1263,8 +1263,8 @@ describe('Parser', () => {
                 type: SyntaxType.VoidKeyword,
                 loc: {
                   start: { line: 3, column: 16, index: 37 },
-                  end: { line: 3, column: 20, index: 41 }
-                }
+                  end: { line: 3, column: 20, index: 41 },
+                },
               },
               comments: [],
               modifiers: [
@@ -1275,34 +1275,34 @@ describe('Parser', () => {
                     start: {
                       line: 3,
                       column: 9,
-                      index: 30
+                      index: 30,
                     },
                     end: {
                       line: 3,
                       column: 15,
-                      index: 36
-                    }
-                  }
-                }
+                      index: 36,
+                    },
+                  },
+                },
               ],
               loc: {
                 start: { line: 3, column: 16, index: 37 },
-                end: { line: 3, column: 27, index: 48 }
-              }
-            }
+                end: { line: 3, column: 27, index: 48 },
+              },
+            },
           ],
           comments: [],
           extends: null,
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 4, column: 8, index: 56 }
-          }
-        }
-      ]
-    };
+            end: { line: 4, column: 8, index: 56 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a service with mixed oneway functions', () => {
     const content: string = `
@@ -1310,12 +1310,12 @@ describe('Parser', () => {
         oneway void test()
         i32 sendMessage(1: string msg)
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1329,14 +1329,14 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 15,
-                index: 15
+                index: 15,
               },
               end: {
                 line: 2,
                 column: 19,
-                index: 19
-              }
-            }
+                index: 19,
+              },
+            },
           },
           extends: null,
           functions: [
@@ -1349,14 +1349,14 @@ describe('Parser', () => {
                   start: {
                     line: 3,
                     column: 21,
-                    index: 42
+                    index: 42,
                   },
                   end: {
                     line: 3,
                     column: 25,
-                    index: 46
-                  }
-                }
+                    index: 46,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.VoidKeyword,
@@ -1364,14 +1364,14 @@ describe('Parser', () => {
                   start: {
                     line: 3,
                     column: 16,
-                    index: 37
+                    index: 37,
                   },
                   end: {
                     line: 3,
                     column: 20,
-                    index: 41
-                  }
-                }
+                    index: 41,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -1385,28 +1385,28 @@ describe('Parser', () => {
                     start: {
                       line: 3,
                       column: 9,
-                      index: 30
+                      index: 30,
                     },
                     end: {
                       line: 3,
                       column: 15,
-                      index: 36
-                    }
-                  }
-                }
+                      index: 36,
+                    },
+                  },
+                },
               ],
               loc: {
                 start: {
                   line: 3,
                   column: 16,
-                  index: 37
+                  index: 37,
                 },
                 end: {
                   line: 3,
                   column: 27,
-                  index: 48
-                }
-              }
+                  index: 48,
+                },
+              },
             },
             {
               type: SyntaxType.FunctionDefinition,
@@ -1417,14 +1417,14 @@ describe('Parser', () => {
                   start: {
                     line: 4,
                     column: 13,
-                    index: 61
+                    index: 61,
                   },
                   end: {
                     line: 4,
                     column: 24,
-                    index: 72
-                  }
-                }
+                    index: 72,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.I32Keyword,
@@ -1432,14 +1432,14 @@ describe('Parser', () => {
                   start: {
                     line: 4,
                     column: 9,
-                    index: 57
+                    index: 57,
                   },
                   end: {
                     line: 4,
                     column: 12,
-                    index: 60
-                  }
-                }
+                    index: 60,
+                  },
+                },
               },
               fields: [
                 {
@@ -1451,14 +1451,14 @@ describe('Parser', () => {
                       start: {
                         line: 4,
                         column: 35,
-                        index: 83
+                        index: 83,
                       },
                       end: {
                         line: 4,
                         column: 38,
-                        index: 86
-                      }
-                    }
+                        index: 86,
+                      },
+                    },
                   },
                   fieldID: {
                     type: SyntaxType.FieldID,
@@ -1467,14 +1467,14 @@ describe('Parser', () => {
                       start: {
                         line: 4,
                         column: 25,
-                        index: 73
+                        index: 73,
                       },
                       end: {
                         line: 4,
                         column: 27,
-                        index: 75
-                      }
-                    }
+                        index: 75,
+                      },
+                    },
                   },
                   fieldType: {
                     type: SyntaxType.StringKeyword,
@@ -1482,14 +1482,14 @@ describe('Parser', () => {
                       start: {
                         line: 4,
                         column: 28,
-                        index: 76
+                        index: 76,
                       },
                       end: {
                         line: 4,
                         column: 34,
-                        index: 82
-                      }
-                    }
+                        index: 82,
+                      },
+                    },
                   },
                   requiredness: null,
                   defaultValue: null,
@@ -1498,15 +1498,15 @@ describe('Parser', () => {
                     start: {
                       line: 4,
                       column: 25,
-                      index: 73
+                      index: 73,
                     },
                     end: {
                       line: 4,
                       column: 38,
-                      index: 86
-                    }
-                  }
-                }
+                      index: 86,
+                    },
+                  },
+                },
               ],
               throws: [],
               comments: [],
@@ -1516,35 +1516,35 @@ describe('Parser', () => {
                 start: {
                   line: 4,
                   column: 9,
-                  index: 57
+                  index: 57,
                 },
                 end: {
                   line: 4,
                   column: 39,
-                  index: 87
-                }
-              }
-            }
+                  index: 87,
+                },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: {
               line: 2,
               column: 7,
-              index: 7
+              index: 7,
             },
             end: {
               line: 5,
               column: 8,
-              index: 95
-            }
-          }
-        }
-      ]
-    };
+              index: 95,
+            },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse a service where functions are separated by commas or semicolons', () => {
     const content: string = `
@@ -1554,12 +1554,12 @@ describe('Parser', () => {
         string dang(),
         i32 ding()
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1573,14 +1573,14 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 15,
-                index: 15
+                index: 15,
               },
               end: {
                 line: 2,
                 column: 19,
-                index: 19
-              }
-            }
+                index: 19,
+              },
+            },
           },
           extends: null,
           functions: [
@@ -1593,14 +1593,14 @@ describe('Parser', () => {
                   start: {
                     line: 3,
                     column: 14,
-                    index: 35
+                    index: 35,
                   },
                   end: {
                     line: 3,
                     column: 18,
-                    index: 39
-                  }
-                }
+                    index: 39,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.BoolKeyword,
@@ -1608,14 +1608,14 @@ describe('Parser', () => {
                   start: {
                     line: 3,
                     column: 9,
-                    index: 30
+                    index: 30,
                   },
                   end: {
                     line: 3,
                     column: 13,
-                    index: 34
-                  }
-                }
+                    index: 34,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -1626,14 +1626,14 @@ describe('Parser', () => {
                 start: {
                   line: 3,
                   column: 9,
-                  index: 30
+                  index: 30,
                 },
                 end: {
                   line: 3,
                   column: 20,
-                  index: 41
-                }
-              }
+                  index: 41,
+                },
+              },
             },
             {
               type: SyntaxType.FunctionDefinition,
@@ -1644,14 +1644,14 @@ describe('Parser', () => {
                   start: {
                     line: 4,
                     column: 14,
-                    index: 55
+                    index: 55,
                   },
                   end: {
                     line: 4,
                     column: 17,
-                    index: 58
-                  }
-                }
+                    index: 58,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.BoolKeyword,
@@ -1659,14 +1659,14 @@ describe('Parser', () => {
                   start: {
                     line: 4,
                     column: 9,
-                    index: 50
+                    index: 50,
                   },
                   end: {
                     line: 4,
                     column: 13,
-                    index: 54
-                  }
-                }
+                    index: 54,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -1677,14 +1677,14 @@ describe('Parser', () => {
                 start: {
                   line: 4,
                   column: 9,
-                  index: 50
+                  index: 50,
                 },
                 end: {
                   line: 4,
                   column: 20,
-                  index: 61
-                }
-              }
+                  index: 61,
+                },
+              },
             },
             {
               type: SyntaxType.FunctionDefinition,
@@ -1695,14 +1695,14 @@ describe('Parser', () => {
                   start: {
                     line: 5,
                     column: 16,
-                    index: 77
+                    index: 77,
                   },
                   end: {
                     line: 5,
                     column: 20,
-                    index: 81
-                  }
-                }
+                    index: 81,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.StringKeyword,
@@ -1710,14 +1710,14 @@ describe('Parser', () => {
                   start: {
                     line: 5,
                     column: 9,
-                    index: 70
+                    index: 70,
                   },
                   end: {
                     line: 5,
                     column: 15,
-                    index: 76
-                  }
-                }
+                    index: 76,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -1728,14 +1728,14 @@ describe('Parser', () => {
                 start: {
                   line: 5,
                   column: 9,
-                  index: 70
+                  index: 70,
                 },
                 end: {
                   line: 5,
                   column: 23,
-                  index: 84
-                }
-              }
+                  index: 84,
+                },
+              },
             },
             {
               type: SyntaxType.FunctionDefinition,
@@ -1746,14 +1746,14 @@ describe('Parser', () => {
                   start: {
                     line: 6,
                     column: 13,
-                    index: 97
+                    index: 97,
                   },
                   end: {
                     line: 6,
                     column: 17,
-                    index: 101
-                  }
-                }
+                    index: 101,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.I32Keyword,
@@ -1761,14 +1761,14 @@ describe('Parser', () => {
                   start: {
                     line: 6,
                     column: 9,
-                    index: 93
+                    index: 93,
                   },
                   end: {
                     line: 6,
                     column: 12,
-                    index: 96
-                  }
-                }
+                    index: 96,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -1779,35 +1779,35 @@ describe('Parser', () => {
                 start: {
                   line: 6,
                   column: 9,
-                  index: 93
+                  index: 93,
                 },
                 end: {
                   line: 6,
                   column: 19,
-                  index: 103
-                }
-              }
-            }
+                  index: 103,
+                },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: {
               line: 2,
               column: 7,
-              index: 7
+              index: 7,
             },
             end: {
               line: 7,
               column: 8,
-              index: 111
-            }
-          }
-        }
-      ]
-    };
+              index: 111,
+            },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a service with commented functions', () => {
     const content: string = `
@@ -1815,12 +1815,12 @@ describe('Parser', () => {
         bool test()
         # void ping()
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1832,15 +1832,15 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 15, index: 15 },
-              end: { line: 2, column: 19, index: 19 }
-            }
+              end: { line: 2, column: 19, index: 19 },
+            },
           },
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
                 start: { line: 3, column: 14, index: 35 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 18, index: 39 },
               }),
               fields: [],
               throws: [],
@@ -1849,8 +1849,8 @@ describe('Parser', () => {
                 type: SyntaxType.BoolKeyword,
                 loc: {
                   start: { line: 3, column: 9, index: 30 },
-                  end: { line: 3, column: 13, index: 34 }
-                }
+                  end: { line: 3, column: 13, index: 34 },
+                },
               },
               comments: [
                 {
@@ -1860,35 +1860,35 @@ describe('Parser', () => {
                     start: {
                       line: 4,
                       column: 9,
-                      index: 50
+                      index: 50,
                     },
                     end: {
                       line: 4,
                       column: 22,
-                      index: 63
-                    }
-                  }
-                }
+                      index: 63,
+                    },
+                  },
+                },
               ],
               modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 20, index: 41 }
-              }
-            }
+                end: { line: 3, column: 20, index: 41 },
+              },
+            },
           ],
           extends: null,
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 5, column: 8, index: 71 }
-          }
-        }
-      ]
-    };
+            end: { line: 5, column: 8, index: 71 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse complex commenting', () => {
     const content: string = `
@@ -1907,12 +1907,12 @@ describe('Parser', () => {
         // string dang(),
         i32 ding()
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -1926,14 +1926,14 @@ describe('Parser', () => {
               start: {
                 line: 9,
                 column: 15,
-                index: 201
+                index: 201,
               },
               end: {
                 line: 9,
                 column: 19,
-                index: 205
-              }
-            }
+                index: 205,
+              },
+            },
           },
           extends: null,
           functions: [
@@ -1946,14 +1946,14 @@ describe('Parser', () => {
                   start: {
                     line: 10,
                     column: 45,
-                    index: 252
+                    index: 252,
                   },
                   end: {
                     line: 10,
                     column: 49,
-                    index: 256
-                  }
-                }
+                    index: 256,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.BoolKeyword,
@@ -1961,14 +1961,14 @@ describe('Parser', () => {
                   start: {
                     line: 10,
                     column: 9,
-                    index: 216
+                    index: 216,
                   },
                   end: {
                     line: 10,
                     column: 13,
-                    index: 220
-                  }
-                }
+                    index: 220,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -1976,20 +1976,20 @@ describe('Parser', () => {
                 {
                   type: SyntaxType.CommentBlock,
                   value: [
-                    'should this be required?'
+                    'should this be required?',
                   ],
                   loc: {
                     start: {
                       line: 10,
                       column: 14,
-                      index: 221
+                      index: 221,
                     },
                     end: {
                       line: 10,
                       column: 44,
-                      index: 251
-                    }
-                  }
+                      index: 251,
+                    },
+                  },
                 },
                 {
                   type: SyntaxType.CommentLine,
@@ -1998,14 +1998,14 @@ describe('Parser', () => {
                     start: {
                       line: 11,
                       column: 9,
-                      index: 267
+                      index: 267,
                     },
                     end: {
                       line: 11,
                       column: 22,
-                      index: 280
-                    }
-                  }
+                      index: 280,
+                    },
+                  },
                 },
                 {
                   type: SyntaxType.CommentLine,
@@ -2014,15 +2014,15 @@ describe('Parser', () => {
                     start: {
                       line: 12,
                       column: 9,
-                      index: 289
+                      index: 289,
                     },
                     end: {
                       line: 12,
                       column: 26,
-                      index: 306
-                    }
-                  }
-                }
+                      index: 306,
+                    },
+                  },
+                },
               ],
               oneway: false,
               modifiers: [],
@@ -2030,14 +2030,14 @@ describe('Parser', () => {
                 start: {
                   line: 10,
                   column: 9,
-                  index: 216
+                  index: 216,
                 },
                 end: {
                   line: 10,
                   column: 51,
-                  index: 258
-                }
-              }
+                  index: 258,
+                },
+              },
             },
             {
               type: SyntaxType.FunctionDefinition,
@@ -2048,14 +2048,14 @@ describe('Parser', () => {
                   start: {
                     line: 13,
                     column: 13,
-                    index: 319
+                    index: 319,
                   },
                   end: {
                     line: 13,
                     column: 17,
-                    index: 323
-                  }
-                }
+                    index: 323,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.I32Keyword,
@@ -2063,14 +2063,14 @@ describe('Parser', () => {
                   start: {
                     line: 13,
                     column: 9,
-                    index: 315
+                    index: 315,
                   },
                   end: {
                     line: 13,
                     column: 12,
-                    index: 318
-                  }
-                }
+                    index: 318,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -2081,15 +2081,15 @@ describe('Parser', () => {
                 start: {
                   line: 13,
                   column: 9,
-                  index: 315
+                  index: 315,
                 },
                 end: {
                   line: 13,
                   column: 19,
-                  index: 325
-                }
-              }
-            }
+                  index: 325,
+                },
+              },
+            },
           ],
           comments: [
             {
@@ -2099,84 +2099,84 @@ describe('Parser', () => {
                 start: {
                   line: 2,
                   column: 7,
-                  index: 7
+                  index: 7,
                 },
                 end: {
                   line: 2,
                   column: 35,
-                  index: 35
-                }
-              }
+                  index: 35,
+                },
+              },
             },
             {
               type: SyntaxType.CommentBlock,
               value: [
                 'This is a multi-line',
-                ' comment for testing'
+                ' comment for testing',
               ],
               loc: {
                 start: {
                   line: 3,
                   column: 7,
-                  index: 42
+                  index: 42,
                 },
                 end: {
                   line: 5,
                   column: 11,
-                  index: 113
-                }
-              }
+                  index: 113,
+                },
+              },
             },
             {
               type: SyntaxType.CommentBlock,
               value: [
                 'Another muliti-line',
-                ' comment for testing'
+                ' comment for testing',
               ],
               loc: {
                 start: {
                   line: 6,
                   column: 7,
-                  index: 120
+                  index: 120,
                 },
                 end: {
                   line: 8,
                   column: 11,
-                  index: 186
-                }
-              }
-            }
+                  index: 186,
+                },
+              },
+            },
           ],
           loc: {
             start: {
               line: 9,
               column: 7,
-              index: 193
+              index: 193,
             },
             end: {
               line: 14,
               column: 8,
-              index: 333
-            }
-          }
-        }
-      ]
-    };
+              index: 333,
+            },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse a service containing a function with custom type', () => {
     const content: string = `
       service Test {
         TestType test()
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -2193,7 +2193,7 @@ describe('Parser', () => {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
                 start: { line: 3, column: 18, index: 39 },
-                end: { line: 3, column: 22, index: 43 }
+                end: { line: 3, column: 22, index: 43 },
               }),
               fields: [],
               throws: [],
@@ -2203,40 +2203,40 @@ describe('Parser', () => {
                 value: 'TestType',
                 loc: {
                   start: { line: 3, column: 9, index: 30 },
-                  end: { line: 3, column: 17, index: 38 }
-                }
+                  end: { line: 3, column: 17, index: 38 },
+                },
               },
               comments: [],
               modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 24, index: 45 }
-              }
-            }
+                end: { line: 3, column: 24, index: 45 },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 4, column: 8, index: 53 }
-          }
-        }
-      ]
-    };
+            end: { line: 4, column: 8, index: 53 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('should correctly parse the syntax of a service containing a function that throws', () => {
     const content: string = `
       service Test {
         bool test() throws (1: Exception1 user_exception, 2: Exception2 system_exception)
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -2248,15 +2248,15 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 15, index: 15 },
-              end: { line: 2, column: 19, index: 19 }
-            }
+              end: { line: 2, column: 19, index: 19 },
+            },
           },
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
                 start: { line: 3, column: 14, index: 35 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 18, index: 39 },
               }),
               fields: [],
               oneway: false,
@@ -2270,14 +2270,14 @@ describe('Parser', () => {
                       start: {
                         line: 3,
                         column: 43,
-                        index: 64
+                        index: 64,
                       },
                       end: {
                         line: 3,
                         column: 57,
-                        index: 78
-                      }
-                    }
+                        index: 78,
+                      },
+                    },
                   },
                   fieldID: {
                     type: SyntaxType.FieldID,
@@ -2286,14 +2286,14 @@ describe('Parser', () => {
                       start: {
                         line: 3,
                         column: 29,
-                        index: 50
+                        index: 50,
                       },
                       end: {
                         line: 3,
                         column: 31,
-                        index: 52
-                      }
-                    }
+                        index: 52,
+                      },
+                    },
                   },
                   fieldType: {
                     type: SyntaxType.Identifier,
@@ -2302,14 +2302,14 @@ describe('Parser', () => {
                       start: {
                         line: 3,
                         column: 32,
-                        index: 53
+                        index: 53,
                       },
                       end: {
                         line: 3,
                         column: 42,
-                        index: 63
-                      }
-                    }
+                        index: 63,
+                      },
+                    },
                   },
                   requiredness: null,
                   defaultValue: null,
@@ -2318,14 +2318,14 @@ describe('Parser', () => {
                     start: {
                       line: 3,
                       column: 29,
-                      index: 50
+                      index: 50,
                     },
                     end: {
                       line: 3,
                       column: 58,
-                      index: 79
-                    }
-                  }
+                      index: 79,
+                    },
+                  },
                 },
                 {
                   type: SyntaxType.FieldDefinition,
@@ -2336,14 +2336,14 @@ describe('Parser', () => {
                       start: {
                         line: 3,
                         column: 73,
-                        index: 94
+                        index: 94,
                       },
                       end: {
                         line: 3,
                         column: 89,
-                        index: 110
-                      }
-                    }
+                        index: 110,
+                      },
+                    },
                   },
                   fieldID: {
                     type: SyntaxType.FieldID,
@@ -2352,14 +2352,14 @@ describe('Parser', () => {
                       start: {
                         line: 3,
                         column: 59,
-                        index: 80
+                        index: 80,
                       },
                       end: {
                         line: 3,
                         column: 61,
-                        index: 82
-                      }
-                    }
+                        index: 82,
+                      },
+                    },
                   },
                   fieldType: {
                     type: SyntaxType.Identifier,
@@ -2368,14 +2368,14 @@ describe('Parser', () => {
                       start: {
                         line: 3,
                         column: 62,
-                        index: 83
+                        index: 83,
                       },
                       end: {
                         line: 3,
                         column: 72,
-                        index: 93
-                      }
-                    }
+                        index: 93,
+                      },
+                    },
                   },
                   requiredness: null,
                   defaultValue: null,
@@ -2384,55 +2384,55 @@ describe('Parser', () => {
                     start: {
                       line: 3,
                       column: 59,
-                      index: 80
+                      index: 80,
                     },
                     end: {
                       line: 3,
                       column: 89,
-                      index: 110
-                    }
-                  }
-                }
+                      index: 110,
+                    },
+                  },
+                },
               ],
               returnType: {
                 type: SyntaxType.BoolKeyword,
                 loc: {
                   start: { line: 3, column: 9, index: 30 },
-                  end: { line: 3, column: 13, index: 34 }
-                }
+                  end: { line: 3, column: 13, index: 34 },
+                },
               },
               comments: [],
               modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 90, index: 111 }
-              }
-            }
+                end: { line: 3, column: 90, index: 111 },
+              },
+            },
           ],
           extends: null,
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 4, column: 8, index: 119 }
-          }
-        }
-      ]
-    };
+            end: { line: 4, column: 8, index: 119 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
-  it('parses a service that extends another service', function() {
+  it('parses a service that extends another service', () => {
     const content: string = `
       service ServiceTwo extends ServiceOne {
         void test()
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -2446,14 +2446,14 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 15,
-                index: 15
+                index: 15,
               },
               end: {
                 line: 2,
                 column: 25,
-                index: 25
-              }
-            }
+                index: 25,
+              },
+            },
           },
           extends: {
             type: SyntaxType.Identifier,
@@ -2462,14 +2462,14 @@ describe('Parser', () => {
               start: {
                 line: 2,
                 column: 26,
-                index: 26
+                index: 26,
               },
               end: {
                 line: 2,
                 column: 44,
-                index: 44
-              }
-            }
+                index: 44,
+              },
+            },
           },
           functions: [
             {
@@ -2481,14 +2481,14 @@ describe('Parser', () => {
                   start: {
                     line: 3,
                     column: 14,
-                    index: 60
+                    index: 60,
                   },
                   end: {
                     line: 3,
                     column: 18,
-                    index: 64
-                  }
-                }
+                    index: 64,
+                  },
+                },
               },
               returnType: {
                 type: SyntaxType.VoidKeyword,
@@ -2496,14 +2496,14 @@ describe('Parser', () => {
                   start: {
                     line: 3,
                     column: 9,
-                    index: 55
+                    index: 55,
                   },
                   end: {
                     line: 3,
                     column: 13,
-                    index: 59
-                  }
-                }
+                    index: 59,
+                  },
+                },
               },
               fields: [],
               throws: [],
@@ -2514,47 +2514,47 @@ describe('Parser', () => {
                 start: {
                   line: 3,
                   column: 9,
-                  index: 55
+                  index: 55,
                 },
                 end: {
                   line: 3,
                   column: 20,
-                  index: 66
-                }
-              }
-            }
+                  index: 66,
+                },
+              },
+            },
           ],
           comments: [],
           loc: {
             start: {
               line: 2,
               column: 7,
-              index: 7
+              index: 7,
             },
             end: {
               line: 4,
               column: 8,
-              index: 74
-            }
-          }
-        }
-      ]
-    };
+              index: 74,
+            },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
+    assert.deepEqual(thrift, expected)
+  })
 
   it('parses a service containing a function with arguments with mixed FieldIDs', () => {
     const content: string = `
       service Test {
         void test(string test1, 1: bool test2)
       }
-    `;
-    const scanner: Scanner = createScanner(content);
-    const tokens: Array<Token> = scanner.scan();
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
 
-    const parser: Parser = createParser(tokens);
-    const thrift: ThriftDocument = parser.parse();
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
 
     const expected: ThriftDocument = {
       type: SyntaxType.ThriftDocument,
@@ -2566,15 +2566,15 @@ describe('Parser', () => {
             value: 'Test',
             loc: {
               start: { line: 2, column: 15, index: 15 },
-              end: { line: 2, column: 19, index: 19 }
-            }
+              end: { line: 2, column: 19, index: 19 },
+            },
           },
           functions: [
             {
               type: SyntaxType.FunctionDefinition,
               name: createIdentifier('test', {
                 start: { line: 3, column: 14, index: 35 },
-                end: { line: 3, column: 18, index: 39 }
+                end: { line: 3, column: 18, index: 39 },
               }),
               fields: [
                 {
@@ -2584,20 +2584,20 @@ describe('Parser', () => {
                   defaultValue: null,
                   name: createIdentifier('test1', {
                     start: { line: 3, column: 26, index: 47 },
-                    end: { line: 3, column: 31, index: 52 }
+                    end: { line: 3, column: 31, index: 52 },
                   }),
                   fieldType: {
                     type: SyntaxType.StringKeyword,
                     loc: {
                       start: { line: 3, column: 19, index: 40 },
-                      end: { line: 3, column: 25, index: 46 }
-                    }
+                      end: { line: 3, column: 25, index: 46 },
+                    },
                   },
                   comments: [],
                   loc: {
                     start: { line: 3, column: 19, index: 40 },
-                    end: { line: 3, column: 32, index: 53 }
-                  }
+                    end: { line: 3, column: 32, index: 53 },
+                  },
                 },
                 {
                   type: SyntaxType.FieldDefinition,
@@ -2606,28 +2606,28 @@ describe('Parser', () => {
                     value: 1,
                     loc: {
                       start: { line: 3, column: 33, index: 54 },
-                      end: { line: 3, column: 35, index: 56 }
-                    }
+                      end: { line: 3, column: 35, index: 56 },
+                    },
                   },
                   requiredness: null,
                   defaultValue: null,
                   name: createIdentifier('test2', {
                     start: { line: 3, column: 41, index: 62 },
-                    end: { line: 3, column: 46, index: 67 }
+                    end: { line: 3, column: 46, index: 67 },
                   }),
                   fieldType: {
                     type: SyntaxType.BoolKeyword,
                     loc: {
                       start: { line: 3, column: 36, index: 57 },
-                      end: { line: 3, column: 40, index: 61 }
-                    }
+                      end: { line: 3, column: 40, index: 61 },
+                    },
                   },
                   comments: [],
                   loc: {
                     start: { line: 3, column: 33, index: 54 },
-                    end: { line: 3, column: 46, index: 67  }
-                  }
-                }
+                    end: { line: 3, column: 46, index: 67  },
+                  },
+                },
               ],
               throws: [],
               oneway: false,
@@ -2635,27 +2635,27 @@ describe('Parser', () => {
                 type: SyntaxType.VoidKeyword,
                 loc: {
                   start: { line: 3, column: 9, index: 30 },
-                  end: { line: 3, column: 13, index: 34 }
-                }
+                  end: { line: 3, column: 13, index: 34 },
+                },
               },
               comments: [],
               modifiers: [],
               loc: {
                 start: { line: 3, column: 9, index: 30 },
-                end: { line: 3, column: 47, index: 68 }
-              }
-            }
+                end: { line: 3, column: 47, index: 68 },
+              },
+            },
           ],
           extends: null,
           comments: [],
           loc: {
             start: { line: 2, column: 7, index: 7 },
-            end: { line: 4, column: 8, index: 76 }
-          }
-        }
-      ]
-    };
+            end: { line: 4, column: 8, index: 76 },
+          },
+        },
+      ],
+    }
 
-    assert.deepEqual(thrift, expected);
-  });
-});
+    assert.deepEqual(thrift, expected)
+  })
+})

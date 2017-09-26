@@ -1,46 +1,53 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { ThriftDocument, Token, ThriftError, ErrorType } from './types';
-import { Scanner, createScanner } from './scanner';
-import { Parser, createParser } from './parser';
-import { organize } from './organizer';
-import { Debugger, createDebugger } from './debugger';
+import * as fs from 'fs'
+import * as path from 'path'
+import { createDebugger, Debugger } from './debugger'
+import { organize } from './organizer'
+import { createParser, Parser } from './parser'
+import { createScanner, Scanner } from './scanner'
+import {
+  ErrorType,
+  SyntaxType,
+  ThriftDocument,
+  ThriftError,
+  ThriftErrors,
+  Token,
+} from './types'
 
-export * from './types';
-export * from './factory';
-export { createScanner } from './scanner';
-export { createParser } from './parser';
+export * from './types'
+export * from './factory'
+export { createScanner } from './scanner'
+export { createParser } from './parser'
 
 export interface ParseOptions {
-  fastFail: boolean;
-  rootDir: string;
-  outDir: string;
-  files: Array<string>;
+  fastFail: boolean
+  rootDir: string
+  outDir: string
+  files: Array<string>
 }
 
 export const defaultOptions: ParseOptions = {
   fastFail: false,
   rootDir: '.',
   outDir: '.',
-  files: []
-};
-
-export function parseFiles(options: ParseOptions = defaultOptions): Array<ThriftDocument> {
-  return options.files.map((file: string): ThriftDocument => {
-    const filePath: string = path.resolve(process.cwd(), options.rootDir, file);
-    const content: string = fs.readFileSync(filePath, 'utf-8');
-    return parse(content, options);
-  });
+  files: [],
 }
 
-export function parse(source: string, options: ParseOptions = defaultOptions): ThriftDocument {
-  const debug: Debugger = createDebugger(source);
-  const scanner: Scanner = createScanner(source, handleError);
-  const tokens: Array<Token> = scanner.scan();
+export function parseFiles(options: ParseOptions = defaultOptions): Array<ThriftDocument | ThriftErrors> {
+  return options.files.map((file: string): ThriftDocument | ThriftErrors => {
+    const filePath: string = path.resolve(process.cwd(), options.rootDir, file)
+    const content: string = fs.readFileSync(filePath, 'utf-8')
+    return parse(content, options)
+  })
+}
 
-  const parser: Parser = createParser(tokens, handleError);
-  const intermediate: ThriftDocument = parser.parse();
-  const thrift: ThriftDocument = organize(intermediate);
+export function parse(source: string, options: ParseOptions = defaultOptions): ThriftDocument | ThriftErrors {
+  const debug: Debugger = createDebugger(source)
+  const scanner: Scanner = createScanner(source, handleError)
+  const tokens: Array<Token> = scanner.scan()
+
+  const parser: Parser = createParser(tokens, handleError)
+  const intermediate: ThriftDocument = parser.parse()
+  const thrift: ThriftDocument = organize(intermediate)
 
   /**
    * This is a safe handler for errors that allows the parser and scanner to recover to a
@@ -51,27 +58,30 @@ export function parse(source: string, options: ParseOptions = defaultOptions): T
    * @param err
    */
   function handleError(err: ThriftError): void {
-    debug.report(err);
+    debug.report(err)
     if (options.fastFail) {
-      debug.print();
-      throw new Error(err.message);
+      debug.print()
+      throw new Error(err.message)
     } else {
       switch (err.type) {
         case ErrorType.ParseError:
-          parser.synchronize();
-          break;
+          parser.synchronize()
+          break
 
         case ErrorType.ScanError:
-          scanner.syncronize();
-          break;
+          scanner.syncronize()
+          break
       }
     }
   }
 
   if (debug.hasError()) {
-    debug.print();
-    return null;
+    debug.print()
+    return {
+      type: SyntaxType.ThriftErrors,
+      errors: debug.getErrors(),
+    }
   } else {
-    return thrift;
+    return thrift
   }
 }

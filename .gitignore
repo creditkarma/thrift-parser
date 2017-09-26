@@ -21,3 +21,6 @@ dist
 # nyc artifacts
 coverage/
 .nyc_output/
+
+# test artifacts
+thrift-json/

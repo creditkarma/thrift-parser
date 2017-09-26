@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import * as path from 'path';
 import * as fs from 'fs';
+
 import { mkdir } from './mkdir';
 import { parseFiles, ParseOptions, ThriftDocument } from '../index';
 import { resolveOptions } from './resolveOptions';
