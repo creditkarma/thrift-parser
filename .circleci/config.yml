@@ -23,7 +23,7 @@ jobs:
           root: ./
           # Must be relative path from root
           paths:
-            - dist
+            - ./dist
             - ./LICENSE
             - ./package.json
 
@@ -44,10 +44,13 @@ workflows:
   version: 2
   build_publish:
       jobs:
-        - build
+        - build:
+            filters:
+              tags:
+                only: /.*/
         - publish:
             requires:
               - build
             filters:
               tags:
-                ignore: /(v)?[0-9]+(\.[0-9]+)*/
+                only: /(v)?[0-9]+(\.[0-9]+)*/
