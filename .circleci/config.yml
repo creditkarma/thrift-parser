@@ -27,19 +27,15 @@ jobs:
             - ./LICENSE
             - ./package.json
 
-  npm_token:
-    <<: *defaults
-    steps:
-      - run:
-          name: npm-token
-          command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
-
   publish:
     <<: *defaults
     steps:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: ./
+      - run:
+          name: npm-token
+          command: 'echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc'
       - run:
           name: publish-npm
           command: npm publish
@@ -49,11 +45,9 @@ workflows:
   build_publish:
       jobs:
         - build
-        - npm_token
         - publish:
             requires:
               - build
-              - npm_token
             filters:
               tags:
                 only: /(v)?[0-9]+(\.[0-9]+)*/
