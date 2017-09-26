@@ -63,11 +63,13 @@ workflows:
               tags:
                 only: /.*/
         - build:
-            filters:
-              tags:
-                only: /.*/
             requires:
               - test
+            filters:
+              tags:
+                only: /(v)?[0-9]+(\.[0-9]+)*/
+              branches:
+                ignore: /.*/
         - publish:
             requires:
               - build
