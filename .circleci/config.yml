@@ -31,6 +31,16 @@ jobs:
             - package.json
             - README.md
 
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ./
+      - run:
+          name: npm-test
+          command: npm test
+
   publish:
     <<: *defaults
     steps:
@@ -52,9 +62,15 @@ workflows:
             filters:
               tags:
                 only: /.*/
-        - publish:
+        - test:
+            filters:
+              tags:
+                only: /.*/
             requires:
               - build
+        - publish:
+            requires:
+              - test
             filters:
               tags:
                 only: /(v)?[0-9]+(\.[0-9]+)*/
