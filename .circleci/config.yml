@@ -17,10 +17,6 @@ jobs:
       - run:
           name: build
           command: npm run build
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory
           root: ./
@@ -38,8 +34,15 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
+          name: install-npm
+          command: npm install
+      - run:
           name: npm-test
           command: npm test
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
 
   publish:
     <<: *defaults
