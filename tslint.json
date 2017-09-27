@@ -28,6 +28,13 @@
       "check-whitespace"
     ],
     "radix": false,
-    "no-unused-expression": false
+    "no-unused-expression": false,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ]
   }
 }
