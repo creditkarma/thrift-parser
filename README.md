@@ -195,7 +195,7 @@ exception <identifier> { <fields> }
 #### ServiceDefinition
 
 ```
-service <identifier> extends? <identifier> { <functions> }
+service <identifier> (extends <identifier>)? { <functions> }
 ```
 
 ```typescript
