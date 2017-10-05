@@ -42,6 +42,131 @@ $ npm run build
 $ npm test
 ```
 
+## AST Structure
+
+The root of the returned AST is either a ThriftDocument (successful parse) or a ThriftErrors (unsuccessful parse).
+
+### ThriftDocument
+
+```typescript
+{
+  type: "ThriftDocument",
+  body: Array<ThriftStatement>
+}
+```
+
+### ThriftErrors
+
+```typescript
+{
+  type: "ThriftErrors",
+  errors: Array<ThriftError>
+}
+```
+
+### ThriftError
+
+```typescript
+{
+  type: "ParseError" | "ScanError",
+  message: string,
+  loc: TextLocation
+}
+```
+
+### Thrift Statements
+
+#### NamespaceDefinition
+
+```typescript
+{
+  type: "NamespaceDefinition",
+  scope: Identifier,
+  name: Identifier
+}
+```
+
+#### IncludeDefinition
+
+```typescript
+{
+  type: "IncludeDefinition",
+  path: StringLiteral
+}
+```
+
+#### TypedefDefinition
+
+```typescript
+{
+  type: "TypedefDefinition",
+  name: Identifier,
+  definitionType: FieldType
+}
+```
+
+#### ConstDefinition
+
+```typescript
+{
+  type: "ConstDefinition",
+  name: Identifier,
+  fieldType: FieldType,
+  initializer: ConstValue,
+}
+```
+
+#### EnumDefinition
+
+```typescript
+{
+  type: "EnumDefinition",
+  name: Identifier,
+  members: Array<EnumMember>
+}
+```
+
+#### StructDefinition
+
+```typescript
+{
+  type: "StructDefinition",
+  name: Identifier,
+  fields: Array<FieldDefinition>
+}
+```
+
+#### UnionDefinition
+
+```typescript
+{
+  type: "UnionDefinition",
+  name: Identifier,
+  fields: Array<FieldDefinition>
+}
+```
+
+#### ExceptionDefinition
+
+```typescript
+{
+  type: "ExceptionDefinition",
+  name: Identifier,
+  fields: Array<FieldDefinition>
+}
+```
+
+#### ServiceDefinition
+
+```typescript
+{
+  type: "ServiceDefinition",
+  name: Identifier,
+  extends: Identifier | null,
+  functions: Array<FunctionDefinition>
+}
+```
+
 ## Viewing with ASTExplorer
 
 ASTExplorer is a web app for visualizing ASTs. You type source. It shows you the resulting syntax tree based on the parser you've selected. I've included the integrations for this parser. To get that up and running you'll need to clone ASTExplorer.
