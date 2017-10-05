@@ -64,7 +64,9 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 }
 ```
 
-### ThriftError
+#### ThriftError
+
+A descriptor of what went wrong while parsing the specified Thrift source.
 
 ```typescript
 {
@@ -76,7 +78,11 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 
 ### Thrift Statements
 
+Thrift Statements represent each of the main constructs that can be defined in Thrift source.
+
 #### NamespaceDefinition
+
+"namespace <identifier> <identifier>"
 
 ```typescript
 {
@@ -88,6 +94,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 
 #### IncludeDefinition
 
+"include '<path>'"
+
 ```typescript
 {
   type: "IncludeDefinition",
@@ -96,6 +104,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 ```
 
 #### TypedefDefinition
+
+"typedef <field-type> <identifier>"
 
 ```typescript
 {
@@ -106,6 +116,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 ```
 
 #### ConstDefinition
+
+"const <field-type> <identifier> = <initializer>"
 
 ```typescript
 {
@@ -118,6 +130,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 
 #### EnumDefinition
 
+"enum <identifier> { <members> }"
+
 ```typescript
 {
   type: "EnumDefinition",
@@ -127,6 +141,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 ```
 
 #### StructDefinition
+
+"struct <identifier> { <fields> }"
 
 ```typescript
 {
@@ -138,6 +154,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 
 #### UnionDefinition
 
+"union <identifier> { <fields> }"
+
 ```typescript
 {
   type: "UnionDefinition",
@@ -148,6 +166,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 
 #### ExceptionDefinition
 
+"exception <identifier> { <fields> }"
+
 ```typescript
 {
   type: "ExceptionDefinition",
@@ -157,6 +177,8 @@ The root of the returned AST is either a ThriftDocument (successful parse) or a 
 ```
 
 #### ServiceDefinition
+
+"service <identifier> extends? <identifier> { <functions> }"
 
 ```typescript
 {
