@@ -82,7 +82,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### NamespaceDefinition
 
-"namespace <identifier> <identifier>"
+```
+namespace <identifier> <identifier>
+```
 
 ```typescript
 {
@@ -94,7 +96,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### IncludeDefinition
 
-"include '<path>'"
+```
+include '<path>'"
+```
 
 ```typescript
 {
@@ -105,7 +109,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### TypedefDefinition
 
-"typedef <field-type> <identifier>"
+```
+typedef <field-type> <identifier>
+```
 
 ```typescript
 {
@@ -117,7 +123,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### ConstDefinition
 
-"const <field-type> <identifier> = <initializer>"
+```
+const <field-type> <identifier> = <initializer>
+```
 
 ```typescript
 {
@@ -130,7 +138,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### EnumDefinition
 
-"enum <identifier> { <members> }"
+```
+enum <identifier> { <members> }
+```
 
 ```typescript
 {
@@ -142,7 +152,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### StructDefinition
 
-"struct <identifier> { <fields> }"
+```
+struct <identifier> { <fields> }
+```
 
 ```typescript
 {
@@ -154,7 +166,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### UnionDefinition
 
-"union <identifier> { <fields> }"
+```
+union <identifier> { <fields> }
+```
 
 ```typescript
 {
@@ -166,7 +180,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### ExceptionDefinition
 
-"exception <identifier> { <fields> }"
+```
+exception <identifier> { <fields> }
+```
 
 ```typescript
 {
@@ -178,7 +194,9 @@ Thrift Statements represent each of the main constructs that can be defined in T
 
 #### ServiceDefinition
 
-"service <identifier> extends? <identifier> { <functions> }"
+```
+service <identifier> extends? <identifier> { <functions> }
+```
 
 ```typescript
 {
