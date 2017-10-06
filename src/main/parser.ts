@@ -465,7 +465,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     if (equalToken !== null) {
       const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral)
       requireValue(numToken, `Equals token "=" must be followed by an Integer`)
-      initializer = createIntConstant(parseInt(numToken.text), numToken.loc)
+      initializer = createIntConstant(numToken.text, numToken.loc)
       loc = createTextLocation(nameToken.loc.start, initializer.loc.end)
     }
     else {
@@ -655,7 +655,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
       case SyntaxType.IntegerLiteral:
       case SyntaxType.HexLiteral:
-        return createIntConstant(parseInt(next.text), next.loc)
+        return createIntConstant(next.text, next.loc)
 
       case SyntaxType.FloatLiteral:
       case SyntaxType.ExponentialLiteral:
