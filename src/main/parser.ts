@@ -465,7 +465,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     if (equalToken !== null) {
       const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral)
       requireValue(numToken, `Equals token "=" must be followed by an Integer`)
-      initializer = createIntConstant(parseInt(numToken.text), numToken.loc)
+      initializer = createIntConstant(numToken.text, numToken.loc)
       loc = createTextLocation(nameToken.loc.start, initializer.loc.end)
     }
     else {
@@ -655,7 +655,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
       case SyntaxType.IntegerLiteral:
       case SyntaxType.HexLiteral:
-        return createIntConstant(parseInt(next.text), next.loc)
+        return createIntConstant(next.text, next.loc)
 
       case SyntaxType.FloatLiteral:
       case SyntaxType.ExponentialLiteral:
@@ -682,7 +682,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
   function parseMapValue(): ConstMap {
     // The parseValue method has already advanced the cursor
     const startLoc: TextLocation = currentToken().loc
-    const properties: Array<PropertyAssignment> = readMapValues()
+    const properties: Array<PropertyAssignment> = check(SyntaxType.RightBraceToken) ? [] : readMapValues()
     const closeBrace: Token = consume(SyntaxType.RightBraceToken)
     requireValue(closeBrace, `Closing brace missing from map definition`)
 
@@ -699,7 +699,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
   function parseListValue(): ConstList {
     // The parseValue method has already advanced the cursor
     const startLoc: TextLocation = currentToken().loc
-    const elements: Array<ConstValue> = readListValues()
+    const elements: Array<ConstValue> = check(SyntaxType.RightBracketToken) ? [] : readListValues()
     const closeBrace: Token = consume(SyntaxType.RightBracketToken)
     requireValue(closeBrace, `Closing square-bracket missing from list definition`)
     const endLoc: TextLocation = closeBrace.loc

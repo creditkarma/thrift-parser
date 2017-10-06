@@ -1037,7 +1037,7 @@ describe('Parser', () => {
               },
               initializer: {
                 type: SyntaxType.IntConstant,
-                value: 2,
+                value: '2',
                 loc: {
                   start: { line: 3, column: 15, index: 33 },
                   end: { line: 3, column: 16, index: 34 },
@@ -1119,7 +1119,7 @@ describe('Parser', () => {
               },
               initializer: {
                 type: SyntaxType.IntConstant,
-                value: 175,
+                value: '0xaf',
                 loc: {
                   start: { line: 3, column: 15, index: 33 },
                   end: { line: 3, column: 19, index: 37 },
@@ -2651,6 +2651,215 @@ describe('Parser', () => {
           loc: {
             start: { line: 2, column: 7, index: 7 },
             end: { line: 4, column: 8, index: 76 },
+          },
+        },
+      ],
+    }
+
+    assert.deepEqual(thrift, expected)
+  })
+
+  it('should correctly parse an empty list', () => {
+    const content: string = `
+      const list<string> EMPTY_LIST = []
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          comments: [],
+          fieldType: {
+            loc: {
+              end: {
+                column: 25,
+                index: 25,
+                line: 2,
+              },
+              start: {
+                column: 17,
+                index: 17,
+                line: 2,
+              },
+            },
+            type: SyntaxType.ListType,
+            valueType: {
+              loc: {
+                end: {
+                  column: 24,
+                  index: 24,
+                  line: 2,
+                },
+                start: {
+                  column: 18,
+                  index: 18,
+                  line: 2,
+                },
+              },
+              type: SyntaxType.StringKeyword,
+            },
+          },
+          initializer: {
+            elements: [],
+            loc: {
+              end: {
+                column: 41,
+                index: 41,
+                line: 2,
+              },
+              start: {
+                column: 40,
+                index: 40,
+                line: 2,
+              },
+            },
+            type: SyntaxType.ConstList,
+          },
+          loc: {
+            end: {
+              column: 41,
+              index: 41,
+              line: 2,
+            },
+            start: {
+              column: 7,
+              index: 7,
+              line: 2,
+            },
+          },
+          name: {
+            loc: {
+              end: {
+                column: 36,
+                index: 36,
+                line: 2,
+              },
+              start: {
+                column: 26,
+                index: 26,
+                line: 2,
+              },
+            },
+            type: SyntaxType.Identifier,
+            value: 'EMPTY_LIST',
+          },
+          type: SyntaxType.ConstDefinition,
+        },
+      ],
+    }
+
+    assert.deepEqual(thrift, expected)
+  })
+
+  it('should correctly parse an empty map', () => {
+    const content: string = `
+      const map<string, string> EMPTY_MAP = {}
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ConstDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'EMPTY_MAP',
+            loc: {
+              start: {
+                line: 2,
+                column: 33,
+                index: 33,
+              },
+              end: {
+                line: 2,
+                column: 42,
+                index: 42,
+              },
+            },
+          },
+          fieldType: {
+            type: SyntaxType.MapType,
+            keyType: {
+              type: SyntaxType.StringKeyword,
+              loc: {
+                start: {
+                  line: 2,
+                  column: 17,
+                  index: 17,
+                },
+                end: {
+                  line: 2,
+                  column: 23,
+                  index: 23,
+                },
+              },
+            },
+            valueType: {
+              type: SyntaxType.StringKeyword,
+              loc: {
+                start: {
+                  line: 2,
+                  column: 25,
+                  index: 25,
+                },
+                end: {
+                  line: 2,
+                  column: 31,
+                  index: 31,
+                },
+              },
+            },
+            loc: {
+              start: {
+                line: 2,
+                column: 16,
+                index: 16,
+              },
+              end: {
+                line: 2,
+                column: 32,
+                index: 32,
+              },
+            },
+          },
+          initializer: {
+            type: SyntaxType.ConstMap,
+            properties: [],
+            loc: {
+              start: {
+                line: 2,
+                column: 46,
+                index: 46,
+              },
+              end: {
+                line: 2,
+                column: 47,
+                index: 47,
+              },
+            },
+          },
+          comments: [],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7,
+            },
+            end: {
+              line: 2,
+              column: 47,
+              index: 47,
+            },
           },
         },
       ],

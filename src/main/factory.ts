@@ -126,7 +126,7 @@ export function createStringLiteral(value: string, loc: TextLocation): StringLit
   }
 }
 
-export function createIntConstant(value: number, loc: TextLocation): IntConstant {
+export function createIntConstant(value: string, loc: TextLocation): IntConstant {
   return { type: SyntaxType.IntConstant, value, loc }
 }
 
