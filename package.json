@@ -3,10 +3,10 @@
   "version": "0.0.11",
   "description": "A parser for Thrift written in TypeScript",
   "main": "./dist/main/index.js",
+  "types": "./dist/main/index.d.ts",
   "bin": {
     "thrift-parser": "./dist/main/bin/index.js"
   },
-  "types": "./dist/index.d.ts",
   "keywords": [
     "Thrift",
     "TypeScript"
