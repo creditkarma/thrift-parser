@@ -234,7 +234,7 @@ export interface BooleanLiteral extends SyntaxNode {
 
 export interface IntConstant extends SyntaxNode {
   type: SyntaxType.IntConstant
-  value: number
+  value: string
 }
 
 export interface DoubleConstant extends SyntaxNode {
