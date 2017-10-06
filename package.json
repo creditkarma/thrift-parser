@@ -1,6 +1,6 @@
 {
   "name": "@creditkarma/thrift-parser",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A parser for Thrift written in TypeScript",
   "main": "./dist/main/index.js",
   "bin": {
