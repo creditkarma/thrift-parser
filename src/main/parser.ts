@@ -682,7 +682,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
   function parseMapValue(): ConstMap {
     // The parseValue method has already advanced the cursor
     const startLoc: TextLocation = currentToken().loc
-    const properties: Array<PropertyAssignment> = readMapValues()
+    const properties: Array<PropertyAssignment> = check(SyntaxType.RightBraceToken) ? [] : readMapValues()
     const closeBrace: Token = consume(SyntaxType.RightBraceToken)
     requireValue(closeBrace, `Closing brace missing from map definition`)
 
@@ -699,7 +699,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
   function parseListValue(): ConstList {
     // The parseValue method has already advanced the cursor
     const startLoc: TextLocation = currentToken().loc
-    const elements: Array<ConstValue> = readListValues()
+    const elements: Array<ConstValue> = check(SyntaxType.RightBracketToken) ? [] : readListValues()
     const closeBrace: Token = consume(SyntaxType.RightBracketToken)
     requireValue(closeBrace, `Closing square-bracket missing from list definition`)
     const endLoc: TextLocation = closeBrace.loc
