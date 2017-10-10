@@ -26,6 +26,7 @@ export const KEYWORDS: KeywordMap = {
   i32: SyntaxType.I32Keyword,
   i64: SyntaxType.I64Keyword,
   exception: SyntaxType.ExceptionKeyword,
+  binary: SyntaxType.BinaryKeyword,
   bool: SyntaxType.BoolKeyword,
   byte: SyntaxType.ByteKeyword,
   required: SyntaxType.RequiredKeyword,

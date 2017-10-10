@@ -2881,4 +2881,86 @@ describe('Parser', () => {
 
     assert.deepEqual(thrift, expected)
   })
+
+  it('should correctly parse binary type', () => {
+    const content: string = `
+      const binary a = "test"
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ConstDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'a',
+            loc: {
+              start: {
+                line: 2,
+                column: 20,
+                index: 20,
+              },
+              end: {
+                line: 2,
+                column: 21,
+                index: 21,
+              },
+            },
+          },
+          fieldType: {
+            type: SyntaxType.BinaryKeyword,
+            loc: {
+              start: {
+                line: 2,
+                column: 13,
+                index: 13,
+              },
+              end: {
+                line: 2,
+                column: 19,
+                index: 19,
+              },
+            },
+          },
+          initializer: {
+            type: SyntaxType.StringLiteral,
+            value: 'test',
+            loc: {
+              start: {
+                line: 2,
+                column: 24,
+                index: 24,
+              },
+              end: {
+                line: 2,
+                column: 30,
+                index: 30,
+              },
+            },
+          },
+          comments: [],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7,
+            },
+            end: {
+              line: 2,
+              column: 30,
+              index: 30,
+            },
+          },
+        },
+      ],
+    }
+
+    assert.deepEqual(thrift, expected)
+  })
 })
