@@ -232,14 +232,34 @@ export interface BooleanLiteral extends SyntaxNode {
   value: boolean
 }
 
+export interface IntegerLiteral extends SyntaxNode {
+  type: SyntaxType.IntegerLiteral
+  value: string
+}
+
+export interface HexLiteral extends SyntaxNode {
+  type: SyntaxType.HexLiteral
+  value: string
+}
+
+export interface FloatLiteral extends SyntaxNode {
+  type: SyntaxType.FloatLiteral
+  value: string
+}
+
+export interface ExponentialLiteral extends SyntaxNode {
+  type: SyntaxType.ExponentialLiteral
+  value: string
+}
+
 export interface IntConstant extends SyntaxNode {
   type: SyntaxType.IntConstant
-  value: string
+  value: IntegerLiteral | HexLiteral
 }
 
 export interface DoubleConstant extends SyntaxNode {
   type: SyntaxType.DoubleConstant
-  value: number
+  value: FloatLiteral | ExponentialLiteral
 }
 
 export interface ConstMap extends SyntaxNode {

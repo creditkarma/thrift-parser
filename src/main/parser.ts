@@ -4,6 +4,7 @@ import {
   ConstList,
   ConstMap,
   ConstValue,
+  DoubleConstant,
   EnumDefinition,
   EnumMember,
   ExceptionDefinition,
@@ -41,9 +42,13 @@ import {
   createConstList,
   createConstMap,
   createDoubleConstant,
+  createExponentialLiteral,
   createFieldID,
+  createFloatLiteral,
+  createHexLiteral,
   createIdentifier,
   createIntConstant,
+  createIntegerLiteral,
   createKeywordFieldType,
   createMapFieldType,
   createParseError,
@@ -458,14 +463,12 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const nameToken: Token = consume(SyntaxType.Identifier)
     requireValue(nameToken, `EnumMember must have identifier`)
 
-    const equalToken: Token = consume(SyntaxType.EqualToken)
-
     let loc: TextLocation = null
     let initializer: IntConstant = null
-    if (equalToken !== null) {
+    if (consume(SyntaxType.EqualToken) !== null) {
       const numToken: Token = consume(SyntaxType.IntegerLiteral, SyntaxType.HexLiteral)
       requireValue(numToken, `Equals token "=" must be followed by an Integer`)
-      initializer = createIntConstant(numToken.text, numToken.loc)
+      initializer = parseIntValue(numToken)
       loc = createTextLocation(nameToken.loc.start, initializer.loc.end)
     }
     else {
@@ -655,11 +658,11 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
       case SyntaxType.IntegerLiteral:
       case SyntaxType.HexLiteral:
-        return createIntConstant(next.text, next.loc)
+        return parseIntValue(next)
 
       case SyntaxType.FloatLiteral:
       case SyntaxType.ExponentialLiteral:
-        return createDoubleConstant(parseFloat(next.text), next.loc)
+        return parseDoubleValue(next)
 
       case SyntaxType.TrueKeyword:
         return createBooleanLiteral(true, next.loc)
@@ -675,6 +678,44 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
       default:
         return null
+    }
+  }
+
+  function parseIntValue(token: Token): IntConstant {
+    switch (token.type) {
+      case SyntaxType.IntegerLiteral:
+        return createIntConstant(
+          createIntegerLiteral(token.text, token.loc),
+          token.loc,
+        )
+
+      case SyntaxType.HexLiteral:
+        return createIntConstant(
+          createHexLiteral(token.text, token.loc),
+          token.loc,
+        )
+
+      default:
+        reportError(`IntConstant expected but found: ${token.type}`)
+    }
+  }
+
+  function parseDoubleValue(token: Token): DoubleConstant {
+    switch (token.type) {
+      case SyntaxType.FloatLiteral:
+        return createDoubleConstant(
+          createFloatLiteral(token.text, token.loc),
+          token.loc,
+        )
+
+      case SyntaxType.ExponentialLiteral:
+        return createDoubleConstant(
+          createExponentialLiteral(token.text, token.loc),
+          token.loc,
+        )
+
+      default:
+        reportError(`DoubleConstant expected but found: ${token.type}`)
     }
   }
 

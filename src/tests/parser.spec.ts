@@ -1037,7 +1037,14 @@ describe('Parser', () => {
               },
               initializer: {
                 type: SyntaxType.IntConstant,
-                value: '2',
+                value: {
+                  type: SyntaxType.IntegerLiteral,
+                  value: '2',
+                  loc: {
+                    start: { line: 3, column: 15, index: 33 },
+                    end: { line: 3, column: 16, index: 34 },
+                  },
+                },
                 loc: {
                   start: { line: 3, column: 15, index: 33 },
                   end: { line: 3, column: 16, index: 34 },
@@ -1119,7 +1126,14 @@ describe('Parser', () => {
               },
               initializer: {
                 type: SyntaxType.IntConstant,
-                value: '0xaf',
+                value: {
+                  type: SyntaxType.HexLiteral,
+                  value: '0xaf',
+                  loc: {
+                    start: { line: 3, column: 15, index: 33 },
+                    end: { line: 3, column: 19, index: 37 },
+                  },
+                },
                 loc: {
                   start: { line: 3, column: 15, index: 33 },
                   end: { line: 3, column: 19, index: 37 },

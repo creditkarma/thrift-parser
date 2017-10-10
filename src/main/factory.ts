@@ -7,13 +7,17 @@ import {
   ConstValue,
   DoubleConstant,
   ErrorType,
+  ExponentialLiteral,
   FieldDefinition,
   FieldID,
   FieldRequired,
   FieldType,
+  FloatLiteral,
   FunctionType,
+  HexLiteral,
   Identifier,
   IntConstant,
+  IntegerLiteral,
   KeywordType,
   ListType,
   MapType,
@@ -126,11 +130,27 @@ export function createStringLiteral(value: string, loc: TextLocation): StringLit
   }
 }
 
-export function createIntConstant(value: string, loc: TextLocation): IntConstant {
+export function createIntegerLiteral(value: string, loc: TextLocation): IntegerLiteral {
+  return { type: SyntaxType.IntegerLiteral, value, loc }
+}
+
+export function createHexLiteral(value: string, loc: TextLocation): HexLiteral {
+  return { type: SyntaxType.HexLiteral, value, loc }
+}
+
+export function createFloatLiteral(value: string, loc: TextLocation): FloatLiteral {
+  return { type: SyntaxType.FloatLiteral, value, loc }
+}
+
+export function createExponentialLiteral(value: string, loc: TextLocation): ExponentialLiteral {
+  return { type: SyntaxType.ExponentialLiteral, value, loc }
+}
+
+export function createIntConstant(value: IntegerLiteral | HexLiteral, loc: TextLocation): IntConstant {
   return { type: SyntaxType.IntConstant, value, loc }
 }
 
-export function createDoubleConstant(value: number, loc: TextLocation): DoubleConstant {
+export function createDoubleConstant(value: FloatLiteral | ExponentialLiteral, loc: TextLocation): DoubleConstant {
   return { type: SyntaxType.DoubleConstant, value, loc }
 }
 
