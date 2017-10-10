@@ -817,6 +817,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       case SyntaxType.SetKeyword:
         return parseSetType()
 
+      case SyntaxType.BinaryKeyword:
       case SyntaxType.BoolKeyword:
       case SyntaxType.ByteKeyword:
       case SyntaxType.StringKeyword:
