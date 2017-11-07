@@ -213,9 +213,8 @@ ASTExplorer is a web app for visualizing ASTs. You type source. It shows you the
 
 ```sh
 $ git clone https://github.com/fkling/astexplorer.git
-$ cd astexplorer
-$ git submodule update --init
-$ cd website/
+$ cd astexplorer/website
+$ npm install
 ```
 
 In another terminal window, (until we publish this parser) you'll need to npm link to get things to work.
@@ -250,6 +249,18 @@ $ npm start
 By default this will start ASTExplorer on localhost:8080
 
 There is a dropdown to select the language you want to use, choose 'Thrift IDL'
+
+Note: I have had some trouble getting `npm run build` to work. However, the watch build is much more reliable.
+
+```sh
+$ npm run watch
+```
+
+Then in another terminal window run `start`.
+
+```sh
+$ npm start
+```
 
 ## Contributing
 
