@@ -12,8 +12,9 @@
     "TypeScript"
   ],
   "scripts": {
-    "build": "rm -rf ./dist; tsc",
+    "clean": "rimraf dist/",
     "lint": "tslint --fix src/**/*.ts",
+    "build": "npm run clean && npm run lint && tsc",
     "test:cli": "ts-node ./src/main/bin/index.ts ./fixtures/errors.thrift",
     "test": "npm run lint && NODE_ENV=test mocha --opts mocha.opts",
     "coverage": "NODE_ENV=test nyc mocha --opts mocha.cover.opts",
@@ -23,7 +24,7 @@
     "release:publish": "git push --follow-tags"
   },
   "files": [
-    "dist/"
+    "dist/main"
   ],
   "author": "Credit Karma",
   "repository": {
@@ -40,7 +41,7 @@
     "nyc": "^11.1.0",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
-    "typescript": "^2.4.2"
+    "typescript": "^2.6.1"
   },
   "nyc": {
     "include": [

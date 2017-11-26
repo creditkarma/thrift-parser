@@ -4,6 +4,8 @@ A parser for Thrift written in TypeScript. The resulting AST can be used to code
 
 ## Usage
 
+A successful parse returns a ThriftDocument object. An unsuccessful parse returns a ThriftErrors object.
+
 ```js
 import { parse, ThriftDocument } from '@creditkarma/thrift-parser'
 
@@ -14,7 +16,14 @@ const rawThrift: string =`
   }
 `;
 
-const thriftAST: ThriftDocument = parse(rawThrift);
+const thriftAST: ThriftDocument | ThriftErrors = parse(rawThrift);
+
+switch(thriftAST.type) {
+  case 'ThriftDocument':
+    // Do something with valid AST
+  case 'ThriftErrors':
+    // Report or recover from errors
+}
 ```
 
 You can also use Thrift Parser from the command line or npm scripts. When using from the command line the generated AST is saved to file as JSON.
@@ -217,18 +226,10 @@ $ cd astexplorer/website
 $ npm install
 ```
 
-In another terminal window, (until we publish this parser) you'll need to npm link to get things to work.
-
-From the root directory of this parser, where the package.json is...
+You will now need to install thrift-parser for ASTExplorer
 
 ```sh
-$ npm link
-```
-
-Then back in your terminal for ASTExplorer (from astexplorer/website)...
-
-```sh
-$ npm link @creditkarma/thrift-parser
+$ npm install @creditkarma/thrift-parser
 ```
 
 Cool, now we need to copy some stuff into the ASTExplorer project.

@@ -76,9 +76,9 @@ export function organize(raw: ThriftDocument): ThriftDocument {
     body: [
       ...namespaces,
       ...includes,
+      ...enums,
       ...typedefs,
       ...constants,
-      ...enums,
       ...structs,
       ...unions,
       ...exceptions,

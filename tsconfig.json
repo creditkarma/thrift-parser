@@ -13,18 +13,9 @@
     "pretty": true,
     "removeComments": false,
     "lib": [
-      "ES6"
-    ],
-    "types": [
-      "@types/mocha",
-      "@types/chai",
-      "@types/node"
+      "es6"
     ]
   },
-  "files": [
-    "./src/main/index.ts",
-    "./src/main/bin/index.ts"
-  ],
   "exclude": [
     "node_modules",
     "dist"
