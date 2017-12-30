@@ -199,7 +199,12 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
         break
 
       case '-':
-        addToken(SyntaxType.MinusToken)
+        if (isDigit(peek())) {
+          number()
+        }
+        else {
+          addToken(SyntaxType.MinusToken)
+        }
         break
 
       default:

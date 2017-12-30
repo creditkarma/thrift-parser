@@ -224,6 +224,103 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected)
   })
 
+  it('should correctly parse a value initialized to a negative number', () => {
+    const content: string = `
+      const i32 test = -1
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.ConstDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'test',
+            loc: {
+              start: {
+                line: 2,
+                column: 17,
+                index: 17,
+              },
+              end: {
+                line: 2,
+                column: 21,
+                index: 21,
+              },
+            },
+          },
+          fieldType: {
+            type: SyntaxType.I32Keyword,
+            loc: {
+              start: {
+                line: 2,
+                column: 13,
+                index: 13,
+              },
+              end: {
+                line: 2,
+                column: 16,
+                index: 16,
+              },
+            },
+          },
+          initializer: {
+            type: SyntaxType.IntConstant,
+            value: {
+              type: SyntaxType.IntegerLiteral,
+              value: '-1',
+              loc: {
+                start: {
+                  line: 2,
+                  column: 24,
+                  index: 24,
+                },
+                end: {
+                  line: 2,
+                  column: 26,
+                  index: 26,
+                },
+              },
+            },
+            loc: {
+              start: {
+                line: 2,
+                column: 24,
+                index: 24,
+              },
+              end: {
+                line: 2,
+                column: 26,
+                index: 26,
+              },
+            },
+          },
+          comments: [],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7,
+            },
+            end: {
+              line: 2,
+              column: 26,
+              index: 26,
+            },
+          },
+        },
+      ],
+    }
+
+    assert.deepEqual(thrift, expected)
+  })
+
   it('should correctly parse the syntax of a typedef definition', () => {
     const content: string = `
       typedef string name
@@ -2884,7 +2981,7 @@ describe('Parser', () => {
 
   it('should correctly parse binary type', () => {
     const content: string = `
-      const binary a = "test"
+      const binary a = 'test'
     `
     const scanner: Scanner = createScanner(content)
     const tokens: Array<Token> = scanner.scan()
