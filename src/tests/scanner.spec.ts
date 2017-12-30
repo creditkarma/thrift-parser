@@ -50,7 +50,7 @@ describe('Scanner', () => {
 
   it('should correctly recognize strings with double quotes', () => {
     const content = `
-      "this is a test"
+      'this is a test'
     `
     const scanner: Scanner = createScanner(content)
     const tokens: Array<Token> = scanner.scan()
@@ -861,6 +861,115 @@ describe('Scanner', () => {
             line: 3,
             column: 5,
             index: 45,
+          },
+        },
+      },
+    ]
+
+    assert.deepEqual(tokens, expected)
+  })
+
+  it('should correctly handle assignment to a negative number', () => {
+    const content = `
+      const i32 test = -1
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+
+    const expected: Array<Token> = [
+      {
+        type: SyntaxType.ConstKeyword,
+        text: 'const',
+        loc: {
+          start: {
+            line: 2,
+            column: 7,
+            index: 7,
+          },
+          end: {
+            line: 2,
+            column: 12,
+            index: 12,
+          },
+        },
+      },
+      {
+        type: SyntaxType.I32Keyword,
+        text: 'i32',
+        loc: {
+          start: {
+            line: 2,
+            column: 13,
+            index: 13,
+          },
+          end: {
+            line: 2,
+            column: 16,
+            index: 16,
+          },
+        },
+      },
+      {
+        type: SyntaxType.Identifier,
+        text: 'test',
+        loc: {
+          start: {
+            line: 2,
+            column: 17,
+            index: 17,
+          },
+          end: {
+            line: 2,
+            column: 21,
+            index: 21,
+          },
+        },
+      },
+      {
+        type: SyntaxType.EqualToken,
+        text: '',
+        loc: {
+          start: {
+            line: 2,
+            column: 22,
+            index: 22,
+          },
+          end: {
+            line: 2,
+            column: 23,
+            index: 23,
+          },
+        },
+      },
+      {
+        type: SyntaxType.IntegerLiteral,
+        text: '-1',
+        loc: {
+          start: {
+            line: 2,
+            column: 24,
+            index: 24,
+          },
+          end: {
+            line: 2,
+            column: 26,
+            index: 26,
+          },
+        },
+      },
+      {
+        type: SyntaxType.EOF,
+        text: '',
+        loc: {
+          start: {
+            line: 3,
+            column: 4,
+            index: 31,
+          },
+          end: {
+            line: 3,
+            column: 5,
+            index: 31,
           },
         },
       },
