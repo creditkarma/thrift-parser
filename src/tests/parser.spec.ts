@@ -954,6 +954,237 @@ describe('Parser', () => {
     assert.deepEqual(thrift, expected)
   })
 
+  it('should correctly parse the syntax of a struct with initializers', () => {
+    const content: string = `
+      struct Test {
+        1: required i32 field1 = -1
+        2: required bool field2 = false,
+      }
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+
+    const parser: Parser = createParser(tokens)
+    const thrift: ThriftDocument = parser.parse()
+
+    const expected: ThriftDocument = {
+      type: SyntaxType.ThriftDocument,
+      body: [
+        {
+          type: SyntaxType.StructDefinition,
+          name: {
+            type: SyntaxType.Identifier,
+            value: 'Test',
+            loc: {
+              start: {
+                line: 2,
+                column: 14,
+                index: 14,
+              },
+              end: {
+                line: 2,
+                column: 18,
+                index: 18,
+              },
+            },
+          },
+          fields: [
+            {
+              type: SyntaxType.FieldDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'field1',
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 25,
+                    index: 45,
+                  },
+                  end: {
+                    line: 3,
+                    column: 31,
+                    index: 51,
+                  },
+                },
+              },
+              fieldID: {
+                type: SyntaxType.FieldID,
+                value: 1,
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 9,
+                    index: 29,
+                  },
+                  end: {
+                    line: 3,
+                    column: 11,
+                    index: 31,
+                  },
+                },
+              },
+              fieldType: {
+                type: SyntaxType.I32Keyword,
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 21,
+                    index: 41,
+                  },
+                  end: {
+                    line: 3,
+                    column: 24,
+                    index: 44,
+                  },
+                },
+              },
+              requiredness: 'required',
+              defaultValue: {
+                type: SyntaxType.IntConstant,
+                value: {
+                  type: SyntaxType.IntegerLiteral,
+                  value: '-1',
+                  loc: {
+                    start: {
+                      line: 3,
+                      column: 34,
+                      index: 54,
+                    },
+                    end: {
+                      line: 3,
+                      column: 36,
+                      index: 56,
+                    },
+                  },
+                },
+                loc: {
+                  start: {
+                    line: 3,
+                    column: 34,
+                    index: 54,
+                  },
+                  end: {
+                    line: 3,
+                    column: 36,
+                    index: 56,
+                  },
+                },
+              },
+              comments: [],
+              loc: {
+                start: {
+                  line: 3,
+                  column: 9,
+                  index: 29,
+                },
+                end: {
+                  line: 3,
+                  column: 36,
+                  index: 56,
+                },
+              },
+            },
+            {
+              type: SyntaxType.FieldDefinition,
+              name: {
+                type: SyntaxType.Identifier,
+                value: 'field2',
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 26,
+                    index: 82,
+                  },
+                  end: {
+                    line: 4,
+                    column: 32,
+                    index: 88,
+                  },
+                },
+              },
+              fieldID: {
+                type: SyntaxType.FieldID,
+                value: 2,
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 9,
+                    index: 65,
+                  },
+                  end: {
+                    line: 4,
+                    column: 11,
+                    index: 67,
+                  },
+                },
+              },
+              fieldType: {
+                type: SyntaxType.BoolKeyword,
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 21,
+                    index: 77,
+                  },
+                  end: {
+                    line: 4,
+                    column: 25,
+                    index: 81,
+                  },
+                },
+              },
+              requiredness: 'required',
+              defaultValue: {
+                type: SyntaxType.BooleanLiteral,
+                value: false,
+                loc: {
+                  start: {
+                    line: 4,
+                    column: 35,
+                    index: 91,
+                  },
+                  end: {
+                    line: 4,
+                    column: 40,
+                    index: 96,
+                  },
+                },
+              },
+              comments: [],
+              loc: {
+                start: {
+                  line: 4,
+                  column: 9,
+                  index: 65,
+                },
+                end: {
+                  line: 4,
+                  column: 41,
+                  index: 97,
+                },
+              },
+            },
+          ],
+          comments: [],
+          loc: {
+            start: {
+              line: 2,
+              column: 7,
+              index: 7,
+            },
+            end: {
+              line: 5,
+              column: 8,
+              index: 105,
+            },
+          },
+        },
+      ],
+    }
+
+    assert.deepEqual(thrift, expected)
+  })
+
   it('should correctly parse the syntax of an enum', () => {
     const content: string = `
       enum Test {
