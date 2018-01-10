@@ -713,6 +713,132 @@ describe('Scanner', () => {
     assert.deepEqual(tokens, expected)
   })
 
+  it(`should correctly handle an empty comment line`, () => {
+    const content: string = `
+      #
+      const i32 id = 45
+    `
+    const scanner: Scanner = createScanner(content)
+    const tokens: Array<Token> = scanner.scan()
+
+    const expected: Array<Token> = [
+      {
+        type: SyntaxType.CommentLine,
+        text: '',
+        loc: {
+          start: {
+            line: 2,
+            column: 7,
+            index: 7,
+          },
+          end: {
+            line: 2,
+            column: 9,
+            index: 9,
+          },
+        },
+      },
+      {
+        type: SyntaxType.ConstKeyword,
+        text: 'const',
+        loc: {
+          start: {
+            line: 2,
+            column: 15,
+            index: 15,
+          },
+          end: {
+            line: 2,
+            column: 20,
+            index: 20,
+          },
+        },
+      },
+      {
+        type: SyntaxType.I32Keyword,
+        text: 'i32',
+        loc: {
+          start: {
+            line: 2,
+            column: 21,
+            index: 21,
+          },
+          end: {
+            line: 2,
+            column: 24,
+            index: 24,
+          },
+        },
+      },
+      {
+        type: SyntaxType.Identifier,
+        text: 'id',
+        loc: {
+          start: {
+            line: 2,
+            column: 25,
+            index: 25,
+          },
+          end: {
+            line: 2,
+            column: 27,
+            index: 27,
+          },
+        },
+      },
+      {
+        type: SyntaxType.EqualToken,
+        text: '',
+        loc: {
+          start: {
+            line: 2,
+            column: 28,
+            index: 28,
+          },
+          end: {
+            line: 2,
+            column: 29,
+            index: 29,
+          },
+        },
+      },
+      {
+        type: SyntaxType.IntegerLiteral,
+        text: '45',
+        loc: {
+          start: {
+            line: 2,
+            column: 30,
+            index: 30,
+          },
+          end: {
+            line: 2,
+            column: 32,
+            index: 32,
+          },
+        },
+      },
+      {
+        type: SyntaxType.EOF,
+        text: '',
+        loc: {
+          start: {
+            line: 3,
+            column: 4,
+            index: 37,
+          },
+          end: {
+            line: 3,
+            column: 5,
+            index: 37,
+          },
+        },
+      },
+    ]
+
+    assert.deepEqual(tokens, expected)
+  })
+
   it(`should correctly handle multi-line comments with '/* ... */'`, () => {
     const content: string = `
       /* This is a struct

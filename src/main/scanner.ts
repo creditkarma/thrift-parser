@@ -305,17 +305,20 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
     if (current() === '#') {
       advance()
     } else {
+      // Advance past '//'
       advance()
       advance()
     }
 
-    // A comment goes until the end of the line.
-    while (peek() !== '\n' && !isAtEnd()) {
+    if (current() !== '\n') {
+      // A comment goes until the end of the line.
+      while (peek() !== '\n' && !isAtEnd()) {
+        comment += current()
+        advance()
+      }
+
       comment += current()
-      advance()
     }
-
-    comment += current()
 
     addToken(SyntaxType.CommentLine, comment.trim())
   }
