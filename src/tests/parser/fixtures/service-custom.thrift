@@ -1,0 +1,3 @@
+service Test {
+    TestType test()
+}

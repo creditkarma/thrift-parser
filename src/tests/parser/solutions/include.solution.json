@@ -1,0 +1,37 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "IncludeDefinition",
+            "path": {
+                "type": "StringLiteral",
+                "value": "test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 15,
+                        "index": 14
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 15,
+                    "index": 14
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,3 @@
+service Test {
+    bool test()
+}

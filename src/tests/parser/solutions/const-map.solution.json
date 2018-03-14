@@ -1,0 +1,193 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "ConstDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "MAP_CONST",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 26,
+                        "index": 25
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 35,
+                        "index": 34
+                    }
+                }
+            },
+            "fieldType": {
+                "type": "MapType",
+                "keyType": {
+                    "type": "StringKeyword",
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 11,
+                            "index": 10
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 17,
+                            "index": 16
+                        }
+                    }
+                },
+                "valueType": {
+                    "type": "StringKeyword",
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 18,
+                            "index": 17
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 24,
+                            "index": 23
+                        }
+                    }
+                },
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 10,
+                        "index": 9
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 25,
+                        "index": 24
+                    }
+                }
+            },
+            "initializer": {
+                "type": "ConstMap",
+                "properties": [
+                    {
+                        "type": "PropertyAssignment",
+                        "name": {
+                            "type": "StringLiteral",
+                            "value": "hello",
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 39,
+                                    "index": 38
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 46,
+                                    "index": 45
+                                }
+                            }
+                        },
+                        "initializer": {
+                            "type": "StringLiteral",
+                            "value": "world",
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 48,
+                                    "index": 47
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 55,
+                                    "index": 54
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 39,
+                                "index": 38
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 55,
+                                "index": 54
+                            }
+                        }
+                    },
+                    {
+                        "type": "PropertyAssignment",
+                        "name": {
+                            "type": "StringLiteral",
+                            "value": "foo",
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 57,
+                                    "index": 56
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 62,
+                                    "index": 61
+                                }
+                            }
+                        },
+                        "initializer": {
+                            "type": "StringLiteral",
+                            "value": "bar",
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 64,
+                                    "index": 63
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 69,
+                                    "index": 68
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 57,
+                                "index": 56
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 69,
+                                "index": 68
+                            }
+                        }
+                    }
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 39,
+                        "index": 38
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 71,
+                        "index": 70
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 71,
+                    "index": 70
+                }
+            }
+        }
+    ]
+}

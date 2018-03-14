@@ -1,461 +1,433 @@
-import {
-  ErrorReporter,
-  noopReporter,
-} from './debugger'
+import { ErrorReporter, noopReporter } from './debugger'
 import { createScanError, createToken } from './factory'
 import { KEYWORDS } from './keywords'
 import { SyntaxType, TextLocation, Token } from './types'
 
 function isDigit(value: string): boolean {
-  return (
-    value >= '0' &&
-    value <= '9'
-  )
+    return value >= '0' && value <= '9'
 }
 
 function isAlpha(value: string): boolean {
-  return (
-    (value >= 'a' && value <= 'z') ||
-    (value >= 'A' && value <= 'Z')
-  )
+    return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z')
 }
 
 // The first character of an Identifier can be a letter or underscore
 function isAlphaOrUnderscore(value: string): boolean {
-  return (
-    isAlpha(value) ||
-    (value === '_')
-  )
+    return isAlpha(value) || value === '_'
 }
 
 function isValidIdentifier(value: string): boolean {
-  return (
-    isAlphaOrUnderscore(value) ||
-    isDigit(value) ||
-    (value === '.') ||
-    (value === '-')
-  )
+    return isAlphaOrUnderscore(value) || isDigit(value) || value === '.' || value === '-'
 }
 
 function isHexDigit(value: string): boolean {
-  return (
-    (value >= '0' && value <= '9') ||
-    (value >= 'A' && value <= 'F') ||
-    (value >= 'a' && value <= 'f')
-  )
+    return (value >= '0' && value <= '9') || (value >= 'A' && value <= 'F') || (value >= 'a' && value <= 'f')
 }
 
 function isWhiteSpace(char: string): boolean {
-  switch (char) {
-    case ' ':
-    case '\r':
-    case '\t':
-    case '\n':
-      return true
+    switch (char) {
+        case ' ':
+        case '\r':
+        case '\t':
+        case '\n':
+            return true
 
-    default:
-      return false
-  }
+        default:
+            return false
+    }
 }
 
 class ScanError extends Error {
-  public message: string
-  public loc: TextLocation
-  constructor(msg: string, loc: TextLocation) {
-    super(msg)
-    this.message = msg
-    this.loc = loc
-  }
+    public message: string
+    public loc: TextLocation
+    constructor(msg: string, loc: TextLocation) {
+        super(msg)
+        this.message = msg
+        this.loc = loc
+    }
 }
 
 export interface Scanner {
-  scan(): Array<Token>
-  syncronize(): void
+    scan(): Array<Token>
+    syncronize(): void
 }
 
 export function createScanner(src: string, report: ErrorReporter = noopReporter) {
-  const source: string = src
-  const tokens: Array<Token> = []
-  let line: number = 1
-  let column: number = 1
-  let startLine: number = 1
-  let startColumn: number = 1
-  let startIndex: number = 0
-  let currentIndex: number = 0
+    const source: string = src
+    const tokens: Array<Token> = []
+    let line: number = 1
+    let column: number = 1
+    let startLine: number = 1
+    let startColumn: number = 1
+    let startIndex: number = 0
+    let currentIndex: number = 0
 
-  function scan(): Array<Token> {
-    while (!isAtEnd()) {
-      try {
+    function scan(): Array<Token> {
+        while (!isAtEnd()) {
+            try {
+                startIndex = currentIndex
+                startLine = line
+                startColumn = column
+                scanToken()
+            } catch (e) {
+                report(createScanError(e.message, e.loc))
+            }
+        }
+
         startIndex = currentIndex
-        startLine = line
-        startColumn = column
-        scanToken()
-      } catch (e) {
-        report(createScanError(e.message, e.loc))
-      }
+        addToken(SyntaxType.EOF)
+
+        return tokens
     }
 
-    startIndex = currentIndex
-    addToken(SyntaxType.EOF)
-
-    return tokens
-  }
-
-  // Find the beginning of the next word to restart parse after error
-  function syncronize(): void {
-    while (!isAtEnd() && !isWhiteSpace(current())) {
-      advance()
+    // Find the beginning of the next word to restart parse after error
+    function syncronize(): void {
+        while (!isAtEnd() && !isWhiteSpace(current())) {
+            advance()
+        }
     }
-  }
 
-  function scanToken(): void {
-    const next = advance()
-    switch (next) {
-      case ' ':
-      case '\r':
-      case '\t':
-        // Ignore whitespace.
-        break
+    function scanToken(): void {
+        const next = advance()
+        switch (next) {
+            case ' ':
+            case '\r':
+            case '\t':
+                // Ignore whitespace.
+                break
 
-      case '\n':
-        nextLine()
-        break
+            case '\n':
+                nextLine()
+                break
 
-      case '&':
-        // Thirft supports (undocumented by the grammar) a syntax for c-style pointers
-        // Pointers are indicated by the '&' token. As these are not relevant to JavaScript we
-        // drop them here. This may not be the best thing to do, perhaps should leave them in
-        // the parse tree and allow consumers to deal.
-        break
+            case '&':
+                // Thirft supports (undocumented by the grammar) a syntax for c-style pointers
+                // Pointers are indicated by the '&' token. As these are not relevant to JavaScript we
+                // drop them here. This may not be the best thing to do, perhaps should leave them in
+                // the parse tree and allow consumers to deal.
+                break
 
-      case '=':
-        addToken(SyntaxType.EqualToken)
-        break
+            case '=':
+                addToken(SyntaxType.EqualToken)
+                break
 
-      case '(':
-        addToken(SyntaxType.LeftParenToken)
-        break
+            case '(':
+                addToken(SyntaxType.LeftParenToken)
+                break
 
-      case ')':
-        addToken(SyntaxType.RightParenToken)
-        break
+            case ')':
+                addToken(SyntaxType.RightParenToken)
+                break
 
-      case '{':
-        addToken(SyntaxType.LeftBraceToken)
-        break
+            case '{':
+                addToken(SyntaxType.LeftBraceToken)
+                break
 
-      case '}':
-        addToken(SyntaxType.RightBraceToken)
-        break
+            case '}':
+                addToken(SyntaxType.RightBraceToken)
+                break
 
-      case '[':
-        addToken(SyntaxType.LeftBracketToken)
-        break
+            case '[':
+                addToken(SyntaxType.LeftBracketToken)
+                break
 
-      case ']':
-        addToken(SyntaxType.RightBracketToken)
-        break
+            case ']':
+                addToken(SyntaxType.RightBracketToken)
+                break
 
-      case ';':
-        addToken(SyntaxType.SemicolonToken)
-        break
+            case ';':
+                addToken(SyntaxType.SemicolonToken)
+                break
 
-      case ',':
-        addToken(SyntaxType.CommaToken)
-        break
+            case ',':
+                addToken(SyntaxType.CommaToken)
+                break
 
-      // Strings can use single or double quotes
-      case '"':
-      case '\'':
-        string()
-        break
+            // Strings can use single or double quotes
+            case '"':
+            case "'":
+                string()
+                break
 
-      case ':':
-        addToken(SyntaxType.ColonToken)
-        break
+            case ':':
+                addToken(SyntaxType.ColonToken)
+                break
 
-      case '#':
-        singleLineComment()
-        break
+            case '#':
+                singleLineComment()
+                break
 
-      case '/':
-        if (peek() === '/') {
-          singleLineComment()
+            case '/':
+                if (peek() === '/') {
+                    singleLineComment()
+                } else if (peek() === '*') {
+                    multilineComment()
+                } else {
+                    reportError(`Unexpected token: ${next}`)
+                }
+                break
+
+            case '<':
+                addToken(SyntaxType.LessThanToken)
+                break
+
+            case '>':
+                addToken(SyntaxType.GreaterThanToken)
+                break
+
+            case '-':
+                if (isDigit(peek())) {
+                    number()
+                } else {
+                    addToken(SyntaxType.MinusToken)
+                }
+                break
+
+            default:
+                if (isDigit(next)) {
+                    number()
+                } else if (isAlphaOrUnderscore(next)) {
+                    identifier()
+                } else if (isValidIdentifier(next)) {
+                    reportError(
+                        `Invalid identifier '${next}': Identifiers must begin with a letter or underscore`,
+                    )
+                } else {
+                    reportError(`Unexpected token: ${next}`)
+                }
         }
-        else if (peek() === '*') {
-          multilineComment()
+    }
+
+    function identifier(): void {
+        while (!isAtEnd() && peek() !== '\n' && isValidIdentifier(peek())) {
+            advance()
         }
-        else {
-          reportError(`Unexpected token: ${next}`)
+
+        const literal: string = source.substring(startIndex, currentIndex)
+        const type: SyntaxType = KEYWORDS[literal]
+
+        if (type == null) {
+            addToken(SyntaxType.Identifier, literal)
+        } else {
+            addToken(type, literal)
         }
-        break
+    }
 
-      case '<':
-        addToken(SyntaxType.LessThanToken)
-        break
+    function number(): void {
+        if (current() === '0' && (consume('x') || consume('X'))) {
+            hexadecimal()
+        } else {
+            integer()
 
-      case '>':
-        addToken(SyntaxType.GreaterThanToken)
-        break
+            if (peek() === 'e' || peek() === 'E') {
+                enotation()
+            } else if (peek() === '.' && isDigit(peekNext())) {
+                float()
+            } else {
+                commitToken(SyntaxType.IntegerLiteral)
+            }
+        }
+    }
 
-      case '-':
+    function hexadecimal(): void {
+        while (!isAtEnd() && peek() !== '\n' && isHexDigit(peek())) {
+            advance()
+        }
+
+        commitToken(SyntaxType.HexLiteral)
+    }
+
+    function enotation(): void {
+        consume('e') || consume('E')
+        consume('-') || consume('+')
         if (isDigit(peek())) {
-          number()
-        }
-        else {
-          addToken(SyntaxType.MinusToken)
-        }
-        break
-
-      default:
-        if (isDigit(next)) {
-          number()
-        }
-        else if (isAlphaOrUnderscore(next)) {
-          identifier()
-        }
-        else if (isValidIdentifier(next)) {
-          reportError(`Invalid identifier '${next}': Identifiers must begin with a letter or underscore`)
-        }
-        else {
-          reportError(`Unexpected token: ${next}`)
+            integer()
+            commitToken(SyntaxType.ExponentialLiteral)
+        } else {
+            reportError(`Invalid use of e-notation`)
         }
     }
-  }
 
-  function identifier(): void {
-    while (!isAtEnd() && peek() !== '\n' && isValidIdentifier(peek())) {
-      advance()
+    function float(): void {
+        consume('.')
+        integer()
+
+        if (peek() === 'e' || peek() === 'E') {
+            enotation()
+        } else {
+            commitToken(SyntaxType.FloatLiteral)
+        }
     }
 
-    const literal: string = source.substring(startIndex, currentIndex)
-    const type: SyntaxType = KEYWORDS[literal]
-
-    if (type == null) {
-      addToken(SyntaxType.Identifier, literal)
-    }
-    else {
-      addToken(type, literal)
-    }
-  }
-
-  function number(): void {
-    if (current() === '0' && (consume('x') || consume('X'))) {
-      hexadecimal()
-    } else {
-      integer()
-
-      if (peek() === 'e' || peek() === 'E') {
-        enotation()
-      } else if (peek() === '.' && isDigit(peekNext())) {
-        float()
-      } else {
-        commitToken(SyntaxType.IntegerLiteral)
-      }
-    }
-  }
-
-  function hexadecimal(): void {
-    while (
-      !isAtEnd() &&
-      peek() !== '\n' &&
-      isHexDigit(peek())
-    ) {
-      advance()
+    function integer(): void {
+        while (!isAtEnd() && peek() !== '\n' && isDigit(peek())) {
+            advance()
+        }
     }
 
-    commitToken(SyntaxType.HexLiteral)
-  }
+    function singleLineComment(): void {
+        let comment: string = ''
 
-  function enotation(): void {
-    consume('e') || consume('E')
-    consume('-') || consume('+')
-    if (isDigit(peek())) {
-      integer()
-      commitToken(SyntaxType.ExponentialLiteral)
-    } else {
-      reportError(`Invalid use of e-notation`)
-    }
-  }
+        while (true) {
+            if (
+                current() === '\n' ||
+                isAtEnd() ||
+                (current() !== '/' && current() !== '#' && current() !== ' ')
+            ) {
+                break
+            } else {
+                advance()
+            }
+        }
 
-  function float(): void {
-    consume('.')
-    integer()
+        if (current() !== '\n') {
+            // A comment goes until the end of the line.
+            while (peek() !== '\n' && !isAtEnd()) {
+                comment += current()
+                advance()
+            }
 
-    if (peek() === 'e' || peek() === 'E') {
-      enotation()
-    } else {
-      commitToken(SyntaxType.FloatLiteral)
-    }
-  }
+            comment += current()
+        }
 
-  function integer(): void {
-    while (
-      !isAtEnd() &&
-      peek() !== '\n' &&
-      (isDigit(peek()))
-    ) {
-      advance()
-    }
-  }
-
-  function singleLineComment(): void {
-    let comment: string = ''
-
-    if (current() === '#') {
-      advance()
-    } else {
-      // Advance past '//'
-      advance()
-      advance()
+        addToken(SyntaxType.CommentLine, comment.trim())
     }
 
-    if (current() !== '\n') {
-      // A comment goes until the end of the line.
-      while (peek() !== '\n' && !isAtEnd()) {
-        comment += current()
-        advance()
-      }
+    function multilineComment(): void {
+        let comment: string = ''
+        let cursor: number = 0
 
-      comment += current()
+        while (true) {
+            if (
+                current() === '\n' ||
+                isAtEnd() ||
+                (current() !== '/' && current() !== '*' && current() !== ' ')
+            ) {
+                break
+            } else {
+                advance()
+            }
+        }
+
+        while (true) {
+            if (current() === '\n') {
+                nextLine()
+            }
+
+            if (comment.charAt(cursor - 1) === '\n' && (peek() === ' ' || peek() === '*')) {
+                /**
+                 * We ignore stars and spaces after a new line to normalize comment formatting.
+                 * We're only keeping the text of the comment without the extranious formatting.
+                 */
+            } else {
+                comment += current()
+                cursor += 1
+            }
+
+            advance()
+
+            // A comment goes until we find a comment terminator (*/).
+            if ((peek() === '*' && peekNext() === '/') || isAtEnd()) {
+                advance()
+                advance()
+                break
+            }
+        }
+
+        addToken(SyntaxType.CommentBlock, comment.trim())
     }
 
-    addToken(SyntaxType.CommentLine, comment.trim())
-  }
+    function string(): void {
+        while (!isAtEnd() && peek() !== '"' && peek() !== "'") {
+            if (peek() === '\n') {
+                nextLine()
+            }
 
-  function multilineComment(): void {
-    let comment: string = ''
-    let cursor: number = 0
-    advance()
-    advance()
+            advance()
+        }
 
-    while (true) {
-      if (peek() === '\n') {
-        nextLine()
-      }
-
-      if (
-        comment.charAt(cursor - 1) === '\n' &&
-        (peek() === ' ' || peek() === '*')
-      ) {
-        /**
-         * We ignore stars and spaces after a new line to normalize comment formatting.
-         * We're only keeping the text of the comment without the extranious formatting.
-         */
-      } else {
-        comment += current()
-        cursor += 1
-      }
-
-      advance()
-
-      // A comment goes until we find a comment terminator (*/).
-      if ((peek() === '*' && peekNext() === '/') || isAtEnd()) {
-        advance()
-        advance()
-        break
-      }
+        if (isAtEnd() && previous() !== '"') {
+            reportError(`Strings must be terminated with '"'`)
+        } else {
+            // advance past closing "
+            advance()
+            // We use "+ 1" and "- 1" to remove the quote markes from the string
+            const literal: string = source.substring(startIndex + 1, currentIndex - 1)
+            addToken(SyntaxType.StringLiteral, literal)
+        }
     }
 
-    addToken(SyntaxType.CommentBlock, comment.trim())
-  }
+    function consume(text: string): boolean {
+        if (peek() === text) {
+            advance()
+            return true
+        }
 
-  function string(): void {
-    while (
-      !isAtEnd() &&
-      peek() !== '"' &&
-      peek() !== '\''
-    ) {
-      if (peek() === '\n') {
-        nextLine()
-      }
-
-      advance()
+        return false
     }
 
-    if (isAtEnd() && previous() !== '"') {
-      reportError(`Strings must be terminated with '"'`)
-    }
-    else {
-      // advance past closing "
-      advance()
-      // We use "+ 1" and "- 1" to remove the quote markes from the string
-      const literal: string = source.substring(startIndex + 1, currentIndex - 1)
-      addToken(SyntaxType.StringLiteral, literal)
-    }
-  }
-
-  function consume(text: string): boolean {
-    if (peek() === text) {
-      advance()
-      return true
+    function advance(): string {
+        currentIndex++
+        column++
+        return source.charAt(currentIndex - 1)
     }
 
-    return false
-  }
+    function previous(): string {
+        return source.charAt(currentIndex - 2)
+    }
 
-  function advance(): string {
-    currentIndex++
-    column++
-    return source.charAt(currentIndex - 1)
-  }
+    function current(): string {
+        return source.charAt(currentIndex - 1)
+    }
 
-  function previous(): string {
-    return source.charAt(currentIndex - 2)
-  }
+    function peek(): string {
+        return source.charAt(currentIndex)
+    }
 
-  function current(): string {
-    return source.charAt(currentIndex - 1)
-  }
+    function peekNext(): string {
+        return source.charAt(currentIndex + 1)
+    }
 
-  function peek(): string {
-    return source.charAt(currentIndex)
-  }
+    function nextLine() {
+        line++
+        column = 1
+    }
 
-  function peekNext(): string {
-    return source.charAt(currentIndex + 1)
-  }
+    function commitToken(type: SyntaxType): void {
+        const literal: string = source.substring(startIndex, currentIndex)
+        addToken(type, literal)
+    }
 
-  function nextLine() {
-    line++
-    column = 1
-  }
+    function currentLocation(): TextLocation {
+        return {
+            start: {
+                line: startLine,
+                column: startColumn,
+                index: startIndex,
+            },
+            end: {
+                line,
+                column,
+                index: currentIndex,
+            },
+        }
+    }
 
-  function commitToken(type: SyntaxType): void {
-    const literal: string = source.substring(startIndex, currentIndex)
-    addToken(type, literal)
-  }
+    function addToken(type: SyntaxType, value: string = ''): void {
+        const loc: TextLocation = currentLocation()
+        tokens.push(createToken(type, value, loc))
+    }
 
-  function currentLocation(): TextLocation {
+    function isAtEnd(): boolean {
+        return currentIndex >= source.length
+    }
+
+    function reportError(msg: string): void {
+        throw new ScanError(msg, currentLocation())
+    }
+
     return {
-      start: {
-        line: startLine,
-        column: startColumn,
-        index: startIndex,
-      },
-      end: {
-        line,
-        column,
-        index: currentIndex,
-      },
+        scan,
+        syncronize,
     }
-  }
-
-  function addToken(type: SyntaxType, value: string = ''): void {
-    const loc: TextLocation = currentLocation()
-    tokens.push(createToken(type, value, loc))
-  }
-
-  function isAtEnd(): boolean {
-    return currentIndex >= source.length
-  }
-
-  function reportError(msg: string): void {
-    throw new ScanError(msg, currentLocation())
-  }
-
-  return {
-    scan,
-    syncronize,
-  }
 }

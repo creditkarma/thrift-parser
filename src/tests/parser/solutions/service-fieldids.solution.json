@@ -1,0 +1,207 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "ServiceDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 13,
+                        "index": 12
+                    }
+                }
+            },
+            "extends": null,
+            "functions": [
+                {
+                    "type": "FunctionDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "test",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 10,
+                                "index": 24
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 14,
+                                "index": 28
+                            }
+                        }
+                    },
+                    "returnType": {
+                        "type": "VoidKeyword",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 5,
+                                "index": 19
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 9,
+                                "index": 23
+                            }
+                        }
+                    },
+                    "fields": [
+                        {
+                            "type": "FieldDefinition",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "test1",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 22,
+                                        "index": 36
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 27,
+                                        "index": 41
+                                    }
+                                }
+                            },
+                            "fieldID": null,
+                            "fieldType": {
+                                "type": "StringKeyword",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 15,
+                                        "index": 29
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 21,
+                                        "index": 35
+                                    }
+                                }
+                            },
+                            "requiredness": null,
+                            "defaultValue": null,
+                            "comments": [],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 15,
+                                    "index": 29
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 28,
+                                    "index": 42
+                                }
+                            }
+                        },
+                        {
+                            "type": "FieldDefinition",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "test2",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 37,
+                                        "index": 51
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 42,
+                                        "index": 56
+                                    }
+                                }
+                            },
+                            "fieldID": {
+                                "type": "FieldID",
+                                "value": 1,
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 29,
+                                        "index": 43
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 31,
+                                        "index": 45
+                                    }
+                                }
+                            },
+                            "fieldType": {
+                                "type": "BoolKeyword",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 32,
+                                        "index": 46
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 36,
+                                        "index": 50
+                                    }
+                                }
+                            },
+                            "requiredness": null,
+                            "defaultValue": null,
+                            "comments": [],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 29,
+                                    "index": 43
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 42,
+                                    "index": 56
+                                }
+                            }
+                        }
+                    ],
+                    "throws": [],
+                    "comments": [],
+                    "oneway": false,
+                    "modifiers": [],
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 5,
+                            "index": 19
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 43,
+                            "index": 57
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 2,
+                    "index": 59
+                }
+            }
+        }
+    ]
+}

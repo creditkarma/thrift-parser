@@ -1,0 +1,34 @@
+[
+    {
+        "type": "HexLiteral",
+        "text": "0xfff",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 1,
+                "index": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 6,
+                "index": 5
+            }
+        }
+    },
+    {
+        "type": "EOF",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 6,
+                "index": 6
+            },
+            "end": {
+                "line": 2,
+                "column": 1,
+                "index": 6
+            }
+        }
+    }
+]

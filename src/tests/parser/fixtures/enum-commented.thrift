@@ -1,0 +1,4 @@
+enum Test {
+    ONE,
+    # TWO
+}

@@ -1,0 +1,83 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "ConstDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 11,
+                        "index": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 15,
+                        "index": 14
+                    }
+                }
+            },
+            "fieldType": {
+                "type": "I32Keyword",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 7,
+                        "index": 6
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 10,
+                        "index": 9
+                    }
+                }
+            },
+            "initializer": {
+                "type": "IntConstant",
+                "value": {
+                    "type": "IntegerLiteral",
+                    "value": "-1",
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 18,
+                            "index": 17
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 20,
+                            "index": 19
+                        }
+                    }
+                },
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 18,
+                        "index": 17
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 20,
+                        "index": 19
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 20,
+                    "index": 19
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,108 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "ServiceDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 13,
+                        "index": 12
+                    }
+                }
+            },
+            "extends": null,
+            "functions": [
+                {
+                    "type": "FunctionDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "test",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 10,
+                                "index": 24
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 14,
+                                "index": 28
+                            }
+                        }
+                    },
+                    "returnType": {
+                        "type": "BoolKeyword",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 5,
+                                "index": 19
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 9,
+                                "index": 23
+                            }
+                        }
+                    },
+                    "fields": [],
+                    "throws": [],
+                    "comments": [
+                        {
+                            "type": "CommentLine",
+                            "value": "void ping()",
+                            "loc": {
+                                "start": {
+                                    "line": 3,
+                                    "column": 5,
+                                    "index": 35
+                                },
+                                "end": {
+                                    "line": 3,
+                                    "column": 18,
+                                    "index": 48
+                                }
+                            }
+                        }
+                    ],
+                    "oneway": false,
+                    "modifiers": [],
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 5,
+                            "index": 19
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 16,
+                            "index": 30
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 2,
+                    "index": 50
+                }
+            }
+        }
+    ]
+}

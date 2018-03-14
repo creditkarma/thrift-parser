@@ -1,0 +1,52 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "TypedefDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "name",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 16,
+                        "index": 15
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 20,
+                        "index": 19
+                    }
+                }
+            },
+            "definitionType": {
+                "type": "StringKeyword",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 15,
+                        "index": 14
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 20,
+                    "index": 19
+                }
+            }
+        }
+    ]
+}
