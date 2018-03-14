@@ -45,7 +45,7 @@
     "rimraf": "^2.6.2",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
-    "typescript": "^2.7.2"
+    "typescript": "~2.7.2"
   },
   "nyc": {
     "include": [
