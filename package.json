@@ -11,9 +11,11 @@
     "dist/main"
   ],
   "keywords": [
-    "Thrift",
-    "TypeScript",
-    "parser"
+    "thrift",
+    "typexcript",
+    "parser",
+    "scanner",
+    "ast"
   ],
   "scripts": {
     "clean": "rimraf dist/",
