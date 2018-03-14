@@ -1,0 +1,21 @@
+{
+    "type": "ThriftErrors",
+    "errors": [
+        {
+            "type": "ParseError",
+            "message": "FieldType expected but found: GreaterThanToken",
+            "loc": {
+                "start": {
+                    "line": 78,
+                    "column": 22,
+                    "index": 1928
+                },
+                "end": {
+                    "line": 78,
+                    "column": 23,
+                    "index": 1929
+                }
+            }
+        }
+    ]
+}

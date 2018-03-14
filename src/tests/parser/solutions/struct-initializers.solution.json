@@ -1,0 +1,214 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "StructDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 8,
+                        "index": 7
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 12,
+                        "index": 11
+                    }
+                }
+            },
+            "fields": [
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "field1",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 21,
+                                "index": 34
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 27,
+                                "index": 40
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 1,
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 5,
+                                "index": 18
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 7,
+                                "index": 20
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "I32Keyword",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 17,
+                                "index": 30
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 20,
+                                "index": 33
+                            }
+                        }
+                    },
+                    "requiredness": "required",
+                    "defaultValue": {
+                        "type": "IntConstant",
+                        "value": {
+                            "type": "IntegerLiteral",
+                            "value": "-1",
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 30,
+                                    "index": 43
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 32,
+                                    "index": 45
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 30,
+                                "index": 43
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 32,
+                                "index": 45
+                            }
+                        }
+                    },
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 5,
+                            "index": 18
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 32,
+                            "index": 45
+                        }
+                    }
+                },
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "field2",
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 22,
+                                "index": 67
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 28,
+                                "index": 73
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 2,
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 5,
+                                "index": 50
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 7,
+                                "index": 52
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "BoolKeyword",
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 17,
+                                "index": 62
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 21,
+                                "index": 66
+                            }
+                        }
+                    },
+                    "requiredness": "required",
+                    "defaultValue": {
+                        "type": "BooleanLiteral",
+                        "value": false,
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 31,
+                                "index": 76
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 36,
+                                "index": 81
+                            }
+                        }
+                    },
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 5,
+                            "index": 50
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 37,
+                            "index": 82
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 2,
+                    "index": 84
+                }
+            }
+        }
+    ]
+}

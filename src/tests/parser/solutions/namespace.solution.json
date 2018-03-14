@@ -1,0 +1,101 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "NamespaceDefinition",
+            "scope": {
+                "type": "Identifier",
+                "value": "js",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 11,
+                        "index": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 13,
+                        "index": 12
+                    }
+                }
+            },
+            "name": {
+                "type": "Identifier",
+                "value": "test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 14,
+                        "index": 13
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 18,
+                        "index": 17
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 18,
+                    "index": 17
+                }
+            }
+        },
+        {
+            "type": "NamespaceDefinition",
+            "scope": {
+                "type": "Identifier",
+                "value": "js.ts",
+                "loc": {
+                    "start": {
+                        "line": 2,
+                        "column": 11,
+                        "index": 28
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 16,
+                        "index": 33
+                    }
+                }
+            },
+            "name": {
+                "type": "Identifier",
+                "value": "test",
+                "loc": {
+                    "start": {
+                        "line": 2,
+                        "column": 17,
+                        "index": 34
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 21,
+                        "index": 38
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 1,
+                    "index": 18
+                },
+                "end": {
+                    "line": 2,
+                    "column": 21,
+                    "index": 38
+                }
+            }
+        }
+    ]
+}

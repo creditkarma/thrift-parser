@@ -1,0 +1,162 @@
+[
+    {
+        "type": "StructKeyword",
+        "text": "struct",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 1,
+                "index": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 7,
+                "index": 6
+            }
+        }
+    },
+    {
+        "type": "Identifier",
+        "text": "MyStruct",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 8,
+                "index": 7
+            },
+            "end": {
+                "line": 1,
+                "column": 16,
+                "index": 15
+            }
+        }
+    },
+    {
+        "type": "LeftBraceToken",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 17,
+                "index": 16
+            },
+            "end": {
+                "line": 1,
+                "column": 18,
+                "index": 17
+            }
+        }
+    },
+    {
+        "type": "IntegerLiteral",
+        "text": "1",
+        "loc": {
+            "start": {
+                "line": 2,
+                "column": 5,
+                "index": 22
+            },
+            "end": {
+                "line": 2,
+                "column": 6,
+                "index": 23
+            }
+        }
+    },
+    {
+        "type": "ColonToken",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 2,
+                "column": 6,
+                "index": 23
+            },
+            "end": {
+                "line": 2,
+                "column": 7,
+                "index": 24
+            }
+        }
+    },
+    {
+        "type": "RequiredKeyword",
+        "text": "required",
+        "loc": {
+            "start": {
+                "line": 2,
+                "column": 8,
+                "index": 25
+            },
+            "end": {
+                "line": 2,
+                "column": 16,
+                "index": 33
+            }
+        }
+    },
+    {
+        "type": "Identifier",
+        "text": "MyStruct",
+        "loc": {
+            "start": {
+                "line": 2,
+                "column": 17,
+                "index": 34
+            },
+            "end": {
+                "line": 2,
+                "column": 25,
+                "index": 42
+            }
+        }
+    },
+    {
+        "type": "Identifier",
+        "text": "nextItem",
+        "loc": {
+            "start": {
+                "line": 2,
+                "column": 28,
+                "index": 45
+            },
+            "end": {
+                "line": 2,
+                "column": 36,
+                "index": 53
+            }
+        }
+    },
+    {
+        "type": "RightBraceToken",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 3,
+                "column": 1,
+                "index": 54
+            },
+            "end": {
+                "line": 3,
+                "column": 2,
+                "index": 55
+            }
+        }
+    },
+    {
+        "type": "EOF",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 3,
+                "column": 2,
+                "index": 56
+            },
+            "end": {
+                "line": 4,
+                "column": 1,
+                "index": 56
+            }
+        }
+    }
+]

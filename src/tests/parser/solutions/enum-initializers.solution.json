@@ -1,0 +1,135 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "EnumDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 6,
+                        "index": 5
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 10,
+                        "index": 9
+                    }
+                }
+            },
+            "members": [
+                {
+                    "type": "EnumMember",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "ONE",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 5,
+                                "index": 16
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 8,
+                                "index": 19
+                            }
+                        }
+                    },
+                    "initializer": {
+                        "type": "IntConstant",
+                        "value": {
+                            "type": "IntegerLiteral",
+                            "value": "2",
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 11,
+                                    "index": 22
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 12,
+                                    "index": 23
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 11,
+                                "index": 22
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 12,
+                                "index": 23
+                            }
+                        }
+                    },
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 5,
+                            "index": 16
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 12,
+                            "index": 23
+                        }
+                    }
+                },
+                {
+                    "type": "EnumMember",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "TWO",
+                        "loc": {
+                            "start": {
+                                "line": 3,
+                                "column": 5,
+                                "index": 29
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 8,
+                                "index": 32
+                            }
+                        }
+                    },
+                    "initializer": null,
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 5,
+                            "index": 29
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 8,
+                            "index": 32
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 2,
+                    "index": 34
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,114 @@
+[
+    {
+        "type": "CommentLine",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 1,
+                "index": 0
+            },
+            "end": {
+                "line": 1,
+                "column": 3,
+                "index": 2
+            }
+        }
+    },
+    {
+        "type": "ConstKeyword",
+        "text": "const",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 3,
+                "index": 2
+            },
+            "end": {
+                "line": 1,
+                "column": 8,
+                "index": 7
+            }
+        }
+    },
+    {
+        "type": "I32Keyword",
+        "text": "i32",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 9,
+                "index": 8
+            },
+            "end": {
+                "line": 1,
+                "column": 12,
+                "index": 11
+            }
+        }
+    },
+    {
+        "type": "Identifier",
+        "text": "id",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 13,
+                "index": 12
+            },
+            "end": {
+                "line": 1,
+                "column": 15,
+                "index": 14
+            }
+        }
+    },
+    {
+        "type": "EqualToken",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 16,
+                "index": 15
+            },
+            "end": {
+                "line": 1,
+                "column": 17,
+                "index": 16
+            }
+        }
+    },
+    {
+        "type": "IntegerLiteral",
+        "text": "45",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 18,
+                "index": 17
+            },
+            "end": {
+                "line": 1,
+                "column": 20,
+                "index": 19
+            }
+        }
+    },
+    {
+        "type": "EOF",
+        "text": "",
+        "loc": {
+            "start": {
+                "line": 1,
+                "column": 20,
+                "index": 20
+            },
+            "end": {
+                "line": 2,
+                "column": 1,
+                "index": 20
+            }
+        }
+    }
+]

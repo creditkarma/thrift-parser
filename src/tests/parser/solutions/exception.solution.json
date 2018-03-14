@@ -1,0 +1,104 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "ExceptionDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 11,
+                        "index": 10
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 15,
+                        "index": 14
+                    }
+                }
+            },
+            "fields": [
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "message",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 24,
+                                "index": 40
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 31,
+                                "index": 47
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 1,
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 5,
+                                "index": 21
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 7,
+                                "index": 23
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "StringKeyword",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 17,
+                                "index": 33
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 23,
+                                "index": 39
+                            }
+                        }
+                    },
+                    "requiredness": "required",
+                    "defaultValue": null,
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 5,
+                            "index": 21
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 32,
+                            "index": 48
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 2,
+                    "index": 50
+                }
+            }
+        }
+    ]
+}

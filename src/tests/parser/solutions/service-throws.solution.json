@@ -1,0 +1,224 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "ServiceDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Test",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 9,
+                        "index": 8
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 13,
+                        "index": 12
+                    }
+                }
+            },
+            "extends": null,
+            "functions": [
+                {
+                    "type": "FunctionDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "test",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 10,
+                                "index": 24
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 14,
+                                "index": 28
+                            }
+                        }
+                    },
+                    "returnType": {
+                        "type": "BoolKeyword",
+                        "loc": {
+                            "start": {
+                                "line": 2,
+                                "column": 5,
+                                "index": 19
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 9,
+                                "index": 23
+                            }
+                        }
+                    },
+                    "fields": [],
+                    "throws": [
+                        {
+                            "type": "FieldDefinition",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "user_exception",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 39,
+                                        "index": 53
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 53,
+                                        "index": 67
+                                    }
+                                }
+                            },
+                            "fieldID": {
+                                "type": "FieldID",
+                                "value": 1,
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 25,
+                                        "index": 39
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 27,
+                                        "index": 41
+                                    }
+                                }
+                            },
+                            "fieldType": {
+                                "type": "Identifier",
+                                "value": "Exception1",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 28,
+                                        "index": 42
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 38,
+                                        "index": 52
+                                    }
+                                }
+                            },
+                            "requiredness": null,
+                            "defaultValue": null,
+                            "comments": [],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 25,
+                                    "index": 39
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 54,
+                                    "index": 68
+                                }
+                            }
+                        },
+                        {
+                            "type": "FieldDefinition",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "system_exception",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 69,
+                                        "index": 83
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 85,
+                                        "index": 99
+                                    }
+                                }
+                            },
+                            "fieldID": {
+                                "type": "FieldID",
+                                "value": 2,
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 55,
+                                        "index": 69
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 57,
+                                        "index": 71
+                                    }
+                                }
+                            },
+                            "fieldType": {
+                                "type": "Identifier",
+                                "value": "Exception2",
+                                "loc": {
+                                    "start": {
+                                        "line": 2,
+                                        "column": 58,
+                                        "index": 72
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 68,
+                                        "index": 82
+                                    }
+                                }
+                            },
+                            "requiredness": null,
+                            "defaultValue": null,
+                            "comments": [],
+                            "loc": {
+                                "start": {
+                                    "line": 2,
+                                    "column": 55,
+                                    "index": 69
+                                },
+                                "end": {
+                                    "line": 2,
+                                    "column": 85,
+                                    "index": 99
+                                }
+                            }
+                        }
+                    ],
+                    "comments": [],
+                    "oneway": false,
+                    "modifiers": [],
+                    "loc": {
+                        "start": {
+                            "line": 2,
+                            "column": 5,
+                            "index": 19
+                        },
+                        "end": {
+                            "line": 2,
+                            "column": 86,
+                            "index": 100
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 1,
+                    "index": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 2,
+                    "index": 102
+                }
+            }
+        }
+    ]
+}
