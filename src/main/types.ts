@@ -283,12 +283,12 @@ export interface Identifier extends SyntaxNode {
   value: string
 }
 
-export const enum ErrorType {
+export enum ErrorType {
   ParseError = 'ParseError',
   ScanError = 'ScanError',
 }
 
-export const enum SyntaxType {
+export enum SyntaxType {
   ThriftDocument = 'ThriftDocument',
   ThriftErrors = 'ThriftErrors',
 
