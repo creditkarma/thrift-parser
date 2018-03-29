@@ -12,6 +12,7 @@
     "noUnusedLocals": true,
     "pretty": true,
     "removeComments": false,
+    "preserveConstEnums": true,
     "lib": [
       "es6"
     ]
