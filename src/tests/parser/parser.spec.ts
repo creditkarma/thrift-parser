@@ -375,4 +375,17 @@ describe('Parser', () => {
 
         assert.deepEqual(thrift, expected)
     })
+
+    it('should map comments correctly', () => {
+        const content: string = loadSource('comments-mapping')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const parser: Parser = createParser(tokens)
+        const thrift: ThriftDocument = parser.parse()
+
+        const expected: any = loadSolution('comments-mapping')
+
+        assert.deepEqual(thrift, expected)
+    })
 })

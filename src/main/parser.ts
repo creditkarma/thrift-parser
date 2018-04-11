@@ -184,6 +184,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
   // ServiceDefinition → 'service' Identifier ( 'extends' Identifier )? '{' Function* '}'
   function parseService(): ServiceDefinition {
+    const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.ServiceKeyword)
     const nameToken: Token = consume(SyntaxType.Identifier)
     requireValue(nameToken, `Unable to find identifier for service`)
@@ -191,8 +192,6 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const extendsId: Identifier = parseExtends()
     const openBrace: Token = consume(SyntaxType.LeftBraceToken)
     requireValue(openBrace, `Expected opening curly brace`)
-
-    const leadingComments: Array<Comment> = getComments()
 
     const functions: Array<FunctionDefinition> = parseFunctions()
     const closeBrace: Token = consume(SyntaxType.RightBraceToken)
@@ -205,10 +204,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       name: createIdentifier(nameToken.text, nameToken.loc),
       extends: extendsId,
       functions,
-      comments: [
-        ...leadingComments,
-        ...getComments(),
-      ],
+      comments: leadingComments,
       loc: location,
     }
   }
@@ -250,6 +246,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
   // Function → 'oneway'? FunctionType Identifier '(' Field* ')' Throws? ListSeparator?
   function parseFunction(): FunctionDefinition {
+    const leadingComments: Array<Comment> = getComments()
     const onewayToken: Token = consume(SyntaxType.OnewayKeyword)
     const returnType: FunctionType = parseFunctionType()
 
@@ -275,7 +272,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       returnType,
       fields: params.fields,
       throws: (throws !== null) ? throws.fields : [],
-      comments: getComments(),
+      comments: leadingComments,
       oneway: (onewayToken !== null),
       modifiers: (
         (onewayToken !== null) ?
@@ -360,6 +357,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
   // ConstDefinition → 'const' FieldType Identifier '=' ConstValue ListSeparator?
   function parseConst(): ConstDefinition {
+    const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.ConstKeyword)
     const fieldType: FieldType = parseFieldType()
     const nameToken: Token = consume(SyntaxType.Identifier)
@@ -374,7 +372,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       name: createIdentifier(nameToken.text, nameToken.loc),
       fieldType,
       initializer,
-      comments: getComments(),
+      comments: leadingComments,
       loc: {
         start: keywordToken.loc.start,
         end: initializer.loc.end,
@@ -412,6 +410,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
   // EnumDefinition → 'enum' Identifier '{' EnumMember* '}'
   function parseEnum(): EnumDefinition {
+    const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.EnumKeyword)
     const nameToken: Token = consume(SyntaxType.Identifier)
     requireValue(nameToken, `Expected identifier for enum definition`)
@@ -432,7 +431,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       type: SyntaxType.EnumDefinition,
       name: createIdentifier(nameToken.text, nameToken.loc),
       members,
-      comments: getComments(),
+      comments: leadingComments,
       loc,
     }
   }
@@ -486,6 +485,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
   // StructLike → ('struct' | 'union' | 'exception') Identifier 'xsd_all'? '{' Field* '}'
   function parseStructLikeInterface(): StructLike {
+    const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.StructKeyword, SyntaxType.UnionKeyword, SyntaxType.ExceptionKeyword)
     const nameToken: Token = consume(SyntaxType.Identifier)
     requireValue(nameToken, `Struct-like must have an identifier`)
@@ -493,7 +493,6 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const openBrace: Token = consume(SyntaxType.LeftBraceToken)
     requireValue(openBrace, `Struct-like body must begin with opening curly brace '{'`)
 
-    const leadingComments: Array<Comment> = getComments()
     const fields: Array<FieldDefinition> = parseFields()
     const closeBrace: Token = consume(SyntaxType.RightBraceToken)
     requireValue(closeBrace, `Struct-like body must end with a closing curly brace '}'`)
@@ -501,10 +500,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return {
       name: createIdentifier(nameToken.text, nameToken.loc),
       fields,
-      comments: [
-        ...leadingComments,
-        ...getComments(),
-      ],
+      comments: leadingComments,
       loc: {
         start: keywordToken.loc.start,
         end: closeBrace.loc.end,

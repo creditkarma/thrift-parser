@@ -56,24 +56,7 @@
                     },
                     "fields": [],
                     "throws": [],
-                    "comments": [
-                        {
-                            "type": "CommentLine",
-                            "value": "void ping()",
-                            "loc": {
-                                "start": {
-                                    "line": 3,
-                                    "column": 5,
-                                    "index": 35
-                                },
-                                "end": {
-                                    "line": 3,
-                                    "column": 18,
-                                    "index": 48
-                                }
-                            }
-                        }
-                    ],
+                    "comments": [],
                     "oneway": false,
                     "modifiers": [],
                     "loc": {
