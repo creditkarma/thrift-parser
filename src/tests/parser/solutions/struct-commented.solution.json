@@ -86,24 +86,7 @@
                     }
                 }
             ],
-            "comments": [
-                {
-                    "type": "CommentLine",
-                    "value": "2: required bool field2,",
-                    "loc": {
-                        "start": {
-                            "line": 3,
-                            "column": 5,
-                            "index": 46
-                        },
-                        "end": {
-                            "line": 3,
-                            "column": 31,
-                            "index": 72
-                        }
-                    }
-                }
-            ],
+            "comments": [],
             "loc": {
                 "start": {
                     "line": 1,
