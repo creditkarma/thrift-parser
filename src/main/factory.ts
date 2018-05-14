@@ -1,4 +1,5 @@
 import {
+  Annotation,
   BaseType,
   BooleanLiteral,
   Comment,
@@ -25,6 +26,7 @@ import {
   PropertyAssignment,
   ScanError,
   SetType,
+  StringConstant,
   StringLiteral,
   StructDefinition,
   SyntaxType,
@@ -85,6 +87,7 @@ export function createFieldDefinition(
   fieldType: FunctionType,
   loc: TextLocation,
   defaultValue: ConstValue = null,
+  annotations: Array<Annotation> = null,
   comments: Array<Comment> = [],
 ): FieldDefinition {
   return {
@@ -94,6 +97,7 @@ export function createFieldDefinition(
     requiredness,
     fieldType,
     defaultValue,
+    annotations,
     comments,
     loc,
   }
@@ -152,6 +156,10 @@ export function createIntConstant(value: IntegerLiteral | HexLiteral, loc: TextL
 
 export function createDoubleConstant(value: FloatLiteral | ExponentialLiteral, loc: TextLocation): DoubleConstant {
   return { type: SyntaxType.DoubleConstant, value, loc }
+}
+
+export function createStringConstant(value: StringLiteral, loc: TextLocation): StringConstant {
+  return { type: SyntaxType.StringConstant, value, loc }
 }
 
 export function createBooleanLiteral(value: boolean, loc: TextLocation): BooleanLiteral {

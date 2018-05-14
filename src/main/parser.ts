@@ -1,4 +1,5 @@
 import {
+  Annotation,
   Comment,
   ConstDefinition,
   ConstList,
@@ -24,6 +25,7 @@ import {
   PropertyAssignment,
   ServiceDefinition,
   SetType,
+  StringConstant,
   StructDefinition,
   StructLike,
   SyntaxType,
@@ -52,6 +54,7 @@ import {
   createKeywordFieldType,
   createMapFieldType,
   createParseError,
+  createStringConstant,
   createStringLiteral,
   createTextLocation,
 } from './factory'
@@ -389,6 +392,32 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return null
   }
 
+  // Annotations → '(' (Identifier '=' StringConstant ListSeparator?)* ')'
+  function parseAnnotations(): Array<Annotation> | null {
+    if (check(SyntaxType.LeftParenToken)) {
+      const annotations: Array<Annotation> = []
+      advance()
+      while (!check(SyntaxType.RightParenToken)) {
+          const nameToken: Token = consume(SyntaxType.Identifier)
+          consume(SyntaxType.EqualToken)
+          const next: Token = advance()
+          const value: StringConstant = parseStringValue(next)
+
+          annotations.push( {
+            type: SyntaxType.Annotation,
+            name: createIdentifier(nameToken.text, nameToken.loc),
+            value,
+            loc: createTextLocation(nameToken.loc.start, value.loc.end),
+          } )
+          readListSeparator()
+      }
+      advance()
+      return annotations
+    }
+
+    return null
+  }
+
   // TypedefDefinition → 'typedef' FieldType Identifier
   function parseTypedef(): TypedefDefinition {
     const keywordToken: Token = consume(SyntaxType.TypedefKeyword)
@@ -581,7 +610,9 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     requireValue(nameToken, `Unable to find identifier for field`)
 
     const defaultValue: ConstValue = parseValueAssignment()
+    const annotations: Array<Annotation> | null = parseAnnotations()
     const listSeparator: Token = readListSeparator()
+
     const endLoc: TextLocation = (
       (listSeparator !== null) ?
         listSeparator.loc :
@@ -599,6 +630,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       requiredness: fieldRequired,
       defaultValue,
       comments: getComments(),
+      annotations,
       loc: location,
     }
   }
@@ -712,6 +744,19 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
       default:
         reportError(`DoubleConstant expected but found: ${token.type}`)
+    }
+  }
+
+  function parseStringValue(token: Token): StringConstant {
+    switch (token.type) {
+      case SyntaxType.StringLiteral:
+        return createStringConstant(
+          createStringLiteral(token.text, token.loc),
+          token.loc,
+        )
+
+      default:
+        reportError(`StringConstant expected but found: ${token.type}`)
     }
   }
 

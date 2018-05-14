@@ -388,4 +388,18 @@ describe('Parser', () => {
 
         assert.deepEqual(thrift, expected)
     })
+
+    it('should correctly parse annotations', () => {
+        const content: string = loadSource('annotations')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const parser: Parser = createParser(tokens)
+        const thrift: ThriftDocument = parser.parse()
+        console.log(JSON.stringify(thrift))
+
+        const expected: any = loadSolution('annotations')
+
+        assert.deepEqual(thrift, expected)
+    })
 })

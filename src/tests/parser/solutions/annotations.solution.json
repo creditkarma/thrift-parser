@@ -1,0 +1,953 @@
+{
+    "type": "ThriftDocument",
+    "body": [
+        {
+            "type": "TypedefDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "MyInteger",
+                "loc": {
+                    "start": {
+                        "line": 2,
+                        "column": 13,
+                        "index": 13
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 22,
+                        "index": 22
+                    }
+                }
+            },
+            "definitionType": {
+                "type": "I32Keyword",
+                "loc": {
+                    "start": {
+                        "line": 2,
+                        "column": 9,
+                        "index": 9
+                    },
+                    "end": {
+                        "line": 2,
+                        "column": 12,
+                        "index": 12
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 1,
+                    "index": 1
+                },
+                "end": {
+                    "line": 2,
+                    "column": 22,
+                    "index": 22
+                }
+            }
+        },
+        {
+            "type": "ConstDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "INT32CONSTANT",
+                "loc": {
+                    "start": {
+                        "line": 3,
+                        "column": 11,
+                        "index": 33
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 24,
+                        "index": 46
+                    }
+                }
+            },
+            "fieldType": {
+                "type": "I32Keyword",
+                "loc": {
+                    "start": {
+                        "line": 3,
+                        "column": 7,
+                        "index": 29
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 10,
+                        "index": 32
+                    }
+                }
+            },
+            "initializer": {
+                "type": "IntConstant",
+                "value": {
+                    "type": "IntegerLiteral",
+                    "value": "9853",
+                    "loc": {
+                        "start": {
+                            "line": 3,
+                            "column": 27,
+                            "index": 49
+                        },
+                        "end": {
+                            "line": 3,
+                            "column": 31,
+                            "index": 53
+                        }
+                    }
+                },
+                "loc": {
+                    "start": {
+                        "line": 3,
+                        "column": 27,
+                        "index": 49
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 31,
+                        "index": 53
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 1,
+                    "index": 23
+                },
+                "end": {
+                    "line": 3,
+                    "column": 31,
+                    "index": 53
+                }
+            }
+        },
+        {
+            "type": "ConstDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "STRINGCONSTANT",
+                "loc": {
+                    "start": {
+                        "line": 4,
+                        "column": 14,
+                        "index": 67
+                    },
+                    "end": {
+                        "line": 4,
+                        "column": 28,
+                        "index": 81
+                    }
+                }
+            },
+            "fieldType": {
+                "type": "StringKeyword",
+                "loc": {
+                    "start": {
+                        "line": 4,
+                        "column": 7,
+                        "index": 60
+                    },
+                    "end": {
+                        "line": 4,
+                        "column": 13,
+                        "index": 66
+                    }
+                }
+            },
+            "initializer": {
+                "type": "StringLiteral",
+                "value": "hello world",
+                "loc": {
+                    "start": {
+                        "line": 4,
+                        "column": 31,
+                        "index": 84
+                    },
+                    "end": {
+                        "line": 4,
+                        "column": 44,
+                        "index": 97
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 1,
+                    "index": 54
+                },
+                "end": {
+                    "line": 4,
+                    "column": 44,
+                    "index": 97
+                }
+            }
+        },
+        {
+            "type": "EnumDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Operation",
+                "loc": {
+                    "start": {
+                        "line": 6,
+                        "column": 6,
+                        "index": 104
+                    },
+                    "end": {
+                        "line": 6,
+                        "column": 15,
+                        "index": 113
+                    }
+                }
+            },
+            "members": [
+                {
+                    "type": "EnumMember",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "ADD",
+                        "loc": {
+                            "start": {
+                                "line": 7,
+                                "column": 3,
+                                "index": 118
+                            },
+                            "end": {
+                                "line": 7,
+                                "column": 6,
+                                "index": 121
+                            }
+                        }
+                    },
+                    "initializer": {
+                        "type": "IntConstant",
+                        "value": {
+                            "type": "IntegerLiteral",
+                            "value": "1",
+                            "loc": {
+                                "start": {
+                                    "line": 7,
+                                    "column": 9,
+                                    "index": 124
+                                },
+                                "end": {
+                                    "line": 7,
+                                    "column": 10,
+                                    "index": 125
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 7,
+                                "column": 9,
+                                "index": 124
+                            },
+                            "end": {
+                                "line": 7,
+                                "column": 10,
+                                "index": 125
+                            }
+                        }
+                    },
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 7,
+                            "column": 3,
+                            "index": 118
+                        },
+                        "end": {
+                            "line": 7,
+                            "column": 10,
+                            "index": 125
+                        }
+                    }
+                },
+                {
+                    "type": "EnumMember",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "MULTIPLY",
+                        "loc": {
+                            "start": {
+                                "line": 8,
+                                "column": 3,
+                                "index": 129
+                            },
+                            "end": {
+                                "line": 8,
+                                "column": 11,
+                                "index": 137
+                            }
+                        }
+                    },
+                    "initializer": null,
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 8,
+                            "column": 3,
+                            "index": 129
+                        },
+                        "end": {
+                            "line": 8,
+                            "column": 11,
+                            "index": 137
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 1,
+                    "index": 99
+                },
+                "end": {
+                    "line": 9,
+                    "column": 2,
+                    "index": 139
+                }
+            }
+        },
+        {
+            "type": "StructDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Work",
+                "loc": {
+                    "start": {
+                        "line": 11,
+                        "column": 8,
+                        "index": 148
+                    },
+                    "end": {
+                        "line": 11,
+                        "column": 12,
+                        "index": 152
+                    }
+                }
+            },
+            "fields": [
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "num1",
+                        "loc": {
+                            "start": {
+                                "line": 12,
+                                "column": 10,
+                                "index": 164
+                            },
+                            "end": {
+                                "line": 12,
+                                "column": 14,
+                                "index": 168
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 1,
+                        "loc": {
+                            "start": {
+                                "line": 12,
+                                "column": 3,
+                                "index": 157
+                            },
+                            "end": {
+                                "line": 12,
+                                "column": 5,
+                                "index": 159
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "I32Keyword",
+                        "loc": {
+                            "start": {
+                                "line": 12,
+                                "column": 6,
+                                "index": 160
+                            },
+                            "end": {
+                                "line": 12,
+                                "column": 9,
+                                "index": 163
+                            }
+                        }
+                    },
+                    "requiredness": null,
+                    "defaultValue": {
+                        "type": "IntConstant",
+                        "value": {
+                            "type": "IntegerLiteral",
+                            "value": "0",
+                            "loc": {
+                                "start": {
+                                    "line": 12,
+                                    "column": 17,
+                                    "index": 171
+                                },
+                                "end": {
+                                    "line": 12,
+                                    "column": 18,
+                                    "index": 172
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 12,
+                                "column": 17,
+                                "index": 171
+                            },
+                            "end": {
+                                "line": 12,
+                                "column": 18,
+                                "index": 172
+                            }
+                        }
+                    },
+                    "comments": [],
+                    "annotations": [
+                        {
+                            "type": "Annotation",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "annotation",
+                                "loc": {
+                                    "start": {
+                                        "line": 12,
+                                        "column": 21,
+                                        "index": 175
+                                    },
+                                    "end": {
+                                        "line": 12,
+                                        "column": 31,
+                                        "index": 185
+                                    }
+                                }
+                            },
+                            "value": {
+                                "type": "StringConstant",
+                                "value": {
+                                    "type": "StringLiteral",
+                                    "value": "foo",
+                                    "loc": {
+                                        "start": {
+                                            "line": 12,
+                                            "column": 34,
+                                            "index": 188
+                                        },
+                                        "end": {
+                                            "line": 12,
+                                            "column": 39,
+                                            "index": 193
+                                        }
+                                    }
+                                },
+                                "loc": {
+                                    "start": {
+                                        "line": 12,
+                                        "column": 34,
+                                        "index": 188
+                                    },
+                                    "end": {
+                                        "line": 12,
+                                        "column": 39,
+                                        "index": 193
+                                    }
+                                }
+                            },
+                            "loc": {
+                                "start": {
+                                    "line": 12,
+                                    "column": 21,
+                                    "index": 175
+                                },
+                                "end": {
+                                    "line": 12,
+                                    "column": 39,
+                                    "index": 193
+                                }
+                            }
+                        }
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 12,
+                            "column": 3,
+                            "index": 157
+                        },
+                        "end": {
+                            "line": 12,
+                            "column": 42,
+                            "index": 196
+                        }
+                    }
+                },
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "op",
+                        "loc": {
+                            "start": {
+                                "line": 13,
+                                "column": 16,
+                                "index": 212
+                            },
+                            "end": {
+                                "line": 13,
+                                "column": 18,
+                                "index": 214
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 2,
+                        "loc": {
+                            "start": {
+                                "line": 13,
+                                "column": 3,
+                                "index": 199
+                            },
+                            "end": {
+                                "line": 13,
+                                "column": 5,
+                                "index": 201
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "Identifier",
+                        "value": "Operation",
+                        "loc": {
+                            "start": {
+                                "line": 13,
+                                "column": 6,
+                                "index": 202
+                            },
+                            "end": {
+                                "line": 13,
+                                "column": 15,
+                                "index": 211
+                            }
+                        }
+                    },
+                    "requiredness": null,
+                    "defaultValue": null,
+                    "comments": [],
+                    "annotations": null,
+                    "loc": {
+                        "start": {
+                            "line": 13,
+                            "column": 3,
+                            "index": 199
+                        },
+                        "end": {
+                            "line": 13,
+                            "column": 19,
+                            "index": 215
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 11,
+                    "column": 1,
+                    "index": 141
+                },
+                "end": {
+                    "line": 14,
+                    "column": 2,
+                    "index": 217
+                }
+            }
+        },
+        {
+            "type": "ServiceDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "Calculator",
+                "loc": {
+                    "start": {
+                        "line": 16,
+                        "column": 9,
+                        "index": 227
+                    },
+                    "end": {
+                        "line": 16,
+                        "column": 19,
+                        "index": 237
+                    }
+                }
+            },
+            "extends": {
+                "type": "Identifier",
+                "value": "shared.SharedService",
+                "loc": {
+                    "start": {
+                        "line": 16,
+                        "column": 20,
+                        "index": 238
+                    },
+                    "end": {
+                        "line": 16,
+                        "column": 48,
+                        "index": 266
+                    }
+                }
+            },
+            "functions": [
+                {
+                    "type": "FunctionDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "add",
+                        "loc": {
+                            "start": {
+                                "line": 17,
+                                "column": 8,
+                                "index": 276
+                            },
+                            "end": {
+                                "line": 17,
+                                "column": 11,
+                                "index": 279
+                            }
+                        }
+                    },
+                    "returnType": {
+                        "type": "I32Keyword",
+                        "loc": {
+                            "start": {
+                                "line": 17,
+                                "column": 4,
+                                "index": 272
+                            },
+                            "end": {
+                                "line": 17,
+                                "column": 7,
+                                "index": 275
+                            }
+                        }
+                    },
+                    "fields": [
+                        {
+                            "type": "FieldDefinition",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "num1",
+                                "loc": {
+                                    "start": {
+                                        "line": 17,
+                                        "column": 24,
+                                        "index": 292
+                                    },
+                                    "end": {
+                                        "line": 17,
+                                        "column": 28,
+                                        "index": 296
+                                    }
+                                }
+                            },
+                            "fieldID": {
+                                "type": "FieldID",
+                                "value": 1,
+                                "loc": {
+                                    "start": {
+                                        "line": 17,
+                                        "column": 12,
+                                        "index": 280
+                                    },
+                                    "end": {
+                                        "line": 17,
+                                        "column": 14,
+                                        "index": 282
+                                    }
+                                }
+                            },
+                            "fieldType": {
+                                "type": "Identifier",
+                                "value": "MyInteger",
+                                "loc": {
+                                    "start": {
+                                        "line": 17,
+                                        "column": 14,
+                                        "index": 282
+                                    },
+                                    "end": {
+                                        "line": 17,
+                                        "column": 23,
+                                        "index": 291
+                                    }
+                                }
+                            },
+                            "requiredness": null,
+                            "defaultValue": null,
+                            "comments": [],
+                            "annotations": null,
+                            "loc": {
+                                "start": {
+                                    "line": 17,
+                                    "column": 12,
+                                    "index": 280
+                                },
+                                "end": {
+                                    "line": 17,
+                                    "column": 29,
+                                    "index": 297
+                                }
+                            }
+                        },
+                        {
+                            "type": "FieldDefinition",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "num2",
+                                "loc": {
+                                    "start": {
+                                        "line": 17,
+                                        "column": 36,
+                                        "index": 304
+                                    },
+                                    "end": {
+                                        "line": 17,
+                                        "column": 40,
+                                        "index": 308
+                                    }
+                                }
+                            },
+                            "fieldID": {
+                                "type": "FieldID",
+                                "value": 2,
+                                "loc": {
+                                    "start": {
+                                        "line": 17,
+                                        "column": 30,
+                                        "index": 298
+                                    },
+                                    "end": {
+                                        "line": 17,
+                                        "column": 32,
+                                        "index": 300
+                                    }
+                                }
+                            },
+                            "fieldType": {
+                                "type": "I32Keyword",
+                                "loc": {
+                                    "start": {
+                                        "line": 17,
+                                        "column": 32,
+                                        "index": 300
+                                    },
+                                    "end": {
+                                        "line": 17,
+                                        "column": 35,
+                                        "index": 303
+                                    }
+                                }
+                            },
+                            "requiredness": null,
+                            "defaultValue": null,
+                            "comments": [],
+                            "annotations": null,
+                            "loc": {
+                                "start": {
+                                    "line": 17,
+                                    "column": 30,
+                                    "index": 298
+                                },
+                                "end": {
+                                    "line": 17,
+                                    "column": 40,
+                                    "index": 308
+                                }
+                            }
+                        }
+                    ],
+                    "throws": [],
+                    "comments": [],
+                    "oneway": false,
+                    "modifiers": [],
+                    "loc": {
+                        "start": {
+                            "line": 17,
+                            "column": 4,
+                            "index": 272
+                        },
+                        "end": {
+                            "line": 17,
+                            "column": 42,
+                            "index": 310
+                        }
+                    }
+                },
+                {
+                    "type": "FunctionDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "zip",
+                        "loc": {
+                            "start": {
+                                "line": 18,
+                                "column": 16,
+                                "index": 326
+                            },
+                            "end": {
+                                "line": 18,
+                                "column": 19,
+                                "index": 329
+                            }
+                        }
+                    },
+                    "returnType": {
+                        "type": "VoidKeyword",
+                        "loc": {
+                            "start": {
+                                "line": 18,
+                                "column": 11,
+                                "index": 321
+                            },
+                            "end": {
+                                "line": 18,
+                                "column": 15,
+                                "index": 325
+                            }
+                        }
+                    },
+                    "fields": [
+                        {
+                            "type": "FieldDefinition",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "vasia",
+                                "loc": {
+                                    "start": {
+                                        "line": 18,
+                                        "column": 26,
+                                        "index": 336
+                                    },
+                                    "end": {
+                                        "line": 18,
+                                        "column": 31,
+                                        "index": 341
+                                    }
+                                }
+                            },
+                            "fieldID": {
+                                "type": "FieldID",
+                                "value": 1,
+                                "loc": {
+                                    "start": {
+                                        "line": 18,
+                                        "column": 20,
+                                        "index": 330
+                                    },
+                                    "end": {
+                                        "line": 18,
+                                        "column": 22,
+                                        "index": 332
+                                    }
+                                }
+                            },
+                            "fieldType": {
+                                "type": "I32Keyword",
+                                "loc": {
+                                    "start": {
+                                        "line": 18,
+                                        "column": 22,
+                                        "index": 332
+                                    },
+                                    "end": {
+                                        "line": 18,
+                                        "column": 25,
+                                        "index": 335
+                                    }
+                                }
+                            },
+                            "requiredness": null,
+                            "defaultValue": null,
+                            "comments": [],
+                            "annotations": null,
+                            "loc": {
+                                "start": {
+                                    "line": 18,
+                                    "column": 20,
+                                    "index": 330
+                                },
+                                "end": {
+                                    "line": 18,
+                                    "column": 31,
+                                    "index": 341
+                                }
+                            }
+                        }
+                    ],
+                    "throws": [],
+                    "comments": [],
+                    "oneway": true,
+                    "modifiers": [
+                        {
+                            "type": "OnewayKeyword",
+                            "text": "oneway",
+                            "loc": {
+                                "start": {
+                                    "line": 18,
+                                    "column": 4,
+                                    "index": 314
+                                },
+                                "end": {
+                                    "line": 18,
+                                    "column": 10,
+                                    "index": 320
+                                }
+                            }
+                        }
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 18,
+                            "column": 11,
+                            "index": 321
+                        },
+                        "end": {
+                            "line": 18,
+                            "column": 32,
+                            "index": 342
+                        }
+                    }
+                }
+            ],
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 16,
+                    "column": 1,
+                    "index": 219
+                },
+                "end": {
+                    "line": 20,
+                    "column": 2,
+                    "index": 345
+                }
+            }
+        }
+    ]
+}

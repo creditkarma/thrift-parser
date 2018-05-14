@@ -74,6 +74,11 @@ export interface CommentBlock extends SyntaxNode {
   value: Array<string>
 }
 
+export interface Annotation extends SyntaxNode {
+  name: Identifier
+  value: StringConstant
+}
+
 export interface PrimarySyntax extends SyntaxNode {
   comments: Array<Comment>
 }
@@ -169,7 +174,8 @@ export interface FieldDefinition extends PrimarySyntax {
   fieldID: FieldID | null
   fieldType: FunctionType
   requiredness: FieldRequired | null
-  defaultValue: ConstValue | null
+  defaultValue: ConstValue | null,
+  annotations: Array<Annotation> | null
 }
 
 export interface FieldID extends SyntaxNode {
@@ -262,6 +268,11 @@ export interface DoubleConstant extends SyntaxNode {
   value: FloatLiteral | ExponentialLiteral
 }
 
+export interface StringConstant extends SyntaxNode {
+  type: SyntaxType.StringConstant
+  value: StringLiteral
+}
+
 export interface ConstMap extends SyntaxNode {
   type: SyntaxType.ConstMap
   properties: Array<PropertyAssignment>
@@ -324,6 +335,7 @@ export enum SyntaxType {
   ConstValue = 'ConstValue',
   IntConstant = 'IntConstant',
   DoubleConstant = 'DoubleConstant',
+  StringConstant = 'StringConstant',
   ConstList = 'ConstList',
   ConstMap = 'ConstMap',
   EnumMember = 'EnumMember',
@@ -388,6 +400,9 @@ export enum SyntaxType {
   ThrowsKeyword = 'ThrowsKeyword',
   VoidKeyword = 'VoidKeyword',
   OnewayKeyword = 'OnewayKeyword',
+
+  // Other
+  Annotation = 'Annotation',
 
   EOF = 'EOF',
 }
