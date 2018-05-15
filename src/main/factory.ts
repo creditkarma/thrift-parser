@@ -1,4 +1,5 @@
 import {
+  Annotations,
   BaseType,
   BooleanLiteral,
   Comment,
@@ -85,6 +86,7 @@ export function createFieldDefinition(
   fieldType: FunctionType,
   loc: TextLocation,
   defaultValue: ConstValue = null,
+  annotations?: Annotations,
   comments: Array<Comment> = [],
 ): FieldDefinition {
   return {
@@ -94,6 +96,7 @@ export function createFieldDefinition(
     requiredness,
     fieldType,
     defaultValue,
+    annotations,
     comments,
     loc,
   }

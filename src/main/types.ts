@@ -23,6 +23,7 @@ export interface SyntaxNode extends Node {
 export interface StructLike {
   name: Identifier
   fields: Array<FieldDefinition>
+  annotations?: Annotations
   comments: Array<Comment>
   loc: TextLocation
 }
@@ -72,6 +73,15 @@ export interface CommentLine extends SyntaxNode {
 export interface CommentBlock extends SyntaxNode {
   type: SyntaxType.CommentBlock
   value: Array<string>
+}
+
+export interface Annotations extends SyntaxNode {
+    annotations: Array<Annotation>
+}
+
+export interface Annotation extends SyntaxNode {
+  name: Identifier
+  value: StringLiteral
 }
 
 export interface PrimarySyntax extends SyntaxNode {
@@ -130,7 +140,8 @@ export interface ConstDefinition extends PrimarySyntax {
   type: SyntaxType.ConstDefinition
   name: Identifier
   fieldType: FieldType
-  initializer: ConstValue
+  initializer: ConstValue,
+  annotations?: Annotations
 }
 
 export type FieldRequired =
@@ -149,6 +160,7 @@ export interface CppIncludeDefinition extends PrimarySyntax {
 export interface InterfaceWithFields extends PrimarySyntax {
   name: Identifier
   fields: Array<FieldDefinition>
+  annotations?: Annotations
 }
 
 export interface StructDefinition extends InterfaceWithFields {
@@ -170,6 +182,7 @@ export interface FieldDefinition extends PrimarySyntax {
   fieldType: FunctionType
   requiredness: FieldRequired | null
   defaultValue: ConstValue | null
+  annotations?: Annotations
 }
 
 export interface FieldID extends SyntaxNode {
@@ -181,18 +194,21 @@ export interface EnumDefinition extends PrimarySyntax {
   type: SyntaxType.EnumDefinition
   name: Identifier
   members: Array<EnumMember>
+  annotations?: Annotations
 }
 
 export interface EnumMember extends PrimarySyntax {
   type: SyntaxType.EnumMember
   name: Identifier
-  initializer: IntConstant | null
+  initializer: IntConstant | null,
+  annotations?: Annotations
 }
 
 export interface TypedefDefinition extends PrimarySyntax {
   type: SyntaxType.TypedefDefinition
   name: Identifier
   definitionType: FieldType
+  annotations?: Annotations
 }
 
 export interface ServiceDefinition extends PrimarySyntax {
@@ -200,6 +216,7 @@ export interface ServiceDefinition extends PrimarySyntax {
   name: Identifier
   extends: Identifier | null
   functions: Array<FunctionDefinition>
+  annotations?: Annotations
 }
 
 export interface FunctionDefinition extends PrimarySyntax {
@@ -209,7 +226,8 @@ export interface FunctionDefinition extends PrimarySyntax {
   returnType: FunctionType
   fields: Array<FieldDefinition>
   throws: Array<FieldDefinition>
-  modifiers: Array<Token>
+  modifiers: Array<Token>,
+  annotations?: Annotations
 }
 
 export interface ParametersDefinition extends SyntaxNode {
@@ -324,6 +342,7 @@ export enum SyntaxType {
   ConstValue = 'ConstValue',
   IntConstant = 'IntConstant',
   DoubleConstant = 'DoubleConstant',
+
   ConstList = 'ConstList',
   ConstMap = 'ConstMap',
   EnumMember = 'EnumMember',
@@ -388,6 +407,10 @@ export enum SyntaxType {
   ThrowsKeyword = 'ThrowsKeyword',
   VoidKeyword = 'VoidKeyword',
   OnewayKeyword = 'OnewayKeyword',
+
+  // Other
+  Annotation = 'Annotation',
+  Annotations = 'Annotations',
 
   EOF = 'EOF',
 }
