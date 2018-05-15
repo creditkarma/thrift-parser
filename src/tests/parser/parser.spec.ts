@@ -13,6 +13,10 @@ function loadSolution(name: string): object {
     return JSON.parse(fs.readFileSync(path.join(__dirname, `./solutions/${name}.solution.json`), 'utf-8'))
 }
 
+function objectify(thrift: ThriftDocument): object {
+    return JSON.parse(JSON.stringify(thrift))
+}
+
 describe('Parser', () => {
     it('should parse complex.thrift', () => {
         const content: string = loadSource('complex')
@@ -35,7 +39,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('const-map')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse a value initialized to a negative number', () => {
@@ -48,7 +52,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('const-i32')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a typedef definition', () => {
@@ -61,7 +65,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('typedef')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse a typedef that references an identifier', () => {
@@ -74,7 +78,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('typedef-identifier')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse inline block comments', () => {
@@ -87,7 +91,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('typedef-commented')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of an include', () => {
@@ -100,7 +104,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('include')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a namespace definition', () => {
@@ -113,7 +117,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('namespace')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a struct', () => {
@@ -126,7 +130,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('struct')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of an exception', () => {
@@ -139,7 +143,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('exception')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a struct with commented fields', () => {
@@ -152,7 +156,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('struct-commented')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a struct with initializers', () => {
@@ -165,7 +169,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('struct-initializers')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of an enum', () => {
@@ -178,7 +182,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('enum')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse an enum with field commented out', () => {
@@ -191,7 +195,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('enum-commented')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of an enum with initialized member', () => {
@@ -204,7 +208,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('enum-initializers')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of an enum with member initialized to hex value', () => {
@@ -217,7 +221,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('enum-hex')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a simple service', () => {
@@ -230,7 +234,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a service with mixed oneway functions', () => {
@@ -243,7 +247,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service-oneway')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse a service where functions are separated by commas or semicolons', () => {
@@ -256,7 +260,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service-separators')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a service with commented functions', () => {
@@ -269,7 +273,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service-commented')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse complex commenting', () => {
@@ -282,7 +286,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('complex-comments')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse a service containing a function with custom type', () => {
@@ -295,7 +299,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service-custom')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse the syntax of a service containing a function that throws', () => {
@@ -308,7 +312,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service-throws')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('parses a service that extends another service', () => {
@@ -321,7 +325,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service-extends')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('parses a service containing a function with arguments with mixed FieldIDs', () => {
@@ -334,7 +338,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('service-fieldids')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse an empty list', () => {
@@ -347,7 +351,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('list-empty')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse an empty map', () => {
@@ -360,7 +364,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('map-empty')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse binary type', () => {
@@ -373,7 +377,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('const-binary')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should map comments correctly', () => {
@@ -386,7 +390,7 @@ describe('Parser', () => {
 
         const expected: any = loadSolution('comments-mapping')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 
     it('should correctly parse annotations', () => {
@@ -396,10 +400,9 @@ describe('Parser', () => {
 
         const parser: Parser = createParser(tokens)
         const thrift: ThriftDocument = parser.parse()
-        console.log(JSON.stringify(thrift))
 
         const expected: any = loadSolution('annotations')
 
-        assert.deepEqual(thrift, expected)
+        assert.deepEqual(objectify(thrift), expected)
     })
 })

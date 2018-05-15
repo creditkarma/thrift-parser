@@ -23,6 +23,7 @@ export interface SyntaxNode extends Node {
 export interface StructLike {
   name: Identifier
   fields: Array<FieldDefinition>
+  annotations?: Annotations
   comments: Array<Comment>
   loc: TextLocation
 }
@@ -74,9 +75,13 @@ export interface CommentBlock extends SyntaxNode {
   value: Array<string>
 }
 
+export interface Annotations extends SyntaxNode {
+    annotations: Array<Annotation>
+}
+
 export interface Annotation extends SyntaxNode {
   name: Identifier
-  value: StringConstant
+  value: StringLiteral
 }
 
 export interface PrimarySyntax extends SyntaxNode {
@@ -135,7 +140,8 @@ export interface ConstDefinition extends PrimarySyntax {
   type: SyntaxType.ConstDefinition
   name: Identifier
   fieldType: FieldType
-  initializer: ConstValue
+  initializer: ConstValue,
+  annotations?: Annotations
 }
 
 export type FieldRequired =
@@ -154,6 +160,7 @@ export interface CppIncludeDefinition extends PrimarySyntax {
 export interface InterfaceWithFields extends PrimarySyntax {
   name: Identifier
   fields: Array<FieldDefinition>
+  annotations?: Annotations
 }
 
 export interface StructDefinition extends InterfaceWithFields {
@@ -174,8 +181,8 @@ export interface FieldDefinition extends PrimarySyntax {
   fieldID: FieldID | null
   fieldType: FunctionType
   requiredness: FieldRequired | null
-  defaultValue: ConstValue | null,
-  annotations: Array<Annotation> | null
+  defaultValue: ConstValue | null
+  annotations?: Annotations
 }
 
 export interface FieldID extends SyntaxNode {
@@ -187,18 +194,21 @@ export interface EnumDefinition extends PrimarySyntax {
   type: SyntaxType.EnumDefinition
   name: Identifier
   members: Array<EnumMember>
+  annotations?: Annotations
 }
 
 export interface EnumMember extends PrimarySyntax {
   type: SyntaxType.EnumMember
   name: Identifier
-  initializer: IntConstant | null
+  initializer: IntConstant | null,
+  annotations?: Annotations
 }
 
 export interface TypedefDefinition extends PrimarySyntax {
   type: SyntaxType.TypedefDefinition
   name: Identifier
   definitionType: FieldType
+  annotations?: Annotations
 }
 
 export interface ServiceDefinition extends PrimarySyntax {
@@ -206,6 +216,7 @@ export interface ServiceDefinition extends PrimarySyntax {
   name: Identifier
   extends: Identifier | null
   functions: Array<FunctionDefinition>
+  annotations?: Annotations
 }
 
 export interface FunctionDefinition extends PrimarySyntax {
@@ -215,7 +226,8 @@ export interface FunctionDefinition extends PrimarySyntax {
   returnType: FunctionType
   fields: Array<FieldDefinition>
   throws: Array<FieldDefinition>
-  modifiers: Array<Token>
+  modifiers: Array<Token>,
+  annotations?: Annotations
 }
 
 export interface ParametersDefinition extends SyntaxNode {
@@ -268,11 +280,6 @@ export interface DoubleConstant extends SyntaxNode {
   value: FloatLiteral | ExponentialLiteral
 }
 
-export interface StringConstant extends SyntaxNode {
-  type: SyntaxType.StringConstant
-  value: StringLiteral
-}
-
 export interface ConstMap extends SyntaxNode {
   type: SyntaxType.ConstMap
   properties: Array<PropertyAssignment>
@@ -300,109 +307,109 @@ export enum ErrorType {
 }
 
 export enum SyntaxType {
-  ThriftDocument = 'ThriftDocument',
-  ThriftErrors = 'ThriftErrors',
+    ThriftDocument = 'ThriftDocument',
+    ThriftErrors = 'ThriftErrors',
 
-  Identifier = 'Identifier',
-  FieldID = 'FieldID',
+    Identifier = 'Identifier',
+    FieldID = 'FieldID',
 
-  // Statements
-  NamespaceDefinition = 'NamespaceDefinition',
-  IncludeDefinition = 'IncludeDefinition',
-  CppIncludeDefinition = 'CppIncludeDefinition',
-  ConstDefinition = 'ConstDefinition',
-  StructDefinition = 'StructDefinition',
-  EnumDefinition = 'EnumDefinition',
-  ServiceDefinition = 'ServiceDefinition',
-  ExceptionDefinition = 'ExceptionDefinition',
-  TypedefDefinition = 'TypedefDefinition',
-  UnionDefinition = 'UnionDefinition',
+    // Statements
+    NamespaceDefinition = 'NamespaceDefinition',
+    IncludeDefinition = 'IncludeDefinition',
+    CppIncludeDefinition = 'CppIncludeDefinition',
+    ConstDefinition = 'ConstDefinition',
+    StructDefinition = 'StructDefinition',
+    EnumDefinition = 'EnumDefinition',
+    ServiceDefinition = 'ServiceDefinition',
+    ExceptionDefinition = 'ExceptionDefinition',
+    TypedefDefinition = 'TypedefDefinition',
+    UnionDefinition = 'UnionDefinition',
 
-  // Fields
-  FieldDefinition = 'FieldDefinition',
-  FunctionDefinition = 'FunctionDefinition',
-  ParametersDefinition = 'ParametersDefinition',
-  ThrowsDefinition = 'ThrowsDefinition',
+    // Fields
+    FieldDefinition = 'FieldDefinition',
+    FunctionDefinition = 'FunctionDefinition',
+    ParametersDefinition = 'ParametersDefinition',
+    ThrowsDefinition = 'ThrowsDefinition',
 
-  // Type Annotations
-  FieldType = 'FieldType',
-  BaseType = 'BaseType',
-  SetType = 'SetType',
-  MapType = 'MapType',
-  ListType = 'ListType',
+    // Type Annotations
+    FieldType = 'FieldType',
+    BaseType = 'BaseType',
+    SetType = 'SetType',
+    MapType = 'MapType',
+    ListType = 'ListType',
 
-  // Values
-  ConstValue = 'ConstValue',
-  IntConstant = 'IntConstant',
-  DoubleConstant = 'DoubleConstant',
-  StringConstant = 'StringConstant',
-  ConstList = 'ConstList',
-  ConstMap = 'ConstMap',
-  EnumMember = 'EnumMember',
+    // Values
+    ConstValue = 'ConstValue',
+    IntConstant = 'IntConstant',
+    DoubleConstant = 'DoubleConstant',
+    ConstList = 'ConstList',
+    ConstMap = 'ConstMap',
+    EnumMember = 'EnumMember',
 
-  // Literals
-  CommentLine = 'CommentLine',
-  CommentBlock = 'CommentBlock',
-  StringLiteral = 'StringLiteral',
-  IntegerLiteral = 'IntegerLiteral',
-  FloatLiteral = 'FloatLiteral',
-  HexLiteral = 'HexLiteral',
-  ExponentialLiteral = 'ExponentialLiteral',
-  BooleanLiteral = 'BooleanLiteral',
-  PropertyAssignment = 'PropertyAssignment',
+    // Literals
+    CommentLine = 'CommentLine',
+    CommentBlock = 'CommentBlock',
+    StringLiteral = 'StringLiteral',
+    IntegerLiteral = 'IntegerLiteral',
+    FloatLiteral = 'FloatLiteral',
+    HexLiteral = 'HexLiteral',
+    ExponentialLiteral = 'ExponentialLiteral',
+    BooleanLiteral = 'BooleanLiteral',
+    PropertyAssignment = 'PropertyAssignment',
 
-  // Tokens
-  LeftParenToken = 'LeftParenToken',
-  RightParenToken = 'RightParenToken',
-  LeftBraceToken = 'LeftBraceToken',
-  RightBraceToken = 'RightBraceToken',
-  LeftBracketToken = 'LeftBracketToken',
-  RightBracketToken = 'RightBracketToken',
-  CommaToken = 'CommaToken',
-  DotToken = 'DotToken',
-  MinusToken = 'MinusToken',
-  SemicolonToken = 'SemicolonToken',
-  ColonToken = 'ColonToken',
-  StarToken = 'StarToken',
-  EqualToken = 'EqualToken',
-  LessThanToken = 'LessThanToken',
-  GreaterThanToken = 'GreaterThanToken',
+    // Tokens
+    LeftParenToken = 'LeftParenToken',
+    RightParenToken = 'RightParenToken',
+    LeftBraceToken = 'LeftBraceToken',
+    RightBraceToken = 'RightBraceToken',
+    LeftBracketToken = 'LeftBracketToken',
+    RightBracketToken = 'RightBracketToken',
+    CommaToken = 'CommaToken',
+    DotToken = 'DotToken',
+    MinusToken = 'MinusToken',
+    SemicolonToken = 'SemicolonToken',
+    ColonToken = 'ColonToken',
+    StarToken = 'StarToken',
+    EqualToken = 'EqualToken',
+    LessThanToken = 'LessThanToken',
+    GreaterThanToken = 'GreaterThanToken',
 
-  // Keywords
-  NamespaceKeyword = 'NamespaceKeyword',
-  IncludeKeyword = 'IncludeKeyword',
-  CppIncludeKeyword = 'CppIncludeKeyword',
-  ExceptionKeyword = 'ExceptionKeyword',
-  ServiceKeyword = 'ServiceKeyword',
-  ExtendsKeyword = 'ExtendsKeyword',
-  RequiredKeyword = 'RequiredKeyword',
-  OptionalKeyword = 'OptionalKeyword',
-  FalseKeyword = 'FalseKeyword',
-  TrueKeyword = 'TrueKeyword',
-  ConstKeyword = 'ConstKeyword',
-  DoubleKeyword = 'DoubleKeyword',
-  StructKeyword = 'StructKeyword',
-  TypedefKeyword = 'TypedefKeyword',
-  UnionKeyword = 'UnionKeyword',
-  StringKeyword = 'StringKeyword',
-  BinaryKeyword = 'BinaryKeyword',
-  BoolKeyword = 'BoolKeyword',
-  ByteKeyword = 'ByteKeyword',
-  EnumKeyword = 'EnumKeyword',
-  SenumKeyword = 'SenumKeyword',
-  ListKeyword = 'ListKeyword',
-  SetKeyword = 'SetKeyword',
-  MapKeyword = 'MapKeyword',
-  I8Keyword = 'I8Keyword',
-  I16Keyword = 'I16Keyword',
-  I32Keyword = 'I32Keyword',
-  I64Keyword = 'I64Keyword',
-  ThrowsKeyword = 'ThrowsKeyword',
-  VoidKeyword = 'VoidKeyword',
-  OnewayKeyword = 'OnewayKeyword',
+    // Keywords
+    NamespaceKeyword = 'NamespaceKeyword',
+    IncludeKeyword = 'IncludeKeyword',
+    CppIncludeKeyword = 'CppIncludeKeyword',
+    ExceptionKeyword = 'ExceptionKeyword',
+    ServiceKeyword = 'ServiceKeyword',
+    ExtendsKeyword = 'ExtendsKeyword',
+    RequiredKeyword = 'RequiredKeyword',
+    OptionalKeyword = 'OptionalKeyword',
+    FalseKeyword = 'FalseKeyword',
+    TrueKeyword = 'TrueKeyword',
+    ConstKeyword = 'ConstKeyword',
+    DoubleKeyword = 'DoubleKeyword',
+    StructKeyword = 'StructKeyword',
+    TypedefKeyword = 'TypedefKeyword',
+    UnionKeyword = 'UnionKeyword',
+    StringKeyword = 'StringKeyword',
+    BinaryKeyword = 'BinaryKeyword',
+    BoolKeyword = 'BoolKeyword',
+    ByteKeyword = 'ByteKeyword',
+    EnumKeyword = 'EnumKeyword',
+    SenumKeyword = 'SenumKeyword',
+    ListKeyword = 'ListKeyword',
+    SetKeyword = 'SetKeyword',
+    MapKeyword = 'MapKeyword',
+    I8Keyword = 'I8Keyword',
+    I16Keyword = 'I16Keyword',
+    I32Keyword = 'I32Keyword',
+    I64Keyword = 'I64Keyword',
+    ThrowsKeyword = 'ThrowsKeyword',
+    VoidKeyword = 'VoidKeyword',
+    OnewayKeyword = 'OnewayKeyword',
 
-  // Other
-  Annotation = 'Annotation',
+    // Other
+    Annotation = 'Annotation',
+    Annotations = 'Annotations',
 
-  EOF = 'EOF',
+    EOF = 'EOF',
 }

@@ -1,5 +1,6 @@
 import {
   Annotation,
+  Annotations,
   Comment,
   ConstDefinition,
   ConstList,
@@ -25,7 +26,6 @@ import {
   PropertyAssignment,
   ServiceDefinition,
   SetType,
-  StringConstant,
   StructDefinition,
   StructLike,
   SyntaxType,
@@ -54,7 +54,6 @@ import {
   createKeywordFieldType,
   createMapFieldType,
   createParseError,
-  createStringConstant,
   createStringLiteral,
   createTextLocation,
 } from './factory'
@@ -185,7 +184,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     }
   }
 
-  // ServiceDefinition → 'service' Identifier ( 'extends' Identifier )? '{' Function* '}'
+  // ServiceDefinition → 'service' Identifier ( 'extends' Identifier )? '{' Function* '} Annotations?'
   function parseService(): ServiceDefinition {
     const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.ServiceKeyword)
@@ -200,6 +199,8 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const closeBrace: Token = consume(SyntaxType.RightBraceToken)
     requireValue(closeBrace, `Expected closing curly brace`)
 
+    const annotations: Annotations | undefined = parseAnnotations()
+
     const location: TextLocation = createTextLocation(keywordToken.loc.start, closeBrace.loc.end)
 
     return {
@@ -207,6 +208,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       name: createIdentifier(nameToken.text, nameToken.loc),
       extends: extendsId,
       functions,
+      annotations,
       comments: leadingComments,
       loc: location,
     }
@@ -247,7 +249,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return functions
   }
 
-  // Function → 'oneway'? FunctionType Identifier '(' Field* ')' Throws? ListSeparator?
+  // Function → 'oneway'? FunctionType Identifier '(' Field* ')' Throws? Annotations? ListSeparator?
   function parseFunction(): FunctionDefinition {
     const leadingComments: Array<Comment> = getComments()
     const onewayToken: Token = consume(SyntaxType.OnewayKeyword)
@@ -260,6 +262,9 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     requireValue(params, `List of zero or more fields expected`)
 
     const throws: ThrowsDefinition = parseThrows()
+
+    const annotations: Annotations | undefined = parseAnnotations()
+
     const listSeparator: Token = readListSeparator()
     const endLoc: TextLocation = (
       (listSeparator !== null) ?
@@ -275,6 +280,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       returnType,
       fields: params.fields,
       throws: (throws !== null) ? throws.fields : [],
+      annotations,
       comments: leadingComments,
       oneway: (onewayToken !== null),
       modifiers: (
@@ -358,7 +364,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     }
   }
 
-  // ConstDefinition → 'const' FieldType Identifier '=' ConstValue ListSeparator?
+  // ConstDefinition → 'const' FieldType Identifier '=' ConstValue Annotations? ListSeparator?
   function parseConst(): ConstDefinition {
     const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.ConstKeyword)
@@ -368,6 +374,8 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
     const initializer: ConstValue = parseValueAssignment()
     requireValue(initializer, `Const must be initialized to a value`)
+
+    const annotations: Annotations | undefined = parseAnnotations()
     readListSeparator()
 
     return {
@@ -375,6 +383,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       name: createIdentifier(nameToken.text, nameToken.loc),
       fieldType,
       initializer,
+      annotations,
       comments: leadingComments,
       loc: {
         start: keywordToken.loc.start,
@@ -392,30 +401,40 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return null
   }
 
-  // Annotations → '(' (Identifier '=' StringConstant ListSeparator?)* ')'
-  function parseAnnotations(): Array<Annotation> | null {
+  // Annotations → '(' Annotation* ')'
+  function parseAnnotations(): Annotations | undefined {
     if (check(SyntaxType.LeftParenToken)) {
-      const annotations: Array<Annotation> = []
-      advance()
-      while (!check(SyntaxType.RightParenToken)) {
-          const nameToken: Token = consume(SyntaxType.Identifier)
-          consume(SyntaxType.EqualToken)
-          const next: Token = advance()
-          const value: StringConstant = parseStringValue(next)
 
-          annotations.push( {
-            type: SyntaxType.Annotation,
-            name: createIdentifier(nameToken.text, nameToken.loc),
-            value,
-            loc: createTextLocation(nameToken.loc.start, value.loc.end),
-          } )
-          readListSeparator()
+      const annotations: Array<Annotation> = []
+      const startToken = advance()
+      while (!check(SyntaxType.RightParenToken)) {
+          annotations.push(parseAnnotation())
       }
-      advance()
-      return annotations
+      const endToken = advance()
+      return {
+        annotations,
+        type: SyntaxType.Annotations,
+        loc: createTextLocation( startToken.loc.start, endToken.loc.end),
+      }
     }
 
-    return null
+    return undefined
+  }
+
+  // Annotation → Identifier '=' StringLiteral ListSeparator?
+  function parseAnnotation(): Annotation {
+    const nameToken: Token = requireValue(consume(SyntaxType.Identifier), `Annotation must have a name`)
+    requireValue(consume(SyntaxType.EqualToken), `Expected equal sign`)
+    const valueToken: Token = requireValue(consume(SyntaxType.StringLiteral), `Annotation must have a value`)
+
+    readListSeparator()
+
+    return {
+      type: SyntaxType.Annotation,
+      name: createIdentifier(nameToken.text, nameToken.loc),
+      value: createStringLiteral(valueToken.text, valueToken.loc),
+      loc: createTextLocation(nameToken.loc.start, valueToken.loc.end),
+    }
   }
 
   // TypedefDefinition → 'typedef' FieldType Identifier
@@ -425,11 +444,16 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const nameToken: Token = consume(SyntaxType.Identifier)
     requireValue(nameToken, `Typedef is expected to have name and none found`)
 
+    const leadingComments: Array<Comment> = getComments()
+
+    const annotations: Annotations | undefined = parseAnnotations()
+
     return {
       type: SyntaxType.TypedefDefinition,
       name: createIdentifier(nameToken.text, nameToken.loc),
       definitionType: type,
-      comments: getComments(),
+      annotations,
+      comments: leadingComments,
       loc: {
         start: keywordToken.loc.start,
         end: nameToken.loc.end,
@@ -437,7 +461,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     }
   }
 
-  // EnumDefinition → 'enum' Identifier '{' EnumMember* '}'
+  // EnumDefinition → 'enum' Identifier '{' EnumMember* '} Annotations?'
   function parseEnum(): EnumDefinition {
     const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.EnumKeyword)
@@ -451,6 +475,8 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const closeBrace: Token = consume(SyntaxType.RightBraceToken)
     requireValue(closeBrace, `Expected closing brace`)
 
+    const annotations: Annotations | undefined = parseAnnotations()
+
     const loc: TextLocation = {
       start: keywordToken.loc.start,
       end: closeBrace.loc.end,
@@ -460,6 +486,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       type: SyntaxType.EnumDefinition,
       name: createIdentifier(nameToken.text, nameToken.loc),
       members,
+      annotations,
       comments: leadingComments,
       loc,
     }
@@ -486,7 +513,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return members
   }
 
-  // EnumMember → (Identifier ('=' IntConstant)? ListSeparator?)*
+  // EnumMember → (Identifier ('=' IntConstant)? Annotations? ListSeparator?)*
   function parseEnumMember(): EnumMember {
     const nameToken: Token = consume(SyntaxType.Identifier)
     requireValue(nameToken, `EnumMember must have identifier`)
@@ -503,16 +530,19 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       loc = createTextLocation(nameToken.loc.start, nameToken.loc.end)
     }
 
+    const annotations: Annotations | undefined = parseAnnotations()
+
     return {
       type: SyntaxType.EnumMember,
       name: createIdentifier(nameToken.text, nameToken.loc),
       initializer,
+      annotations,
       comments: getComments(),
       loc,
     }
   }
 
-  // StructLike → ('struct' | 'union' | 'exception') Identifier 'xsd_all'? '{' Field* '}'
+  // StructLike → ('struct' | 'union' | 'exception') Identifier 'xsd_all'? '{' Field* '} Annotations?'
   function parseStructLikeInterface(): StructLike {
     const leadingComments: Array<Comment> = getComments()
     const keywordToken: Token = consume(SyntaxType.StructKeyword, SyntaxType.UnionKeyword, SyntaxType.ExceptionKeyword)
@@ -526,9 +556,12 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const closeBrace: Token = consume(SyntaxType.RightBraceToken)
     requireValue(closeBrace, `Struct-like body must end with a closing curly brace '}'`)
 
+    const annotations: Annotations | undefined = parseAnnotations()
+
     return {
       name: createIdentifier(nameToken.text, nameToken.loc),
       fields,
+      annotations,
       comments: leadingComments,
       loc: {
         start: keywordToken.loc.start,
@@ -537,7 +570,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     }
   }
 
-  // StructDefinition → 'struct' Identifier 'xsd_all'? '{' Field* '}'
+  // StructDefinition → 'struct' Identifier 'xsd_all'? '{' Field* '} Annotations?'
   function parseStruct(): StructDefinition {
     const parsedData: StructLike = parseStructLikeInterface()
 
@@ -545,12 +578,13 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       type: SyntaxType.StructDefinition,
       name: parsedData.name,
       fields: parsedData.fields,
+      annotations: parsedData.annotations,
       comments: parsedData.comments,
       loc: parsedData.loc,
     }
   }
 
-  // UnioinDefinition → 'union' Identifier 'xsd_all'? '{' Field* '}'
+  // UnioinDefinition → 'union' Identifier 'xsd_all'? '{' Field* '} Annotations?'
   function parseUnion(): UnionDefinition {
     const parsedData: StructLike = parseStructLikeInterface()
 
@@ -562,12 +596,13 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
         next.requiredness = 'optional'
         return next
       }),
+      annotations: parsedData.annotations,
       comments: parsedData.comments,
       loc: parsedData.loc,
     }
   }
 
-  // ExceptionDefinition → 'exception' Identifier '{' Field* '}'
+  // ExceptionDefinition → 'exception' Identifier '{' Field* '} Annotations?'
   function parseException(): ExceptionDefinition {
     const parsedData: StructLike = parseStructLikeInterface()
 
@@ -575,6 +610,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       type: SyntaxType.ExceptionDefinition,
       name: parsedData.name,
       fields: parsedData.fields,
+      annotations: parsedData.annotations,
       comments: parsedData.comments,
       loc: parsedData.loc,
     }
@@ -600,7 +636,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return fields
   }
 
-  // Field → FieldID? FieldReq? FieldType Identifier ('= ConstValue)? XsdFieldOptions ListSeparator?
+  // Field → FieldID? FieldReq? FieldType Identifier ('= ConstValue)? XsdFieldOptions Annotations? ListSeparator?
   function parseField(): FieldDefinition {
     const startLoc: TextLocation = currentToken().loc
     const fieldID: FieldID = parseFieldId()
@@ -610,7 +646,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     requireValue(nameToken, `Unable to find identifier for field`)
 
     const defaultValue: ConstValue = parseValueAssignment()
-    const annotations: Array<Annotation> | null = parseAnnotations()
+    const annotations: Annotations | undefined = parseAnnotations()
     const listSeparator: Token = readListSeparator()
 
     const endLoc: TextLocation = (
@@ -744,19 +780,6 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
       default:
         reportError(`DoubleConstant expected but found: ${token.type}`)
-    }
-  }
-
-  function parseStringValue(token: Token): StringConstant {
-    switch (token.type) {
-      case SyntaxType.StringLiteral:
-        return createStringConstant(
-          createStringLiteral(token.text, token.loc),
-          token.loc,
-        )
-
-      default:
-        reportError(`StringConstant expected but found: ${token.type}`)
     }
   }
 
