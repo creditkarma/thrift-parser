@@ -12,13 +12,15 @@
   ],
   "keywords": [
     "thrift",
-    "typexcript",
+    "typescript",
     "parser",
     "scanner",
-    "ast"
+    "ast",
+    "rpc"
   ],
   "scripts": {
     "clean": "rimraf dist/",
+    "clean-all": "rimraf dist/ node_modules/ package-lock.json",
     "lint": "tslint --fix src/**/*.ts",
     "build": "npm run clean && npm run lint && tsc",
     "test:cli": "ts-node ./src/main/bin/index.ts ./fixtures/errors.thrift",
