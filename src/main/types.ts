@@ -108,22 +108,26 @@ export type ContainerType =
 
 export interface BaseType extends SyntaxNode {
  type: KeywordType
+ annotations?: Annotations
 }
 
 export interface SetType extends SyntaxNode {
   type: SyntaxType.SetType
   valueType: FieldType
+  annotations?: Annotations
 }
 
 export interface ListType extends SyntaxNode {
   type: SyntaxType.ListType
   valueType: FieldType
+  annotations?: Annotations
 }
 
 export interface MapType extends SyntaxNode {
   type: SyntaxType.MapType
   keyType: FieldType
   valueType: FieldType
+  annotations?: Annotations
 }
 
 export type ConstValue =
@@ -299,6 +303,7 @@ export interface PropertyAssignment extends SyntaxNode {
 export interface Identifier extends SyntaxNode {
   type: SyntaxType.Identifier
   value: string
+  annotations?: Annotations
 }
 
 export enum ErrorType {

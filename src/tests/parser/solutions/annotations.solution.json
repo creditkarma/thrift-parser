@@ -432,17 +432,17 @@
             "type": "TypedefDefinition",
             "name": {
                 "type": "Identifier",
-                "value": "IntegerWithTightlyFormattedAnnotations",
+                "value": "annotatedType",
                 "loc": {
                     "start": {
                         "line": 7,
-                        "column": 13,
-                        "index": 257
+                        "column": 44,
+                        "index": 288
                     },
                     "end": {
                         "line": 7,
-                        "column": 51,
-                        "index": 295
+                        "column": 57,
+                        "index": 301
                     }
                 }
             },
@@ -459,116 +459,69 @@
                         "column": 12,
                         "index": 256
                     }
-                }
-            },
-            "annotations": {
-                "annotations": [
-                    {
-                        "type": "Annotation",
-                        "name": {
-                            "type": "Identifier",
-                            "value": "annotation",
-                            "loc": {
-                                "start": {
-                                    "line": 7,
-                                    "column": 53,
-                                    "index": 297
-                                },
-                                "end": {
-                                    "line": 7,
-                                    "column": 63,
-                                    "index": 307
+                },
+                "annotations": {
+                    "annotations": [
+                        {
+                            "type": "Annotation",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "another.annotation",
+                                "loc": {
+                                    "start": {
+                                        "line": 7,
+                                        "column": 15,
+                                        "index": 259
+                                    },
+                                    "end": {
+                                        "line": 7,
+                                        "column": 33,
+                                        "index": 277
+                                    }
                                 }
-                            }
-                        },
-                        "value": {
-                            "type": "StringLiteral",
-                            "value": "foo",
-                            "loc": {
-                                "start": {
-                                    "line": 7,
-                                    "column": 64,
-                                    "index": 308
-                                },
-                                "end": {
-                                    "line": 7,
-                                    "column": 69,
-                                    "index": 313
-                                }
-                            }
-                        },
-                        "loc": {
-                            "start": {
-                                "line": 7,
-                                "column": 53,
-                                "index": 297
                             },
-                            "end": {
-                                "line": 7,
-                                "column": 69,
-                                "index": 313
+                            "value": {
+                                "type": "StringLiteral",
+                                "value": "bar",
+                                "loc": {
+                                    "start": {
+                                        "line": 7,
+                                        "column": 36,
+                                        "index": 280
+                                    },
+                                    "end": {
+                                        "line": 7,
+                                        "column": 41,
+                                        "index": 285
+                                    }
+                                }
+                            },
+                            "loc": {
+                                "start": {
+                                    "line": 7,
+                                    "column": 15,
+                                    "index": 259
+                                },
+                                "end": {
+                                    "line": 7,
+                                    "column": 41,
+                                    "index": 285
+                                }
                             }
                         }
-                    },
-                    {
-                        "type": "Annotation",
-                        "name": {
-                            "type": "Identifier",
-                            "value": "another.annotation",
-                            "loc": {
-                                "start": {
-                                    "line": 7,
-                                    "column": 70,
-                                    "index": 314
-                                },
-                                "end": {
-                                    "line": 7,
-                                    "column": 88,
-                                    "index": 332
-                                }
-                            }
+                    ],
+                    "type": "Annotations",
+                    "loc": {
+                        "start": {
+                            "line": 7,
+                            "column": 13,
+                            "index": 257
                         },
-                        "value": {
-                            "type": "StringLiteral",
-                            "value": "bar",
-                            "loc": {
-                                "start": {
-                                    "line": 7,
-                                    "column": 89,
-                                    "index": 333
-                                },
-                                "end": {
-                                    "line": 7,
-                                    "column": 94,
-                                    "index": 338
-                                }
-                            }
-                        },
-                        "loc": {
-                            "start": {
-                                "line": 7,
-                                "column": 70,
-                                "index": 314
-                            },
-                            "end": {
-                                "line": 7,
-                                "column": 94,
-                                "index": 338
-                            }
+                        "end": {
+                            "line": 7,
+                            "column": 43,
+                            "index": 287
                         }
-                    }
-                ],
-                "type": "Annotations",
-                "loc": {
-                    "start": {
-                        "line": 7,
-                        "column": 52,
-                        "index": 296
-                    },
-                    "end": {
-                        "line": 7,
-                        "column": 95,
-                        "index": 339
                     }
                 }
             },
@@ -581,72 +534,153 @@
                 },
                 "end": {
                     "line": 7,
-                    "column": 51,
-                    "index": 295
+                    "column": 57,
+                    "index": 301
                 }
             }
         },
         {
-            "type": "ConstDefinition",
+            "type": "TypedefDefinition",
             "name": {
                 "type": "Identifier",
-                "value": "ConstantWithAnnotation",
+                "value": "annotatedIdentifier",
                 "loc": {
                     "start": {
                         "line": 8,
-                        "column": 11,
-                        "index": 350
+                        "column": 54,
+                        "index": 355
                     },
                     "end": {
                         "line": 8,
-                        "column": 33,
-                        "index": 372
+                        "column": 73,
+                        "index": 374
                     }
                 }
             },
-            "fieldType": {
-                "type": "I32Keyword",
+            "definitionType": {
+                "type": "Identifier",
+                "value": "AnnotatedEnum",
                 "loc": {
                     "start": {
                         "line": 8,
-                        "column": 7,
-                        "index": 346
+                        "column": 9,
+                        "index": 310
                     },
                     "end": {
                         "line": 8,
-                        "column": 10,
-                        "index": 349
+                        "column": 22,
+                        "index": 323
                     }
-                }
-            },
-            "initializer": {
-                "type": "IntConstant",
-                "value": {
-                    "type": "IntegerLiteral",
-                    "value": "9853",
+                },
+                "annotations": {
+                    "annotations": [
+                        {
+                            "type": "Annotation",
+                            "name": {
+                                "type": "Identifier",
+                                "value": "another.annotation",
+                                "loc": {
+                                    "start": {
+                                        "line": 8,
+                                        "column": 25,
+                                        "index": 326
+                                    },
+                                    "end": {
+                                        "line": 8,
+                                        "column": 43,
+                                        "index": 344
+                                    }
+                                }
+                            },
+                            "value": {
+                                "type": "StringLiteral",
+                                "value": "bar",
+                                "loc": {
+                                    "start": {
+                                        "line": 8,
+                                        "column": 46,
+                                        "index": 347
+                                    },
+                                    "end": {
+                                        "line": 8,
+                                        "column": 51,
+                                        "index": 352
+                                    }
+                                }
+                            },
+                            "loc": {
+                                "start": {
+                                    "line": 8,
+                                    "column": 25,
+                                    "index": 326
+                                },
+                                "end": {
+                                    "line": 8,
+                                    "column": 51,
+                                    "index": 352
+                                }
+                            }
+                        }
+                    ],
+                    "type": "Annotations",
                     "loc": {
                         "start": {
                             "line": 8,
-                            "column": 36,
-                            "index": 375
+                            "column": 23,
+                            "index": 324
                         },
                         "end": {
                             "line": 8,
-                            "column": 40,
-                            "index": 379
+                            "column": 53,
+                            "index": 354
                         }
                     }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 8,
+                    "column": 1,
+                    "index": 302
                 },
+                "end": {
+                    "line": 8,
+                    "column": 73,
+                    "index": 374
+                }
+            }
+        },
+        {
+            "type": "TypedefDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "IntegerWithTightlyFormattedAnnotations",
                 "loc": {
                     "start": {
-                        "line": 8,
-                        "column": 36,
-                        "index": 375
+                        "line": 9,
+                        "column": 13,
+                        "index": 387
                     },
                     "end": {
-                        "line": 8,
-                        "column": 40,
-                        "index": 379
+                        "line": 9,
+                        "column": 51,
+                        "index": 425
+                    }
+                }
+            },
+            "definitionType": {
+                "type": "I32Keyword",
+                "loc": {
+                    "start": {
+                        "line": 9,
+                        "column": 9,
+                        "index": 383
+                    },
+                    "end": {
+                        "line": 9,
+                        "column": 12,
+                        "index": 386
                     }
                 }
             },
@@ -659,14 +693,14 @@
                             "value": "annotation",
                             "loc": {
                                 "start": {
-                                    "line": 8,
-                                    "column": 43,
-                                    "index": 382
+                                    "line": 9,
+                                    "column": 53,
+                                    "index": 427
                                 },
                                 "end": {
-                                    "line": 8,
-                                    "column": 53,
-                                    "index": 392
+                                    "line": 9,
+                                    "column": 63,
+                                    "index": 437
                                 }
                             }
                         },
@@ -675,27 +709,27 @@
                             "value": "foo",
                             "loc": {
                                 "start": {
-                                    "line": 8,
-                                    "column": 56,
-                                    "index": 395
+                                    "line": 9,
+                                    "column": 64,
+                                    "index": 438
                                 },
                                 "end": {
-                                    "line": 8,
-                                    "column": 61,
-                                    "index": 400
+                                    "line": 9,
+                                    "column": 69,
+                                    "index": 443
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 8,
-                                "column": 43,
-                                "index": 382
+                                "line": 9,
+                                "column": 53,
+                                "index": 427
                             },
                             "end": {
-                                "line": 8,
-                                "column": 61,
-                                "index": 400
+                                "line": 9,
+                                "column": 69,
+                                "index": 443
                             }
                         }
                     },
@@ -706,14 +740,14 @@
                             "value": "another.annotation",
                             "loc": {
                                 "start": {
-                                    "line": 8,
-                                    "column": 63,
-                                    "index": 402
+                                    "line": 9,
+                                    "column": 70,
+                                    "index": 444
                                 },
                                 "end": {
-                                    "line": 8,
-                                    "column": 81,
-                                    "index": 420
+                                    "line": 9,
+                                    "column": 88,
+                                    "index": 462
                                 }
                             }
                         },
@@ -722,27 +756,27 @@
                             "value": "bar",
                             "loc": {
                                 "start": {
-                                    "line": 8,
-                                    "column": 84,
-                                    "index": 423
+                                    "line": 9,
+                                    "column": 89,
+                                    "index": 463
                                 },
                                 "end": {
-                                    "line": 8,
-                                    "column": 89,
-                                    "index": 428
+                                    "line": 9,
+                                    "column": 94,
+                                    "index": 468
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 8,
-                                "column": 63,
-                                "index": 402
+                                "line": 9,
+                                "column": 70,
+                                "index": 444
                             },
                             "end": {
-                                "line": 8,
-                                "column": 89,
-                                "index": 428
+                                "line": 9,
+                                "column": 94,
+                                "index": 468
                             }
                         }
                     }
@@ -750,28 +784,217 @@
                 "type": "Annotations",
                 "loc": {
                     "start": {
-                        "line": 8,
-                        "column": 41,
-                        "index": 380
+                        "line": 9,
+                        "column": 52,
+                        "index": 426
                     },
                     "end": {
-                        "line": 8,
-                        "column": 91,
-                        "index": 430
+                        "line": 9,
+                        "column": 95,
+                        "index": 469
                     }
                 }
             },
             "comments": [],
             "loc": {
                 "start": {
-                    "line": 8,
+                    "line": 9,
                     "column": 1,
-                    "index": 340
+                    "index": 375
                 },
                 "end": {
-                    "line": 8,
+                    "line": 9,
+                    "column": 51,
+                    "index": 425
+                }
+            }
+        },
+        {
+            "type": "ConstDefinition",
+            "name": {
+                "type": "Identifier",
+                "value": "ConstantWithAnnotation",
+                "loc": {
+                    "start": {
+                        "line": 10,
+                        "column": 11,
+                        "index": 480
+                    },
+                    "end": {
+                        "line": 10,
+                        "column": 33,
+                        "index": 502
+                    }
+                }
+            },
+            "fieldType": {
+                "type": "I32Keyword",
+                "loc": {
+                    "start": {
+                        "line": 10,
+                        "column": 7,
+                        "index": 476
+                    },
+                    "end": {
+                        "line": 10,
+                        "column": 10,
+                        "index": 479
+                    }
+                }
+            },
+            "initializer": {
+                "type": "IntConstant",
+                "value": {
+                    "type": "IntegerLiteral",
+                    "value": "9853",
+                    "loc": {
+                        "start": {
+                            "line": 10,
+                            "column": 36,
+                            "index": 505
+                        },
+                        "end": {
+                            "line": 10,
+                            "column": 40,
+                            "index": 509
+                        }
+                    }
+                },
+                "loc": {
+                    "start": {
+                        "line": 10,
+                        "column": 36,
+                        "index": 505
+                    },
+                    "end": {
+                        "line": 10,
+                        "column": 40,
+                        "index": 509
+                    }
+                }
+            },
+            "annotations": {
+                "annotations": [
+                    {
+                        "type": "Annotation",
+                        "name": {
+                            "type": "Identifier",
+                            "value": "annotation",
+                            "loc": {
+                                "start": {
+                                    "line": 10,
+                                    "column": 43,
+                                    "index": 512
+                                },
+                                "end": {
+                                    "line": 10,
+                                    "column": 53,
+                                    "index": 522
+                                }
+                            }
+                        },
+                        "value": {
+                            "type": "StringLiteral",
+                            "value": "foo",
+                            "loc": {
+                                "start": {
+                                    "line": 10,
+                                    "column": 56,
+                                    "index": 525
+                                },
+                                "end": {
+                                    "line": 10,
+                                    "column": 61,
+                                    "index": 530
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 10,
+                                "column": 43,
+                                "index": 512
+                            },
+                            "end": {
+                                "line": 10,
+                                "column": 61,
+                                "index": 530
+                            }
+                        }
+                    },
+                    {
+                        "type": "Annotation",
+                        "name": {
+                            "type": "Identifier",
+                            "value": "another.annotation",
+                            "loc": {
+                                "start": {
+                                    "line": 10,
+                                    "column": 63,
+                                    "index": 532
+                                },
+                                "end": {
+                                    "line": 10,
+                                    "column": 81,
+                                    "index": 550
+                                }
+                            }
+                        },
+                        "value": {
+                            "type": "StringLiteral",
+                            "value": "bar",
+                            "loc": {
+                                "start": {
+                                    "line": 10,
+                                    "column": 84,
+                                    "index": 553
+                                },
+                                "end": {
+                                    "line": 10,
+                                    "column": 89,
+                                    "index": 558
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 10,
+                                "column": 63,
+                                "index": 532
+                            },
+                            "end": {
+                                "line": 10,
+                                "column": 89,
+                                "index": 558
+                            }
+                        }
+                    }
+                ],
+                "type": "Annotations",
+                "loc": {
+                    "start": {
+                        "line": 10,
+                        "column": 41,
+                        "index": 510
+                    },
+                    "end": {
+                        "line": 10,
+                        "column": 91,
+                        "index": 560
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 10,
+                    "column": 1,
+                    "index": 470
+                },
+                "end": {
+                    "line": 10,
                     "column": 40,
-                    "index": 379
+                    "index": 509
                 }
             }
         },
@@ -782,14 +1005,14 @@
                 "value": "AnnotatedEnum",
                 "loc": {
                     "start": {
-                        "line": 10,
+                        "line": 12,
                         "column": 6,
-                        "index": 437
+                        "index": 567
                     },
                     "end": {
-                        "line": 10,
+                        "line": 12,
                         "column": 19,
-                        "index": 450
+                        "index": 580
                     }
                 }
             },
@@ -801,14 +1024,14 @@
                         "value": "ONE",
                         "loc": {
                             "start": {
-                                "line": 11,
+                                "line": 13,
                                 "column": 3,
-                                "index": 455
+                                "index": 585
                             },
                             "end": {
-                                "line": 11,
+                                "line": 13,
                                 "column": 6,
-                                "index": 458
+                                "index": 588
                             }
                         }
                     },
@@ -819,27 +1042,27 @@
                             "value": "1",
                             "loc": {
                                 "start": {
-                                    "line": 11,
+                                    "line": 13,
                                     "column": 9,
-                                    "index": 461
+                                    "index": 591
                                 },
                                 "end": {
-                                    "line": 11,
+                                    "line": 13,
                                     "column": 10,
-                                    "index": 462
+                                    "index": 592
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 11,
+                                "line": 13,
                                 "column": 9,
-                                "index": 461
+                                "index": 591
                             },
                             "end": {
-                                "line": 11,
+                                "line": 13,
                                 "column": 10,
-                                "index": 462
+                                "index": 592
                             }
                         }
                     },
@@ -852,14 +1075,14 @@
                                     "value": "annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 11,
+                                            "line": 13,
                                             "column": 13,
-                                            "index": 465
+                                            "index": 595
                                         },
                                         "end": {
-                                            "line": 11,
+                                            "line": 13,
                                             "column": 23,
-                                            "index": 475
+                                            "index": 605
                                         }
                                     }
                                 },
@@ -868,27 +1091,27 @@
                                     "value": "foo",
                                     "loc": {
                                         "start": {
-                                            "line": 11,
+                                            "line": 13,
                                             "column": 26,
-                                            "index": 478
+                                            "index": 608
                                         },
                                         "end": {
-                                            "line": 11,
+                                            "line": 13,
                                             "column": 31,
-                                            "index": 483
+                                            "index": 613
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 11,
+                                        "line": 13,
                                         "column": 13,
-                                        "index": 465
+                                        "index": 595
                                     },
                                     "end": {
-                                        "line": 11,
+                                        "line": 13,
                                         "column": 31,
-                                        "index": 483
+                                        "index": 613
                                     }
                                 }
                             }
@@ -896,28 +1119,28 @@
                         "type": "Annotations",
                         "loc": {
                             "start": {
-                                "line": 11,
+                                "line": 13,
                                 "column": 11,
-                                "index": 463
+                                "index": 593
                             },
                             "end": {
-                                "line": 11,
+                                "line": 13,
                                 "column": 33,
-                                "index": 485
+                                "index": 615
                             }
                         }
                     },
                     "comments": [],
                     "loc": {
                         "start": {
-                            "line": 11,
+                            "line": 13,
                             "column": 3,
-                            "index": 455
+                            "index": 585
                         },
                         "end": {
-                            "line": 11,
+                            "line": 13,
                             "column": 10,
-                            "index": 462
+                            "index": 592
                         }
                     }
                 },
@@ -928,14 +1151,14 @@
                         "value": "TWO",
                         "loc": {
                             "start": {
-                                "line": 12,
+                                "line": 14,
                                 "column": 3,
-                                "index": 489
+                                "index": 619
                             },
                             "end": {
-                                "line": 12,
+                                "line": 14,
                                 "column": 6,
-                                "index": 492
+                                "index": 622
                             }
                         }
                     },
@@ -949,14 +1172,14 @@
                                     "value": "annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 9,
-                                            "index": 495
+                                            "index": 625
                                         },
                                         "end": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 19,
-                                            "index": 505
+                                            "index": 635
                                         }
                                     }
                                 },
@@ -965,27 +1188,27 @@
                                     "value": "foo",
                                     "loc": {
                                         "start": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 22,
-                                            "index": 508
+                                            "index": 638
                                         },
                                         "end": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 27,
-                                            "index": 513
+                                            "index": 643
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 12,
+                                        "line": 14,
                                         "column": 9,
-                                        "index": 495
+                                        "index": 625
                                     },
                                     "end": {
-                                        "line": 12,
+                                        "line": 14,
                                         "column": 27,
-                                        "index": 513
+                                        "index": 643
                                     }
                                 }
                             },
@@ -996,14 +1219,14 @@
                                     "value": "another.annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 29,
-                                            "index": 515
+                                            "index": 645
                                         },
                                         "end": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 47,
-                                            "index": 533
+                                            "index": 663
                                         }
                                     }
                                 },
@@ -1012,27 +1235,27 @@
                                     "value": "bar",
                                     "loc": {
                                         "start": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 50,
-                                            "index": 536
+                                            "index": 666
                                         },
                                         "end": {
-                                            "line": 12,
+                                            "line": 14,
                                             "column": 55,
-                                            "index": 541
+                                            "index": 671
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 12,
+                                        "line": 14,
                                         "column": 29,
-                                        "index": 515
+                                        "index": 645
                                     },
                                     "end": {
-                                        "line": 12,
+                                        "line": 14,
                                         "column": 55,
-                                        "index": 541
+                                        "index": 671
                                     }
                                 }
                             }
@@ -1040,28 +1263,28 @@
                         "type": "Annotations",
                         "loc": {
                             "start": {
-                                "line": 12,
+                                "line": 14,
                                 "column": 7,
-                                "index": 493
+                                "index": 623
                             },
                             "end": {
-                                "line": 12,
+                                "line": 14,
                                 "column": 57,
-                                "index": 543
+                                "index": 673
                             }
                         }
                     },
                     "comments": [],
                     "loc": {
                         "start": {
-                            "line": 12,
+                            "line": 14,
                             "column": 3,
-                            "index": 489
+                            "index": 619
                         },
                         "end": {
-                            "line": 12,
+                            "line": 14,
                             "column": 6,
-                            "index": 492
+                            "index": 622
                         }
                     }
                 }
@@ -1075,14 +1298,14 @@
                             "value": "annotation",
                             "loc": {
                                 "start": {
-                                    "line": 13,
+                                    "line": 15,
                                     "column": 5,
-                                    "index": 548
+                                    "index": 678
                                 },
                                 "end": {
-                                    "line": 13,
+                                    "line": 15,
                                     "column": 15,
-                                    "index": 558
+                                    "index": 688
                                 }
                             }
                         },
@@ -1091,27 +1314,27 @@
                             "value": "foo",
                             "loc": {
                                 "start": {
-                                    "line": 13,
+                                    "line": 15,
                                     "column": 18,
-                                    "index": 561
+                                    "index": 691
                                 },
                                 "end": {
-                                    "line": 13,
+                                    "line": 15,
                                     "column": 23,
-                                    "index": 566
+                                    "index": 696
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 13,
+                                "line": 15,
                                 "column": 5,
-                                "index": 548
+                                "index": 678
                             },
                             "end": {
-                                "line": 13,
+                                "line": 15,
                                 "column": 23,
-                                "index": 566
+                                "index": 696
                             }
                         }
                     }
@@ -1119,28 +1342,28 @@
                 "type": "Annotations",
                 "loc": {
                     "start": {
-                        "line": 13,
+                        "line": 15,
                         "column": 3,
-                        "index": 546
+                        "index": 676
                     },
                     "end": {
-                        "line": 13,
+                        "line": 15,
                         "column": 25,
-                        "index": 568
+                        "index": 698
                     }
                 }
             },
             "comments": [],
             "loc": {
                 "start": {
-                    "line": 10,
+                    "line": 12,
                     "column": 1,
-                    "index": 432
+                    "index": 562
                 },
                 "end": {
-                    "line": 13,
+                    "line": 15,
                     "column": 2,
-                    "index": 545
+                    "index": 675
                 }
             }
         },
@@ -1151,14 +1374,14 @@
                 "value": "Work",
                 "loc": {
                     "start": {
-                        "line": 15,
+                        "line": 17,
                         "column": 8,
-                        "index": 577
+                        "index": 707
                     },
                     "end": {
-                        "line": 15,
+                        "line": 17,
                         "column": 12,
-                        "index": 581
+                        "index": 711
                     }
                 }
             },
@@ -1170,14 +1393,14 @@
                         "value": "num1",
                         "loc": {
                             "start": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 10,
-                                "index": 593
+                                "index": 723
                             },
                             "end": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 14,
-                                "index": 597
+                                "index": 727
                             }
                         }
                     },
@@ -1186,14 +1409,14 @@
                         "value": 1,
                         "loc": {
                             "start": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 3,
-                                "index": 586
+                                "index": 716
                             },
                             "end": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 5,
-                                "index": 588
+                                "index": 718
                             }
                         }
                     },
@@ -1201,14 +1424,14 @@
                         "type": "I32Keyword",
                         "loc": {
                             "start": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 6,
-                                "index": 589
+                                "index": 719
                             },
                             "end": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 9,
-                                "index": 592
+                                "index": 722
                             }
                         }
                     },
@@ -1220,27 +1443,27 @@
                             "value": "0",
                             "loc": {
                                 "start": {
-                                    "line": 16,
+                                    "line": 18,
                                     "column": 17,
-                                    "index": 600
+                                    "index": 730
                                 },
                                 "end": {
-                                    "line": 16,
+                                    "line": 18,
                                     "column": 18,
-                                    "index": 601
+                                    "index": 731
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 17,
-                                "index": 600
+                                "index": 730
                             },
                             "end": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 18,
-                                "index": 601
+                                "index": 731
                             }
                         }
                     },
@@ -1254,14 +1477,14 @@
                                     "value": "annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 16,
+                                            "line": 18,
                                             "column": 21,
-                                            "index": 604
+                                            "index": 734
                                         },
                                         "end": {
-                                            "line": 16,
+                                            "line": 18,
                                             "column": 31,
-                                            "index": 614
+                                            "index": 744
                                         }
                                     }
                                 },
@@ -1270,27 +1493,27 @@
                                     "value": "foo",
                                     "loc": {
                                         "start": {
-                                            "line": 16,
+                                            "line": 18,
                                             "column": 34,
-                                            "index": 617
+                                            "index": 747
                                         },
                                         "end": {
-                                            "line": 16,
+                                            "line": 18,
                                             "column": 39,
-                                            "index": 622
+                                            "index": 752
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 16,
+                                        "line": 18,
                                         "column": 21,
-                                        "index": 604
+                                        "index": 734
                                     },
                                     "end": {
-                                        "line": 16,
+                                        "line": 18,
                                         "column": 39,
-                                        "index": 622
+                                        "index": 752
                                     }
                                 }
                             }
@@ -1298,27 +1521,27 @@
                         "type": "Annotations",
                         "loc": {
                             "start": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 19,
-                                "index": 602
+                                "index": 732
                             },
                             "end": {
-                                "line": 16,
+                                "line": 18,
                                 "column": 41,
-                                "index": 624
+                                "index": 754
                             }
                         }
                     },
                     "loc": {
                         "start": {
-                            "line": 16,
+                            "line": 18,
                             "column": 3,
-                            "index": 586
+                            "index": 716
                         },
                         "end": {
-                            "line": 16,
+                            "line": 18,
                             "column": 42,
-                            "index": 625
+                            "index": 755
                         }
                     }
                 },
@@ -1326,17 +1549,17 @@
                     "type": "FieldDefinition",
                     "name": {
                         "type": "Identifier",
-                        "value": "op",
+                        "value": "num2",
                         "loc": {
                             "start": {
-                                "line": 17,
-                                "column": 16,
-                                "index": 641
+                                "line": 19,
+                                "column": 33,
+                                "index": 788
                             },
                             "end": {
-                                "line": 17,
-                                "column": 18,
-                                "index": 643
+                                "line": 19,
+                                "column": 37,
+                                "index": 792
                             }
                         }
                     },
@@ -1345,30 +1568,301 @@
                         "value": 2,
                         "loc": {
                             "start": {
-                                "line": 17,
+                                "line": 19,
                                 "column": 3,
-                                "index": 628
+                                "index": 758
                             },
                             "end": {
-                                "line": 17,
+                                "line": 19,
                                 "column": 5,
-                                "index": 630
+                                "index": 760
                             }
                         }
                     },
                     "fieldType": {
-                        "type": "Identifier",
-                        "value": "Operation",
+                        "type": "I32Keyword",
                         "loc": {
                             "start": {
-                                "line": 17,
+                                "line": 19,
                                 "column": 6,
-                                "index": 631
+                                "index": 761
                             },
                             "end": {
-                                "line": 17,
-                                "column": 15,
-                                "index": 640
+                                "line": 19,
+                                "column": 9,
+                                "index": 764
+                            }
+                        },
+                        "annotations": {
+                            "annotations": [
+                                {
+                                    "type": "Annotation",
+                                    "name": {
+                                        "type": "Identifier",
+                                        "value": "annotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 19,
+                                                "column": 12,
+                                                "index": 767
+                                            },
+                                            "end": {
+                                                "line": 19,
+                                                "column": 22,
+                                                "index": 777
+                                            }
+                                        }
+                                    },
+                                    "value": {
+                                        "type": "StringLiteral",
+                                        "value": "foo",
+                                        "loc": {
+                                            "start": {
+                                                "line": 19,
+                                                "column": 25,
+                                                "index": 780
+                                            },
+                                            "end": {
+                                                "line": 19,
+                                                "column": 30,
+                                                "index": 785
+                                            }
+                                        }
+                                    },
+                                    "loc": {
+                                        "start": {
+                                            "line": 19,
+                                            "column": 12,
+                                            "index": 767
+                                        },
+                                        "end": {
+                                            "line": 19,
+                                            "column": 30,
+                                            "index": 785
+                                        }
+                                    }
+                                }
+                            ],
+                            "type": "Annotations",
+                            "loc": {
+                                "start": {
+                                    "line": 19,
+                                    "column": 10,
+                                    "index": 765
+                                },
+                                "end": {
+                                    "line": 19,
+                                    "column": 32,
+                                    "index": 787
+                                }
+                            }
+                        }
+                    },
+                    "requiredness": null,
+                    "defaultValue": null,
+                    "comments": [],
+                    "loc": {
+                        "start": {
+                            "line": 19,
+                            "column": 3,
+                            "index": 758
+                        },
+                        "end": {
+                            "line": 19,
+                            "column": 38,
+                            "index": 793
+                        }
+                    }
+                },
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "myList",
+                        "loc": {
+                            "start": {
+                                "line": 20,
+                                "column": 62,
+                                "index": 855
+                            },
+                            "end": {
+                                "line": 20,
+                                "column": 68,
+                                "index": 861
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 3,
+                        "loc": {
+                            "start": {
+                                "line": 20,
+                                "column": 3,
+                                "index": 796
+                            },
+                            "end": {
+                                "line": 20,
+                                "column": 5,
+                                "index": 798
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "ListType",
+                        "valueType": {
+                            "type": "I32Keyword",
+                            "loc": {
+                                "start": {
+                                    "line": 20,
+                                    "column": 11,
+                                    "index": 804
+                                },
+                                "end": {
+                                    "line": 20,
+                                    "column": 14,
+                                    "index": 807
+                                }
+                            },
+                            "annotations": {
+                                "annotations": [
+                                    {
+                                        "type": "Annotation",
+                                        "name": {
+                                            "type": "Identifier",
+                                            "value": "annotation",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 20,
+                                                    "column": 17,
+                                                    "index": 810
+                                                },
+                                                "end": {
+                                                    "line": 20,
+                                                    "column": 27,
+                                                    "index": 820
+                                                }
+                                            }
+                                        },
+                                        "value": {
+                                            "type": "StringLiteral",
+                                            "value": "foo",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 20,
+                                                    "column": 30,
+                                                    "index": 823
+                                                },
+                                                "end": {
+                                                    "line": 20,
+                                                    "column": 35,
+                                                    "index": 828
+                                                }
+                                            }
+                                        },
+                                        "loc": {
+                                            "start": {
+                                                "line": 20,
+                                                "column": 17,
+                                                "index": 810
+                                            },
+                                            "end": {
+                                                "line": 20,
+                                                "column": 35,
+                                                "index": 828
+                                            }
+                                        }
+                                    }
+                                ],
+                                "type": "Annotations",
+                                "loc": {
+                                    "start": {
+                                        "line": 20,
+                                        "column": 15,
+                                        "index": 808
+                                    },
+                                    "end": {
+                                        "line": 20,
+                                        "column": 37,
+                                        "index": 830
+                                    }
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 20,
+                                "column": 10,
+                                "index": 803
+                            },
+                            "end": {
+                                "line": 20,
+                                "column": 38,
+                                "index": 831
+                            }
+                        },
+                        "annotations": {
+                            "annotations": [
+                                {
+                                    "type": "Annotation",
+                                    "name": {
+                                        "type": "Identifier",
+                                        "value": "annotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 20,
+                                                "column": 41,
+                                                "index": 834
+                                            },
+                                            "end": {
+                                                "line": 20,
+                                                "column": 51,
+                                                "index": 844
+                                            }
+                                        }
+                                    },
+                                    "value": {
+                                        "type": "StringLiteral",
+                                        "value": "foo",
+                                        "loc": {
+                                            "start": {
+                                                "line": 20,
+                                                "column": 54,
+                                                "index": 847
+                                            },
+                                            "end": {
+                                                "line": 20,
+                                                "column": 59,
+                                                "index": 852
+                                            }
+                                        }
+                                    },
+                                    "loc": {
+                                        "start": {
+                                            "line": 20,
+                                            "column": 41,
+                                            "index": 834
+                                        },
+                                        "end": {
+                                            "line": 20,
+                                            "column": 59,
+                                            "index": 852
+                                        }
+                                    }
+                                }
+                            ],
+                            "type": "Annotations",
+                            "loc": {
+                                "start": {
+                                    "line": 20,
+                                    "column": 39,
+                                    "index": 832
+                                },
+                                "end": {
+                                    "line": 20,
+                                    "column": 61,
+                                    "index": 854
+                                }
                             }
                         }
                     },
@@ -1384,14 +1878,14 @@
                                     "value": "annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 17,
-                                            "column": 21,
-                                            "index": 646
+                                            "line": 20,
+                                            "column": 71,
+                                            "index": 864
                                         },
                                         "end": {
-                                            "line": 17,
-                                            "column": 31,
-                                            "index": 656
+                                            "line": 20,
+                                            "column": 81,
+                                            "index": 874
                                         }
                                     }
                                 },
@@ -1400,27 +1894,780 @@
                                     "value": "foo",
                                     "loc": {
                                         "start": {
-                                            "line": 17,
-                                            "column": 34,
-                                            "index": 659
+                                            "line": 20,
+                                            "column": 84,
+                                            "index": 877
                                         },
                                         "end": {
-                                            "line": 17,
-                                            "column": 39,
-                                            "index": 664
+                                            "line": 20,
+                                            "column": 89,
+                                            "index": 882
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 17,
-                                        "column": 21,
-                                        "index": 646
+                                        "line": 20,
+                                        "column": 71,
+                                        "index": 864
                                     },
                                     "end": {
-                                        "line": 17,
+                                        "line": 20,
+                                        "column": 89,
+                                        "index": 882
+                                    }
+                                }
+                            }
+                        ],
+                        "type": "Annotations",
+                        "loc": {
+                            "start": {
+                                "line": 20,
+                                "column": 69,
+                                "index": 862
+                            },
+                            "end": {
+                                "line": 20,
+                                "column": 91,
+                                "index": 884
+                            }
+                        }
+                    },
+                    "loc": {
+                        "start": {
+                            "line": 20,
+                            "column": 3,
+                            "index": 796
+                        },
+                        "end": {
+                            "line": 20,
+                            "column": 92,
+                            "index": 885
+                        }
+                    }
+                },
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "myMap",
+                        "loc": {
+                            "start": {
+                                "line": 21,
+                                "column": 89,
+                                "index": 974
+                            },
+                            "end": {
+                                "line": 21,
+                                "column": 94,
+                                "index": 979
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 4,
+                        "loc": {
+                            "start": {
+                                "line": 21,
+                                "column": 3,
+                                "index": 888
+                            },
+                            "end": {
+                                "line": 21,
+                                "column": 5,
+                                "index": 890
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "MapType",
+                        "keyType": {
+                            "type": "I64Keyword",
+                            "loc": {
+                                "start": {
+                                    "line": 21,
+                                    "column": 10,
+                                    "index": 895
+                                },
+                                "end": {
+                                    "line": 21,
+                                    "column": 13,
+                                    "index": 898
+                                }
+                            },
+                            "annotations": {
+                                "annotations": [
+                                    {
+                                        "type": "Annotation",
+                                        "name": {
+                                            "type": "Identifier",
+                                            "value": "annotation",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 21,
+                                                    "column": 16,
+                                                    "index": 901
+                                                },
+                                                "end": {
+                                                    "line": 21,
+                                                    "column": 26,
+                                                    "index": 911
+                                                }
+                                            }
+                                        },
+                                        "value": {
+                                            "type": "StringLiteral",
+                                            "value": "foo",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 21,
+                                                    "column": 29,
+                                                    "index": 914
+                                                },
+                                                "end": {
+                                                    "line": 21,
+                                                    "column": 34,
+                                                    "index": 919
+                                                }
+                                            }
+                                        },
+                                        "loc": {
+                                            "start": {
+                                                "line": 21,
+                                                "column": 16,
+                                                "index": 901
+                                            },
+                                            "end": {
+                                                "line": 21,
+                                                "column": 34,
+                                                "index": 919
+                                            }
+                                        }
+                                    }
+                                ],
+                                "type": "Annotations",
+                                "loc": {
+                                    "start": {
+                                        "line": 21,
+                                        "column": 14,
+                                        "index": 899
+                                    },
+                                    "end": {
+                                        "line": 21,
+                                        "column": 36,
+                                        "index": 921
+                                    }
+                                }
+                            }
+                        },
+                        "valueType": {
+                            "type": "I64Keyword",
+                            "loc": {
+                                "start": {
+                                    "line": 21,
+                                    "column": 38,
+                                    "index": 923
+                                },
+                                "end": {
+                                    "line": 21,
+                                    "column": 41,
+                                    "index": 926
+                                }
+                            },
+                            "annotations": {
+                                "annotations": [
+                                    {
+                                        "type": "Annotation",
+                                        "name": {
+                                            "type": "Identifier",
+                                            "value": "annotation",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 21,
+                                                    "column": 44,
+                                                    "index": 929
+                                                },
+                                                "end": {
+                                                    "line": 21,
+                                                    "column": 54,
+                                                    "index": 939
+                                                }
+                                            }
+                                        },
+                                        "value": {
+                                            "type": "StringLiteral",
+                                            "value": "foo",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 21,
+                                                    "column": 57,
+                                                    "index": 942
+                                                },
+                                                "end": {
+                                                    "line": 21,
+                                                    "column": 62,
+                                                    "index": 947
+                                                }
+                                            }
+                                        },
+                                        "loc": {
+                                            "start": {
+                                                "line": 21,
+                                                "column": 44,
+                                                "index": 929
+                                            },
+                                            "end": {
+                                                "line": 21,
+                                                "column": 62,
+                                                "index": 947
+                                            }
+                                        }
+                                    }
+                                ],
+                                "type": "Annotations",
+                                "loc": {
+                                    "start": {
+                                        "line": 21,
+                                        "column": 42,
+                                        "index": 927
+                                    },
+                                    "end": {
+                                        "line": 21,
+                                        "column": 64,
+                                        "index": 949
+                                    }
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 21,
+                                "column": 9,
+                                "index": 894
+                            },
+                            "end": {
+                                "line": 21,
+                                "column": 65,
+                                "index": 950
+                            }
+                        },
+                        "annotations": {
+                            "annotations": [
+                                {
+                                    "type": "Annotation",
+                                    "name": {
+                                        "type": "Identifier",
+                                        "value": "annotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 21,
+                                                "column": 68,
+                                                "index": 953
+                                            },
+                                            "end": {
+                                                "line": 21,
+                                                "column": 78,
+                                                "index": 963
+                                            }
+                                        }
+                                    },
+                                    "value": {
+                                        "type": "StringLiteral",
+                                        "value": "foo",
+                                        "loc": {
+                                            "start": {
+                                                "line": 21,
+                                                "column": 81,
+                                                "index": 966
+                                            },
+                                            "end": {
+                                                "line": 21,
+                                                "column": 86,
+                                                "index": 971
+                                            }
+                                        }
+                                    },
+                                    "loc": {
+                                        "start": {
+                                            "line": 21,
+                                            "column": 68,
+                                            "index": 953
+                                        },
+                                        "end": {
+                                            "line": 21,
+                                            "column": 86,
+                                            "index": 971
+                                        }
+                                    }
+                                }
+                            ],
+                            "type": "Annotations",
+                            "loc": {
+                                "start": {
+                                    "line": 21,
+                                    "column": 66,
+                                    "index": 951
+                                },
+                                "end": {
+                                    "line": 21,
+                                    "column": 88,
+                                    "index": 973
+                                }
+                            }
+                        }
+                    },
+                    "requiredness": null,
+                    "defaultValue": null,
+                    "comments": [],
+                    "annotations": {
+                        "annotations": [
+                            {
+                                "type": "Annotation",
+                                "name": {
+                                    "type": "Identifier",
+                                    "value": "annotation",
+                                    "loc": {
+                                        "start": {
+                                            "line": 21,
+                                            "column": 97,
+                                            "index": 982
+                                        },
+                                        "end": {
+                                            "line": 21,
+                                            "column": 107,
+                                            "index": 992
+                                        }
+                                    }
+                                },
+                                "value": {
+                                    "type": "StringLiteral",
+                                    "value": "foo",
+                                    "loc": {
+                                        "start": {
+                                            "line": 21,
+                                            "column": 110,
+                                            "index": 995
+                                        },
+                                        "end": {
+                                            "line": 21,
+                                            "column": 115,
+                                            "index": 1000
+                                        }
+                                    }
+                                },
+                                "loc": {
+                                    "start": {
+                                        "line": 21,
+                                        "column": 97,
+                                        "index": 982
+                                    },
+                                    "end": {
+                                        "line": 21,
+                                        "column": 115,
+                                        "index": 1000
+                                    }
+                                }
+                            }
+                        ],
+                        "type": "Annotations",
+                        "loc": {
+                            "start": {
+                                "line": 21,
+                                "column": 95,
+                                "index": 980
+                            },
+                            "end": {
+                                "line": 21,
+                                "column": 117,
+                                "index": 1002
+                            }
+                        }
+                    },
+                    "loc": {
+                        "start": {
+                            "line": 21,
+                            "column": 3,
+                            "index": 888
+                        },
+                        "end": {
+                            "line": 21,
+                            "column": 118,
+                            "index": 1003
+                        }
+                    }
+                },
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "mySet",
+                        "loc": {
+                            "start": {
+                                "line": 22,
+                                "column": 61,
+                                "index": 1064
+                            },
+                            "end": {
+                                "line": 22,
+                                "column": 66,
+                                "index": 1069
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 5,
+                        "loc": {
+                            "start": {
+                                "line": 22,
+                                "column": 3,
+                                "index": 1006
+                            },
+                            "end": {
+                                "line": 22,
+                                "column": 5,
+                                "index": 1008
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "SetType",
+                        "valueType": {
+                            "type": "I32Keyword",
+                            "loc": {
+                                "start": {
+                                    "line": 22,
+                                    "column": 10,
+                                    "index": 1013
+                                },
+                                "end": {
+                                    "line": 22,
+                                    "column": 13,
+                                    "index": 1016
+                                }
+                            },
+                            "annotations": {
+                                "annotations": [
+                                    {
+                                        "type": "Annotation",
+                                        "name": {
+                                            "type": "Identifier",
+                                            "value": "annotation",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 22,
+                                                    "column": 16,
+                                                    "index": 1019
+                                                },
+                                                "end": {
+                                                    "line": 22,
+                                                    "column": 26,
+                                                    "index": 1029
+                                                }
+                                            }
+                                        },
+                                        "value": {
+                                            "type": "StringLiteral",
+                                            "value": "foo",
+                                            "loc": {
+                                                "start": {
+                                                    "line": 22,
+                                                    "column": 29,
+                                                    "index": 1032
+                                                },
+                                                "end": {
+                                                    "line": 22,
+                                                    "column": 34,
+                                                    "index": 1037
+                                                }
+                                            }
+                                        },
+                                        "loc": {
+                                            "start": {
+                                                "line": 22,
+                                                "column": 16,
+                                                "index": 1019
+                                            },
+                                            "end": {
+                                                "line": 22,
+                                                "column": 34,
+                                                "index": 1037
+                                            }
+                                        }
+                                    }
+                                ],
+                                "type": "Annotations",
+                                "loc": {
+                                    "start": {
+                                        "line": 22,
+                                        "column": 14,
+                                        "index": 1017
+                                    },
+                                    "end": {
+                                        "line": 22,
+                                        "column": 36,
+                                        "index": 1039
+                                    }
+                                }
+                            }
+                        },
+                        "loc": {
+                            "start": {
+                                "line": 22,
+                                "column": 9,
+                                "index": 1012
+                            },
+                            "end": {
+                                "line": 22,
+                                "column": 37,
+                                "index": 1040
+                            }
+                        },
+                        "annotations": {
+                            "annotations": [
+                                {
+                                    "type": "Annotation",
+                                    "name": {
+                                        "type": "Identifier",
+                                        "value": "annotation",
+                                        "loc": {
+                                            "start": {
+                                                "line": 22,
+                                                "column": 40,
+                                                "index": 1043
+                                            },
+                                            "end": {
+                                                "line": 22,
+                                                "column": 50,
+                                                "index": 1053
+                                            }
+                                        }
+                                    },
+                                    "value": {
+                                        "type": "StringLiteral",
+                                        "value": "foo",
+                                        "loc": {
+                                            "start": {
+                                                "line": 22,
+                                                "column": 53,
+                                                "index": 1056
+                                            },
+                                            "end": {
+                                                "line": 22,
+                                                "column": 58,
+                                                "index": 1061
+                                            }
+                                        }
+                                    },
+                                    "loc": {
+                                        "start": {
+                                            "line": 22,
+                                            "column": 40,
+                                            "index": 1043
+                                        },
+                                        "end": {
+                                            "line": 22,
+                                            "column": 58,
+                                            "index": 1061
+                                        }
+                                    }
+                                }
+                            ],
+                            "type": "Annotations",
+                            "loc": {
+                                "start": {
+                                    "line": 22,
+                                    "column": 38,
+                                    "index": 1041
+                                },
+                                "end": {
+                                    "line": 22,
+                                    "column": 60,
+                                    "index": 1063
+                                }
+                            }
+                        }
+                    },
+                    "requiredness": null,
+                    "defaultValue": null,
+                    "comments": [],
+                    "annotations": {
+                        "annotations": [
+                            {
+                                "type": "Annotation",
+                                "name": {
+                                    "type": "Identifier",
+                                    "value": "annotation",
+                                    "loc": {
+                                        "start": {
+                                            "line": 22,
+                                            "column": 69,
+                                            "index": 1072
+                                        },
+                                        "end": {
+                                            "line": 22,
+                                            "column": 79,
+                                            "index": 1082
+                                        }
+                                    }
+                                },
+                                "value": {
+                                    "type": "StringLiteral",
+                                    "value": "foo",
+                                    "loc": {
+                                        "start": {
+                                            "line": 22,
+                                            "column": 82,
+                                            "index": 1085
+                                        },
+                                        "end": {
+                                            "line": 22,
+                                            "column": 87,
+                                            "index": 1090
+                                        }
+                                    }
+                                },
+                                "loc": {
+                                    "start": {
+                                        "line": 22,
+                                        "column": 69,
+                                        "index": 1072
+                                    },
+                                    "end": {
+                                        "line": 22,
+                                        "column": 87,
+                                        "index": 1090
+                                    }
+                                }
+                            }
+                        ],
+                        "type": "Annotations",
+                        "loc": {
+                            "start": {
+                                "line": 22,
+                                "column": 67,
+                                "index": 1070
+                            },
+                            "end": {
+                                "line": 22,
+                                "column": 89,
+                                "index": 1092
+                            }
+                        }
+                    },
+                    "loc": {
+                        "start": {
+                            "line": 22,
+                            "column": 3,
+                            "index": 1006
+                        },
+                        "end": {
+                            "line": 22,
+                            "column": 90,
+                            "index": 1093
+                        }
+                    }
+                },
+                {
+                    "type": "FieldDefinition",
+                    "name": {
+                        "type": "Identifier",
+                        "value": "op",
+                        "loc": {
+                            "start": {
+                                "line": 23,
+                                "column": 16,
+                                "index": 1109
+                            },
+                            "end": {
+                                "line": 23,
+                                "column": 18,
+                                "index": 1111
+                            }
+                        }
+                    },
+                    "fieldID": {
+                        "type": "FieldID",
+                        "value": 6,
+                        "loc": {
+                            "start": {
+                                "line": 23,
+                                "column": 3,
+                                "index": 1096
+                            },
+                            "end": {
+                                "line": 23,
+                                "column": 5,
+                                "index": 1098
+                            }
+                        }
+                    },
+                    "fieldType": {
+                        "type": "Identifier",
+                        "value": "Operation",
+                        "loc": {
+                            "start": {
+                                "line": 23,
+                                "column": 6,
+                                "index": 1099
+                            },
+                            "end": {
+                                "line": 23,
+                                "column": 15,
+                                "index": 1108
+                            }
+                        }
+                    },
+                    "requiredness": null,
+                    "defaultValue": null,
+                    "comments": [],
+                    "annotations": {
+                        "annotations": [
+                            {
+                                "type": "Annotation",
+                                "name": {
+                                    "type": "Identifier",
+                                    "value": "annotation",
+                                    "loc": {
+                                        "start": {
+                                            "line": 23,
+                                            "column": 21,
+                                            "index": 1114
+                                        },
+                                        "end": {
+                                            "line": 23,
+                                            "column": 31,
+                                            "index": 1124
+                                        }
+                                    }
+                                },
+                                "value": {
+                                    "type": "StringLiteral",
+                                    "value": "foo",
+                                    "loc": {
+                                        "start": {
+                                            "line": 23,
+                                            "column": 34,
+                                            "index": 1127
+                                        },
+                                        "end": {
+                                            "line": 23,
+                                            "column": 39,
+                                            "index": 1132
+                                        }
+                                    }
+                                },
+                                "loc": {
+                                    "start": {
+                                        "line": 23,
+                                        "column": 21,
+                                        "index": 1114
+                                    },
+                                    "end": {
+                                        "line": 23,
                                         "column": 39,
-                                        "index": 664
+                                        "index": 1132
                                     }
                                 }
                             },
@@ -1431,14 +2678,14 @@
                                     "value": "another.annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 17,
+                                            "line": 23,
                                             "column": 41,
-                                            "index": 666
+                                            "index": 1134
                                         },
                                         "end": {
-                                            "line": 17,
+                                            "line": 23,
                                             "column": 59,
-                                            "index": 684
+                                            "index": 1152
                                         }
                                     }
                                 },
@@ -1447,27 +2694,27 @@
                                     "value": "bar",
                                     "loc": {
                                         "start": {
-                                            "line": 17,
+                                            "line": 23,
                                             "column": 62,
-                                            "index": 687
+                                            "index": 1155
                                         },
                                         "end": {
-                                            "line": 17,
+                                            "line": 23,
                                             "column": 67,
-                                            "index": 692
+                                            "index": 1160
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 17,
+                                        "line": 23,
                                         "column": 41,
-                                        "index": 666
+                                        "index": 1134
                                     },
                                     "end": {
-                                        "line": 17,
+                                        "line": 23,
                                         "column": 67,
-                                        "index": 692
+                                        "index": 1160
                                     }
                                 }
                             }
@@ -1475,27 +2722,27 @@
                         "type": "Annotations",
                         "loc": {
                             "start": {
-                                "line": 17,
+                                "line": 23,
                                 "column": 19,
-                                "index": 644
+                                "index": 1112
                             },
                             "end": {
-                                "line": 17,
+                                "line": 23,
                                 "column": 69,
-                                "index": 694
+                                "index": 1162
                             }
                         }
                     },
                     "loc": {
                         "start": {
-                            "line": 17,
+                            "line": 23,
                             "column": 3,
-                            "index": 628
+                            "index": 1096
                         },
                         "end": {
-                            "line": 17,
+                            "line": 23,
                             "column": 18,
-                            "index": 643
+                            "index": 1111
                         }
                     }
                 }
@@ -1509,14 +2756,14 @@
                             "value": "annotation",
                             "loc": {
                                 "start": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 5,
-                                    "index": 699
+                                    "index": 1167
                                 },
                                 "end": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 15,
-                                    "index": 709
+                                    "index": 1177
                                 }
                             }
                         },
@@ -1525,27 +2772,27 @@
                             "value": "foo",
                             "loc": {
                                 "start": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 18,
-                                    "index": 712
+                                    "index": 1180
                                 },
                                 "end": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 23,
-                                    "index": 717
+                                    "index": 1185
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 18,
+                                "line": 24,
                                 "column": 5,
-                                "index": 699
+                                "index": 1167
                             },
                             "end": {
-                                "line": 18,
+                                "line": 24,
                                 "column": 23,
-                                "index": 717
+                                "index": 1185
                             }
                         }
                     },
@@ -1556,14 +2803,14 @@
                             "value": "another.annotation",
                             "loc": {
                                 "start": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 25,
-                                    "index": 719
+                                    "index": 1187
                                 },
                                 "end": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 43,
-                                    "index": 737
+                                    "index": 1205
                                 }
                             }
                         },
@@ -1572,27 +2819,27 @@
                             "value": "bar",
                             "loc": {
                                 "start": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 46,
-                                    "index": 740
+                                    "index": 1208
                                 },
                                 "end": {
-                                    "line": 18,
+                                    "line": 24,
                                     "column": 51,
-                                    "index": 745
+                                    "index": 1213
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 18,
+                                "line": 24,
                                 "column": 25,
-                                "index": 719
+                                "index": 1187
                             },
                             "end": {
-                                "line": 18,
+                                "line": 24,
                                 "column": 51,
-                                "index": 745
+                                "index": 1213
                             }
                         }
                     }
@@ -1600,28 +2847,28 @@
                 "type": "Annotations",
                 "loc": {
                     "start": {
-                        "line": 18,
+                        "line": 24,
                         "column": 3,
-                        "index": 697
+                        "index": 1165
                     },
                     "end": {
-                        "line": 18,
+                        "line": 24,
                         "column": 53,
-                        "index": 747
+                        "index": 1215
                     }
                 }
             },
             "comments": [],
             "loc": {
                 "start": {
-                    "line": 15,
+                    "line": 17,
                     "column": 1,
-                    "index": 570
+                    "index": 700
                 },
                 "end": {
-                    "line": 18,
+                    "line": 24,
                     "column": 2,
-                    "index": 696
+                    "index": 1164
                 }
             }
         },
@@ -1632,14 +2879,14 @@
                 "value": "Calculator",
                 "loc": {
                     "start": {
-                        "line": 20,
+                        "line": 26,
                         "column": 9,
-                        "index": 757
+                        "index": 1225
                     },
                     "end": {
-                        "line": 20,
+                        "line": 26,
                         "column": 19,
-                        "index": 767
+                        "index": 1235
                     }
                 }
             },
@@ -1648,14 +2895,14 @@
                 "value": "shared.SharedService",
                 "loc": {
                     "start": {
-                        "line": 20,
+                        "line": 26,
                         "column": 20,
-                        "index": 768
+                        "index": 1236
                     },
                     "end": {
-                        "line": 20,
+                        "line": 26,
                         "column": 48,
-                        "index": 796
+                        "index": 1264
                     }
                 }
             },
@@ -1667,14 +2914,14 @@
                         "value": "funcWithAnnotation",
                         "loc": {
                             "start": {
-                                "line": 21,
+                                "line": 27,
                                 "column": 8,
-                                "index": 806
+                                "index": 1274
                             },
                             "end": {
-                                "line": 21,
+                                "line": 27,
                                 "column": 26,
-                                "index": 824
+                                "index": 1292
                             }
                         }
                     },
@@ -1682,14 +2929,14 @@
                         "type": "I32Keyword",
                         "loc": {
                             "start": {
-                                "line": 21,
+                                "line": 27,
                                 "column": 4,
-                                "index": 802
+                                "index": 1270
                             },
                             "end": {
-                                "line": 21,
+                                "line": 27,
                                 "column": 7,
-                                "index": 805
+                                "index": 1273
                             }
                         }
                     },
@@ -1701,14 +2948,14 @@
                                 "value": "num1",
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 39,
-                                        "index": 837
+                                        "index": 1305
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 43,
-                                        "index": 841
+                                        "index": 1309
                                     }
                                 }
                             },
@@ -1717,14 +2964,14 @@
                                 "value": 1,
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 27,
-                                        "index": 825
+                                        "index": 1293
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 29,
-                                        "index": 827
+                                        "index": 1295
                                     }
                                 }
                             },
@@ -1733,14 +2980,14 @@
                                 "value": "MyInteger",
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 29,
-                                        "index": 827
+                                        "index": 1295
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 38,
-                                        "index": 836
+                                        "index": 1304
                                     }
                                 }
                             },
@@ -1749,14 +2996,14 @@
                             "comments": [],
                             "loc": {
                                 "start": {
-                                    "line": 21,
+                                    "line": 27,
                                     "column": 27,
-                                    "index": 825
+                                    "index": 1293
                                 },
                                 "end": {
-                                    "line": 21,
+                                    "line": 27,
                                     "column": 43,
-                                    "index": 841
+                                    "index": 1309
                                 }
                             }
                         }
@@ -1769,14 +3016,14 @@
                                 "value": "user_exception",
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 67,
-                                        "index": 865
+                                        "index": 1333
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 81,
-                                        "index": 879
+                                        "index": 1347
                                     }
                                 }
                             },
@@ -1785,14 +3032,14 @@
                                 "value": 1,
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 53,
-                                        "index": 851
+                                        "index": 1319
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 55,
-                                        "index": 853
+                                        "index": 1321
                                     }
                                 }
                             },
@@ -1801,14 +3048,14 @@
                                 "value": "Exception1",
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 56,
-                                        "index": 854
+                                        "index": 1322
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 66,
-                                        "index": 864
+                                        "index": 1332
                                     }
                                 }
                             },
@@ -1817,14 +3064,14 @@
                             "comments": [],
                             "loc": {
                                 "start": {
-                                    "line": 21,
+                                    "line": 27,
                                     "column": 53,
-                                    "index": 851
+                                    "index": 1319
                                 },
                                 "end": {
-                                    "line": 21,
+                                    "line": 27,
                                     "column": 82,
-                                    "index": 880
+                                    "index": 1348
                                 }
                             }
                         },
@@ -1835,14 +3082,14 @@
                                 "value": "system_exception",
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 97,
-                                        "index": 895
+                                        "index": 1363
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 113,
-                                        "index": 911
+                                        "index": 1379
                                     }
                                 }
                             },
@@ -1851,14 +3098,14 @@
                                 "value": 2,
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 83,
-                                        "index": 881
+                                        "index": 1349
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 85,
-                                        "index": 883
+                                        "index": 1351
                                     }
                                 }
                             },
@@ -1867,14 +3114,14 @@
                                 "value": "Exception2",
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 86,
-                                        "index": 884
+                                        "index": 1352
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 96,
-                                        "index": 894
+                                        "index": 1362
                                     }
                                 }
                             },
@@ -1883,14 +3130,14 @@
                             "comments": [],
                             "loc": {
                                 "start": {
-                                    "line": 21,
+                                    "line": 27,
                                     "column": 83,
-                                    "index": 881
+                                    "index": 1349
                                 },
                                 "end": {
-                                    "line": 21,
+                                    "line": 27,
                                     "column": 113,
-                                    "index": 911
+                                    "index": 1379
                                 }
                             }
                         }
@@ -1904,14 +3151,14 @@
                                     "value": "annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 21,
+                                            "line": 27,
                                             "column": 117,
-                                            "index": 915
+                                            "index": 1383
                                         },
                                         "end": {
-                                            "line": 21,
+                                            "line": 27,
                                             "column": 127,
-                                            "index": 925
+                                            "index": 1393
                                         }
                                     }
                                 },
@@ -1920,27 +3167,27 @@
                                     "value": "foo",
                                     "loc": {
                                         "start": {
-                                            "line": 21,
+                                            "line": 27,
                                             "column": 130,
-                                            "index": 928
+                                            "index": 1396
                                         },
                                         "end": {
-                                            "line": 21,
+                                            "line": 27,
                                             "column": 135,
-                                            "index": 933
+                                            "index": 1401
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 117,
-                                        "index": 915
+                                        "index": 1383
                                     },
                                     "end": {
-                                        "line": 21,
+                                        "line": 27,
                                         "column": 135,
-                                        "index": 933
+                                        "index": 1401
                                     }
                                 }
                             }
@@ -1948,14 +3195,14 @@
                         "type": "Annotations",
                         "loc": {
                             "start": {
-                                "line": 21,
+                                "line": 27,
                                 "column": 115,
-                                "index": 913
+                                "index": 1381
                             },
                             "end": {
-                                "line": 21,
+                                "line": 27,
                                 "column": 137,
-                                "index": 935
+                                "index": 1403
                             }
                         }
                     },
@@ -1964,14 +3211,14 @@
                     "modifiers": [],
                     "loc": {
                         "start": {
-                            "line": 21,
+                            "line": 27,
                             "column": 4,
-                            "index": 802
+                            "index": 1270
                         },
                         "end": {
-                            "line": 21,
+                            "line": 27,
                             "column": 138,
-                            "index": 936
+                            "index": 1404
                         }
                     }
                 },
@@ -1982,14 +3229,14 @@
                         "value": "funcWithAnotherAnnotation",
                         "loc": {
                             "start": {
-                                "line": 22,
+                                "line": 28,
                                 "column": 16,
-                                "index": 952
+                                "index": 1420
                             },
                             "end": {
-                                "line": 22,
+                                "line": 28,
                                 "column": 41,
-                                "index": 977
+                                "index": 1445
                             }
                         }
                     },
@@ -1997,14 +3244,14 @@
                         "type": "VoidKeyword",
                         "loc": {
                             "start": {
-                                "line": 22,
+                                "line": 28,
                                 "column": 11,
-                                "index": 947
+                                "index": 1415
                             },
                             "end": {
-                                "line": 22,
+                                "line": 28,
                                 "column": 15,
-                                "index": 951
+                                "index": 1419
                             }
                         }
                     },
@@ -2016,14 +3263,14 @@
                                 "value": "num1",
                                 "loc": {
                                     "start": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 48,
-                                        "index": 984
+                                        "index": 1452
                                     },
                                     "end": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 52,
-                                        "index": 988
+                                        "index": 1456
                                     }
                                 }
                             },
@@ -2032,14 +3279,14 @@
                                 "value": 1,
                                 "loc": {
                                     "start": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 42,
-                                        "index": 978
+                                        "index": 1446
                                     },
                                     "end": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 44,
-                                        "index": 980
+                                        "index": 1448
                                     }
                                 }
                             },
@@ -2047,14 +3294,14 @@
                                 "type": "I32Keyword",
                                 "loc": {
                                     "start": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 44,
-                                        "index": 980
+                                        "index": 1448
                                     },
                                     "end": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 47,
-                                        "index": 983
+                                        "index": 1451
                                     }
                                 }
                             },
@@ -2063,14 +3310,14 @@
                             "comments": [],
                             "loc": {
                                 "start": {
-                                    "line": 22,
+                                    "line": 28,
                                     "column": 42,
-                                    "index": 978
+                                    "index": 1446
                                 },
                                 "end": {
-                                    "line": 22,
+                                    "line": 28,
                                     "column": 52,
-                                    "index": 988
+                                    "index": 1456
                                 }
                             }
                         }
@@ -2085,14 +3332,14 @@
                                     "value": "annotation",
                                     "loc": {
                                         "start": {
-                                            "line": 22,
+                                            "line": 28,
                                             "column": 56,
-                                            "index": 992
+                                            "index": 1460
                                         },
                                         "end": {
-                                            "line": 22,
+                                            "line": 28,
                                             "column": 66,
-                                            "index": 1002
+                                            "index": 1470
                                         }
                                     }
                                 },
@@ -2101,27 +3348,27 @@
                                     "value": "foo",
                                     "loc": {
                                         "start": {
-                                            "line": 22,
+                                            "line": 28,
                                             "column": 69,
-                                            "index": 1005
+                                            "index": 1473
                                         },
                                         "end": {
-                                            "line": 22,
+                                            "line": 28,
                                             "column": 74,
-                                            "index": 1010
+                                            "index": 1478
                                         }
                                     }
                                 },
                                 "loc": {
                                     "start": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 56,
-                                        "index": 992
+                                        "index": 1460
                                     },
                                     "end": {
-                                        "line": 22,
+                                        "line": 28,
                                         "column": 74,
-                                        "index": 1010
+                                        "index": 1478
                                     }
                                 }
                             }
@@ -2129,14 +3376,14 @@
                         "type": "Annotations",
                         "loc": {
                             "start": {
-                                "line": 22,
+                                "line": 28,
                                 "column": 54,
-                                "index": 990
+                                "index": 1458
                             },
                             "end": {
-                                "line": 22,
+                                "line": 28,
                                 "column": 76,
-                                "index": 1012
+                                "index": 1480
                             }
                         }
                     },
@@ -2148,28 +3395,28 @@
                             "text": "oneway",
                             "loc": {
                                 "start": {
-                                    "line": 22,
+                                    "line": 28,
                                     "column": 4,
-                                    "index": 940
+                                    "index": 1408
                                 },
                                 "end": {
-                                    "line": 22,
+                                    "line": 28,
                                     "column": 10,
-                                    "index": 946
+                                    "index": 1414
                                 }
                             }
                         }
                     ],
                     "loc": {
                         "start": {
-                            "line": 22,
+                            "line": 28,
                             "column": 11,
-                            "index": 947
+                            "index": 1415
                         },
                         "end": {
-                            "line": 22,
+                            "line": 28,
                             "column": 53,
-                            "index": 989
+                            "index": 1457
                         }
                     }
                 }
@@ -2183,14 +3430,14 @@
                             "value": "annotation",
                             "loc": {
                                 "start": {
-                                    "line": 24,
+                                    "line": 30,
                                     "column": 3,
-                                    "index": 1019
+                                    "index": 1487
                                 },
                                 "end": {
-                                    "line": 24,
+                                    "line": 30,
                                     "column": 13,
-                                    "index": 1029
+                                    "index": 1497
                                 }
                             }
                         },
@@ -2199,27 +3446,27 @@
                             "value": "foo",
                             "loc": {
                                 "start": {
-                                    "line": 24,
+                                    "line": 30,
                                     "column": 16,
-                                    "index": 1032
+                                    "index": 1500
                                 },
                                 "end": {
-                                    "line": 24,
+                                    "line": 30,
                                     "column": 21,
-                                    "index": 1037
+                                    "index": 1505
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 24,
+                                "line": 30,
                                 "column": 3,
-                                "index": 1019
+                                "index": 1487
                             },
                             "end": {
-                                "line": 24,
+                                "line": 30,
                                 "column": 21,
-                                "index": 1037
+                                "index": 1505
                             }
                         }
                     },
@@ -2230,14 +3477,14 @@
                             "value": "another.annotation",
                             "loc": {
                                 "start": {
-                                    "line": 25,
+                                    "line": 31,
                                     "column": 3,
-                                    "index": 1041
+                                    "index": 1509
                                 },
                                 "end": {
-                                    "line": 25,
+                                    "line": 31,
                                     "column": 21,
-                                    "index": 1059
+                                    "index": 1527
                                 }
                             }
                         },
@@ -2246,27 +3493,27 @@
                             "value": "bar",
                             "loc": {
                                 "start": {
-                                    "line": 25,
+                                    "line": 31,
                                     "column": 24,
-                                    "index": 1062
+                                    "index": 1530
                                 },
                                 "end": {
-                                    "line": 25,
+                                    "line": 31,
                                     "column": 29,
-                                    "index": 1067
+                                    "index": 1535
                                 }
                             }
                         },
                         "loc": {
                             "start": {
-                                "line": 25,
+                                "line": 31,
                                 "column": 3,
-                                "index": 1041
+                                "index": 1509
                             },
                             "end": {
-                                "line": 25,
+                                "line": 31,
                                 "column": 29,
-                                "index": 1067
+                                "index": 1535
                             }
                         }
                     }
@@ -2274,28 +3521,28 @@
                 "type": "Annotations",
                 "loc": {
                     "start": {
-                        "line": 23,
+                        "line": 29,
                         "column": 3,
-                        "index": 1015
+                        "index": 1483
                     },
                     "end": {
-                        "line": 26,
+                        "line": 32,
                         "column": 2,
-                        "index": 1069
+                        "index": 1537
                     }
                 }
             },
             "comments": [],
             "loc": {
                 "start": {
-                    "line": 20,
+                    "line": 26,
                     "column": 1,
-                    "index": 749
+                    "index": 1217
                 },
                 "end": {
-                    "line": 23,
+                    "line": 29,
                     "column": 2,
-                    "index": 1014
+                    "index": 1482
                 }
             }
         }
