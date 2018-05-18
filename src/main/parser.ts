@@ -870,7 +870,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     const typeToken: Token = advance()
     switch (typeToken.type) {
       case SyntaxType.Identifier:
-        return createIdentifier(typeToken.text, typeToken.loc)
+        return createIdentifier(typeToken.text, typeToken.loc, parseAnnotations())
 
       case SyntaxType.MapKeyword:
         return parseMapType()
@@ -890,7 +890,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       case SyntaxType.I32Keyword:
       case SyntaxType.I64Keyword:
       case SyntaxType.DoubleKeyword:
-        return createKeywordFieldType(typeToken.type, typeToken.loc)
+        return createKeywordFieldType(typeToken.type, typeToken.loc, parseAnnotations())
 
       default:
         reportError(`FieldType expected but found: ${typeToken.type}`)
@@ -915,7 +915,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
       end: closeBracket.loc.end,
     }
 
-    return createMapFieldType(keyType, valueType, location)
+    return createMapFieldType(keyType, valueType, location, parseAnnotations())
   }
 
   // SetType → 'set' CppType? '<' FieldType '>'
@@ -934,6 +934,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
         start: openBracket.loc.start,
         end: closeBracket.loc.end,
       },
+      annotations: parseAnnotations(),
     }
   }
 
@@ -953,6 +954,7 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
         start: openBracket.loc.start,
         end: closeBracket.loc.end,
       },
+      annotations: parseAnnotations(),
     }
   }
 

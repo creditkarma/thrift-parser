@@ -62,8 +62,8 @@ export function createToken(type: SyntaxType, text: string, loc: TextLocation): 
   return { type, text, loc }
 }
 
-export function createIdentifier(value: string, loc: TextLocation): Identifier {
-  return { type: SyntaxType.Identifier, value, loc }
+export function createIdentifier(value: string, loc: TextLocation, annotations?: Annotations): Identifier {
+  return { type: SyntaxType.Identifier, value, loc, annotations }
 }
 
 export function creataePropertyAssignment(
@@ -161,32 +161,36 @@ export function createBooleanLiteral(value: boolean, loc: TextLocation): Boolean
   return { type: SyntaxType.BooleanLiteral, value, loc }
 }
 
-export function createKeywordFieldType(type: KeywordType, loc: TextLocation): BaseType {
-  return { type, loc }
+export function createKeywordFieldType(type: KeywordType, loc: TextLocation, annotations?: Annotations): BaseType {
+  return { type, loc, annotations }
 }
 
-export function createMapFieldType(keyType: FieldType, valueType: FieldType, loc: TextLocation): MapType {
+export function createMapFieldType(keyType: FieldType, valueType: FieldType, loc: TextLocation,
+                                   annotations?: Annotations): MapType {
   return {
     type: SyntaxType.MapType,
     keyType,
     valueType,
     loc,
+    annotations,
   }
 }
 
-export function createSetFieldType(valueType: FieldType, loc: TextLocation): SetType {
+export function createSetFieldType(valueType: FieldType, loc: TextLocation, annotations?: Annotations): SetType {
   return {
     type: SyntaxType.SetType,
     valueType,
     loc,
+    annotations,
   }
 }
 
-export function createListFieldType(valueType: FieldType, loc: TextLocation): ListType {
+export function createListFieldType(valueType: FieldType, loc: TextLocation, annotations?: Annotations): ListType {
   return {
     type: SyntaxType.ListType,
     valueType,
     loc,
+    annotations,
   }
 }
 
