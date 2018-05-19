@@ -1,7 +1,7 @@
 [
     {
         "type": "StringLiteral",
-        "text": "this is a test",
+        "text": "this is a \"test\"",
         "loc": {
             "start": {
                 "line": 1,
@@ -10,8 +10,40 @@
             },
             "end": {
                 "line": 1,
-                "column": 17,
-                "index": 16
+                "column": 20,
+                "index": 19
+            }
+        }
+    },
+    {
+        "type": "StringLiteral",
+        "text": "this isn't a test",
+        "loc": {
+            "start": {
+                "line": 2,
+                "column": 1,
+                "index": 20
+            },
+            "end": {
+                "line": 2,
+                "column": 21,
+                "index": 40
+            }
+        }
+    },
+    {
+        "type": "StringLiteral",
+        "text": "this is a 'test'",
+        "loc": {
+            "start": {
+                "line": 3,
+                "column": 1,
+                "index": 41
+            },
+            "end": {
+                "line": 3,
+                "column": 21,
+                "index": 61
             }
         }
     },
@@ -20,14 +52,14 @@
         "text": "",
         "loc": {
             "start": {
-                "line": 1,
-                "column": 17,
-                "index": 17
+                "line": 3,
+                "column": 21,
+                "index": 62
             },
             "end": {
-                "line": 2,
+                "line": 4,
                 "column": 1,
-                "index": 17
+                "index": 62
             }
         }
     }

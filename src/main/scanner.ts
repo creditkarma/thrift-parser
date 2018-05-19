@@ -146,7 +146,7 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
             // Strings can use single or double quotes
             case '"':
             case "'":
-                string()
+                string(next)
                 break
 
             case ':':
@@ -337,22 +337,25 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
         addToken(SyntaxType.CommentBlock, comment.trim())
     }
 
-    function string(): void {
-        while (!isAtEnd() && peek() !== '"' && peek() !== "'") {
+    function string(terminator: string): void {
+        while (!isAtEnd() && peek() !== terminator) {
             if (peek() === '\n') {
                 nextLine()
+            }
+            if (peek() === '\\') {
+                advance()
             }
 
             advance()
         }
 
-        if (isAtEnd() && previous() !== '"') {
-            reportError(`Strings must be terminated with '"'`)
+        if (isAtEnd() && previous() !== terminator) {
+            reportError(`String must be terminated with ${terminator}`)
         } else {
             // advance past closing "
             advance()
-            // We use "+ 1" and "- 1" to remove the quote markes from the string
-            const literal: string = source.substring(startIndex + 1, currentIndex - 1)
+            // We use "+ 1" and "- 1" to remove the quote markes from the string and unsescape escaped terminators
+            const literal: string = source.substring(startIndex + 1, currentIndex - 1).replace(/\\(\"|\')/g, '$1')
             addToken(SyntaxType.StringLiteral, literal)
         }
     }
