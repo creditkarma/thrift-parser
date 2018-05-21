@@ -81,7 +81,7 @@ export interface Annotations extends SyntaxNode {
 
 export interface Annotation extends SyntaxNode {
   name: Identifier
-  value: StringLiteral
+  value?: StringLiteral
 }
 
 export interface PrimarySyntax extends SyntaxNode {

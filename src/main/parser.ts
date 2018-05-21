@@ -421,19 +421,22 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     return undefined
   }
 
-  // Annotation → Identifier '=' StringLiteral ListSeparator?
+  // Annotation → Identifier ('=' StringLiteral)? ListSeparator?
   function parseAnnotation(): Annotation {
     const nameToken: Token = requireValue(consume(SyntaxType.Identifier), `Annotation must have a name`)
-    requireValue(consume(SyntaxType.EqualToken), `Expected equal sign`)
-    const valueToken: Token = requireValue(consume(SyntaxType.StringLiteral), `Annotation must have a value`)
+    let valueToken: Token | undefined
+    if (check(SyntaxType.EqualToken)) {
+      advance()
+      valueToken = requireValue(consume(SyntaxType.StringLiteral), `Annotation must have a value`)
+    }
 
     readListSeparator()
 
     return {
       type: SyntaxType.Annotation,
       name: createIdentifier(nameToken.text, nameToken.loc),
-      value: createStringLiteral(valueToken.text, valueToken.loc),
-      loc: createTextLocation(nameToken.loc.start, valueToken.loc.end),
+      value: valueToken ? createStringLiteral(valueToken.text, valueToken.loc) : undefined,
+      loc: createTextLocation(nameToken.loc.start, (valueToken || nameToken).loc.end),
     }
   }
 
