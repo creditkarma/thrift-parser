@@ -1,12 +1,13 @@
 typedef i32 IntegerWithAnnotation ( annotation = "foo" )
-typedef i32 IntegerWithTwoAnnotations ( annotation = "foo", another.annotation = "bar" )
+typedef i32 IntegerWithTwoAnnotations ( foo, bar, annotation = "foo", another.annotation = "bar" )
 typedef i32 IntegerWithFormattedAnnotations (
+  foo,
   annotation = "foo",
   another.annotation = "bar"
 )
 typedef i32 ( another.annotation = "bar" ) annotatedType
 typedef AnnotatedEnum ( another.annotation = "bar" ) annotatedIdentifier
-typedef i32 IntegerWithTightlyFormattedAnnotations (annotation="foo",another.annotation="bar")
+typedef i32 IntegerWithTightlyFormattedAnnotations (annotation="foo",foo,bar,another.annotation="bar")
 const i32 ConstantWithAnnotation = 9853 ( annotation = "foo", another.annotation = "bar" )
 
 enum AnnotatedEnum {
