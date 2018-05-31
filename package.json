@@ -46,8 +46,8 @@
     "nyc": "^11.1.0",
     "rimraf": "^2.6.2",
     "ts-node": "^3.3.0",
-    "tslint": "^5.7.0",
-    "typescript": "~2.7.2"
+    "tslint": "^5.10.0",
+    "typescript": "~2.9.1"
   },
   "nyc": {
     "include": [
