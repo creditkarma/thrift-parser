@@ -23,6 +23,7 @@ export interface ParseOptions {
   rootDir: string
   outDir: string
   files: Array<string>
+  organize: boolean
 }
 
 export const defaultOptions: ParseOptions = {
@@ -30,24 +31,27 @@ export const defaultOptions: ParseOptions = {
   rootDir: '.',
   outDir: '.',
   files: [],
+  organize: true,
 }
 
-export function parseFiles(options: ParseOptions = defaultOptions): Array<ThriftDocument | ThriftErrors> {
-  return options.files.map((file: string): ThriftDocument | ThriftErrors => {
-    const filePath: string = path.resolve(process.cwd(), options.rootDir, file)
+export function parseFiles(options: Partial<ParseOptions> = {}): Array<ThriftDocument | ThriftErrors> {
+  const mergedOptions: ParseOptions = { ...defaultOptions, ...options }
+  return mergedOptions.files.map((file: string): ThriftDocument | ThriftErrors => {
+    const filePath: string = path.resolve(process.cwd(), mergedOptions.rootDir, file)
     const content: string = fs.readFileSync(filePath, 'utf-8')
-    return parse(content, options)
+    return parse(content, mergedOptions)
   })
 }
 
-export function parse(source: string, options: ParseOptions = defaultOptions): ThriftDocument | ThriftErrors {
+export function parse(source: string, options: Partial<ParseOptions> = {}): ThriftDocument | ThriftErrors {
+  const mergedOptions: ParseOptions = { ...defaultOptions, ...options }
   const debug: Debugger = createDebugger(source)
   const scanner: Scanner = createScanner(source, handleError)
   const tokens: Array<Token> = scanner.scan()
 
   const parser: Parser = createParser(tokens, handleError)
   const intermediate: ThriftDocument = parser.parse()
-  const thrift: ThriftDocument = organize(intermediate)
+  const thrift: ThriftDocument = mergedOptions.organize ? organize(intermediate) : intermediate
 
   /**
    * This is a safe handler for errors that allows the parser and scanner to recover to a
@@ -59,7 +63,7 @@ export function parse(source: string, options: ParseOptions = defaultOptions): T
    */
   function handleError(err: ThriftError): void {
     debug.report(err)
-    if (options.fastFail) {
+    if (mergedOptions.fastFail) {
       debug.print()
       throw new Error(err.message)
     } else {

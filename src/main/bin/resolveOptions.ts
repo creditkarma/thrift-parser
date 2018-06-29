@@ -14,6 +14,7 @@ export function resolveOptions(args: Array<string>): ParseOptions {
     rootDir: '.',
     outDir: 'thrift-json',
     files: [],
+    organize: true,
   }
 
   while (index < len) {
