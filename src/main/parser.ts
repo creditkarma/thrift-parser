@@ -961,6 +961,55 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
     }
   }
 
+  function parseCommentBlock(rawValue: string): string {
+    let comment: string = ''
+    let index: number = 0
+    let cursor: number = 0
+    let current: string = rawValue[index]
+
+    while (true) {
+      if (
+        current === '\n' ||
+        index >= rawValue.length ||
+        (current !== '/' && current !== '*' && current !== ' ')
+      ) {
+        break
+      } else {
+        index += 1
+        current = rawValue[index]
+      }
+    }
+
+    while (true) {
+      if (
+        comment.charAt(cursor - 1) === '\n' &&
+        (rawValue[(index + 1)] === ' ' || rawValue[(index + 1)] === '*')
+      ) {
+      /**
+       * We ignore stars and spaces after a new line to normalize comment formatting.
+       * We're only keeping the text of the comment without the extranious formatting.
+       */
+      } else {
+        comment += current
+        cursor += 1
+      }
+
+      index += 1
+      current = rawValue[index]
+
+      // A comment goes until we find a comment terminator (*/).
+      if (rawValue[(index + 1)] === '*' && rawValue[(index + 2)] === '/') {
+        index += 1
+        index += 1
+        break
+      } else if (index >= rawValue.length) {
+        break
+      }
+    }
+
+    return comment.trim()
+  }
+
   function consumeComments(): void {
     while (true) {
       const next: Token = tokens[currentIndex]
@@ -968,7 +1017,8 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
         case SyntaxType.CommentBlock:
           comments.push({
             type: next.type,
-            value: next.text.split('\n'),
+            value: parseCommentBlock(next.text).split('\n'),
+            rawValue: next.text,
             loc: next.loc,
           })
           currentIndex++

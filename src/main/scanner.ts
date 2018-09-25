@@ -295,42 +295,21 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
 
     function multilineComment(): void {
         let comment: string = ''
-        let cursor: number = 0
-
-        while (true) {
-            if (
-                current() === '\n' ||
-                isAtEnd() ||
-                (current() !== '/' && current() !== '*' && current() !== ' ')
-            ) {
-                break
-            } else {
-                advance()
-            }
-        }
 
         while (true) {
             if (current() === '\n') {
                 nextLine()
             }
 
-            if (comment.charAt(cursor - 1) === '\n' && (peek() === ' ' || peek() === '*')) {
-                /**
-                 * We ignore stars and spaces after a new line to normalize comment formatting.
-                 * We're only keeping the text of the comment without the extranious formatting.
-                 */
-            } else {
-                comment += current()
-                cursor += 1
-            }
-
-            advance()
+            comment += current()
 
             // A comment goes until we find a comment terminator (*/).
             if ((peek() === '*' && peekNext() === '/') || isAtEnd()) {
-                advance()
-                advance()
+                comment += advance()
+                comment += advance()
                 break
+            } else {
+                advance()
             }
         }
 

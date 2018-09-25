@@ -41,6 +41,7 @@
             "Multiline typedef",
             " comment"
           ],
+          "rawValue": "/**\n * Multiline typedef\n * comment\n */",
           "loc": {
             "start": {
               "line": 1,
@@ -138,6 +139,7 @@
           "value": [
             "Const1 comment"
           ],
+          "rawValue": "/**\n * Const1 comment\n */",
           "loc": {
             "start": {
               "line": 7,
@@ -384,6 +386,7 @@
           "value": [
             "Enum comment"
           ],
+          "rawValue": "/**\n * Enum comment\n */",
           "loc": {
             "start": {
               "line": 15,
@@ -615,6 +618,7 @@
           "value": [
             "Struct comment"
           ],
+          "rawValue": "/**\n * Struct comment\n */",
           "loc": {
             "start": {
               "line": 24,
@@ -850,6 +854,7 @@
               "value": [
                 "Function 1 comment"
               ],
+              "rawValue": "/**\n   * Function 1 comment\n   */",
               "loc": {
                 "start": {
                   "line": 38,
@@ -986,6 +991,7 @@
               "value": [
                 "Function 2 comment"
               ],
+              "rawValue": "/**\n   * Function 2 comment\n   */",
               "loc": {
                 "start": {
                   "line": 44,
@@ -1039,6 +1045,7 @@
           "value": [
             "Service comment"
           ],
+          "rawValue": "/**\n * Service comment\n */",
           "loc": {
             "start": {
               "line": 33,

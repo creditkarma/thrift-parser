@@ -8,12 +8,12 @@
                 "value": "Test",
                 "loc": {
                     "start": {
-                        "line": 9,
+                        "line": 10,
                         "column": 9,
                         "index": 137
                     },
                     "end": {
-                        "line": 9,
+                        "line": 10,
                         "column": 13,
                         "index": 141
                     }
@@ -28,12 +28,12 @@
                         "value": "ding",
                         "loc": {
                             "start": {
-                                "line": 12,
+                                "line": 13,
                                 "column": 9,
                                 "index": 192
                             },
                             "end": {
-                                "line": 12,
+                                "line": 13,
                                 "column": 13,
                                 "index": 196
                             }
@@ -43,12 +43,12 @@
                         "type": "I32Keyword",
                         "loc": {
                             "start": {
-                                "line": 12,
+                                "line": 13,
                                 "column": 5,
                                 "index": 188
                             },
                             "end": {
-                                "line": 12,
+                                "line": 13,
                                 "column": 8,
                                 "index": 191
                             }
@@ -62,12 +62,12 @@
                             "value": "bool foo();",
                             "loc": {
                                 "start": {
-                                    "line": 10,
+                                    "line": 11,
                                     "column": 5,
                                     "index": 148
                                 },
                                 "end": {
-                                    "line": 10,
+                                    "line": 11,
                                     "column": 18,
                                     "index": 161
                                 }
@@ -78,12 +78,12 @@
                             "value": "string dang(),",
                             "loc": {
                                 "start": {
-                                    "line": 11,
+                                    "line": 12,
                                     "column": 5,
                                     "index": 166
                                 },
                                 "end": {
-                                    "line": 11,
+                                    "line": 12,
                                     "column": 22,
                                     "index": 183
                                 }
@@ -94,12 +94,12 @@
                     "modifiers": [],
                     "loc": {
                         "start": {
-                            "line": 12,
+                            "line": 13,
                             "column": 5,
                             "index": 188
                         },
                         "end": {
-                            "line": 12,
+                            "line": 13,
                             "column": 15,
                             "index": 198
                         }
@@ -129,6 +129,7 @@
                         "This is a multi-line",
                         " comment for testing"
                     ],
+                    "rawValue": "/*\n * This is a multi-line\n * comment for testing\n */",
                     "loc": {
                         "start": {
                             "line": 2,
@@ -148,6 +149,7 @@
                         "Another muliti-line",
                         "comment for testing"
                     ],
+                    "rawValue": "/*\nAnother muliti-line\ncomment for testing\n*/",
                     "loc": {
                         "start": {
                             "line": 6,
@@ -155,8 +157,8 @@
                             "index": 83
                         },
                         "end": {
-                            "line": 8,
-                            "column": 23,
+                            "line": 9,
+                            "column": 3,
                             "index": 128
                         }
                     }
@@ -164,12 +166,12 @@
             ],
             "loc": {
                 "start": {
-                    "line": 9,
+                    "line": 10,
                     "column": 1,
                     "index": 129
                 },
                 "end": {
-                    "line": 13,
+                    "line": 14,
                     "column": 2,
                     "index": 200
                 }

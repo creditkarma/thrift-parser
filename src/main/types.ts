@@ -73,6 +73,7 @@ export interface CommentLine extends SyntaxNode {
 export interface CommentBlock extends SyntaxNode {
   type: SyntaxType.CommentBlock
   value: Array<string>
+  rawValue: string
 }
 
 export interface Annotations extends SyntaxNode {

@@ -133,6 +133,16 @@ describe('Scanner', () => {
         assert.deepEqual(tokens, expected)
     })
 
+    it(`should correctly handle empty multi-line comments`, () => {
+        const content: string = loadSource('comment-block-empty')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const expected: any = loadSolution('comment-block-empty')
+
+        assert.deepEqual(tokens, expected)
+    })
+
     it('should correctly return tokens for a simple const', () => {
         const content = loadSource('const-string')
         const scanner: Scanner = createScanner(content)
