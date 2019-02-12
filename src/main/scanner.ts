@@ -17,11 +17,20 @@ function isAlphaOrUnderscore(value: string): boolean {
 }
 
 function isValidIdentifier(value: string): boolean {
-    return isAlphaOrUnderscore(value) || isDigit(value) || value === '.' || value === '-'
+    return (
+        isAlphaOrUnderscore(value) ||
+        isDigit(value) ||
+        value === '.' ||
+        value === '-'
+    )
 }
 
 function isHexDigit(value: string): boolean {
-    return (value >= '0' && value <= '9') || (value >= 'A' && value <= 'F') || (value >= 'a' && value <= 'f')
+    return (
+        (value >= '0' && value <= '9') ||
+        (value >= 'A' && value <= 'F') ||
+        (value >= 'a' && value <= 'f')
+    )
 }
 
 function isWhiteSpace(char: string): boolean {
@@ -52,7 +61,10 @@ export interface Scanner {
     syncronize(): void
 }
 
-export function createScanner(src: string, report: ErrorReporter = noopReporter) {
+export function createScanner(
+    src: string,
+    report: ErrorReporter = noopReporter,
+) {
     const source: string = src
     const tokens: Array<Token> = []
     let line: number = 1
@@ -314,7 +326,10 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
                 nextLine()
             }
 
-            if (comment.charAt(cursor - 1) === '\n' && (peek() === ' ' || peek() === '*')) {
+            if (
+                comment.charAt(cursor - 1) === '\n' &&
+                (peek() === ' ' || peek() === '*')
+            ) {
                 /**
                  * We ignore stars and spaces after a new line to normalize comment formatting.
                  * We're only keeping the text of the comment without the extranious formatting.
@@ -355,7 +370,9 @@ export function createScanner(src: string, report: ErrorReporter = noopReporter)
             // advance past closing "
             advance()
             // We use "+ 1" and "- 1" to remove the quote markes from the string and unsescape escaped terminators
-            const literal: string = source.substring(startIndex + 1, currentIndex - 1).replace(/\\(\"|\')/g, '$1')
+            const literal: string = source
+                .substring(startIndex + 1, currentIndex - 1)
+                .replace(/\\(\"|\')/g, '$1')
             addToken(SyntaxType.StringLiteral, literal)
         }
     }

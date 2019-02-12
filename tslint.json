@@ -1,40 +1,38 @@
 {
-  "extends": "tslint:recommended",
-  "rules": {
-    "object-literal-sort-keys": false,
-    "no-console": [
-      false
+    "extends": [
+        "tslint:recommended",
+        "tslint-config-prettier",
+        "tslint-plugin-prettier"
     ],
-    "interface-name": [
-      true,
-      "never-prefix"
-    ],
-    "semicolon": [
-      true,
-      "never"
-    ],
-    "array-type": [
-      true,
-      "generic"
-    ],
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ],
-    "one-line": [
-      true,
-      "check-open-brace",
-      "check-whitespace"
-    ],
-    "radix": false,
-    "no-unused-expression": false,
-    "trailing-comma": [
-      true,
-      {
-        "multiline": "always",
-        "singleline": "never"
-      }
-    ]
-  }
+    "rules": {
+        "object-literal-sort-keys": false,
+        "no-console": [
+            false
+        ],
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "semicolon": [
+            true,
+            "never"
+        ],
+        "array-type": [
+            true,
+            "generic"
+        ],
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-whitespace"
+        ],
+        "no-unused-expression": false,
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "always",
+                "singleline": "never"
+            }
+        ]
+    }
 }
