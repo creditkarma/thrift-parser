@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 
 import { parseFiles, ParseOptions, ThriftDocument } from '../index'
+import { ThriftErrors } from '../types'
 import { mkdir } from './mkdir'
 import { resolveOptions } from './resolveOptions'
 
@@ -10,7 +11,7 @@ const cliArgs: Array<string> = process.argv.slice(2)
 const options: ParseOptions = resolveOptions(cliArgs)
 
 parseFiles(options).forEach(
-    (ast: ThriftDocument, index: number): void => {
+    (ast: ThriftDocument | ThriftErrors, index: number): void => {
         const json: string = JSON.stringify(ast, null, 2)
         const file: string = options.files[index]
         const outDir: string = path.resolve(

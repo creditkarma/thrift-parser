@@ -103,7 +103,7 @@ export function createFieldDefinition(
     requiredness: FieldRequired,
     fieldType: FunctionType,
     loc: TextLocation,
-    defaultValue: ConstValue = null,
+    defaultValue: ConstValue | null = null,
     annotations?: Annotations,
     comments: Array<Comment> = [],
 ): FieldDefinition {

@@ -7,9 +7,7 @@
     "declaration": true,
     "rootDir": "./src",
     "outDir": "./dist",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
+    "strict": true,
     "pretty": true,
     "removeComments": false,
     "lib": [
