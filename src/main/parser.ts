@@ -900,6 +900,11 @@ export function createParser(
 
             if (check(SyntaxType.CommaToken)) {
                 advance()
+
+                // trailing comma
+                if (check(SyntaxType.RightBraceToken)) {
+                    break
+                }
             } else {
                 break
             }
