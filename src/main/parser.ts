@@ -853,6 +853,11 @@ export function createParser(tokens: Array<Token>, report: ErrorReporter = noopR
 
       if (check(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
         advance()
+
+        // trailing comma
+        if (check(SyntaxType.RightBracketToken)) {
+          break
+        }
       } else {
         break
       }

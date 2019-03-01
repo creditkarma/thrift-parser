@@ -29,7 +29,20 @@ describe('Parser', () => {
         assert.deepEqual(thrift.body.length, 38)
     })
 
-    it('should correctly parse the syntax of a const', () => {
+    it('should correctly parse the syntax of a const list', () => {
+        const content: string = loadSource('const-list')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const parser: Parser = createParser(tokens)
+        const thrift: ThriftDocument = parser.parse()
+
+        const expected: any = loadSolution('const-list')
+
+        assert.deepEqual(objectify(thrift), expected)
+    })
+
+    it('should correctly parse the syntax of a const map', () => {
         const content: string = loadSource('const-map')
         const scanner: Scanner = createScanner(content)
         const tokens: Array<Token> = scanner.scan()
