@@ -216,6 +216,29 @@ service <identifier> (extends <identifier>)? { <functions> }
 }
 ```
 
+### Comments
+
+Each Thrift structure can be commented. These comments remain in the AST as one of two structures.
+
+#### CommentLine
+
+```typescript
+{
+    type: "CommentLine",
+    value: string
+}
+```
+
+#### CommentBlock
+
+```typescript
+{
+    type: "CommentBlock",
+    value: Array<string>,
+    rawValue: string
+}
+```
+
 ## Viewing with ASTExplorer
 
 ASTExplorer is a web app for visualizing ASTs. You type source. It shows you the resulting syntax tree based on the parser you've selected. I've included the integrations for this parser. To get that up and running you'll need to clone ASTExplorer.
