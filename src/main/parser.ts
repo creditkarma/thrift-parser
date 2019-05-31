@@ -109,7 +109,7 @@ export function createParser(
 
         while (!isAtEnd()) {
             try {
-                const statement: ThriftStatement = parseStatement()
+                const statement: ThriftStatement | null = parseStatement()
                 if (statement !== null) {
                     thrift.body.push(statement)
                 }
@@ -128,7 +128,7 @@ export function createParser(
         }
     }
 
-    function parseStatement(): ThriftStatement {
+    function parseStatement(): ThriftStatement | null {
         const next: Token = currentToken()
 
         // All Thrift statements must start with one of these types
@@ -166,16 +166,22 @@ export function createParser(
                 return null
 
             default:
-                reportError(`Invalid start to Thrift statement ${next.text}`)
+                throw reportError(
+                    `Invalid start to Thrift statement ${next.text}`,
+                )
         }
     }
 
     // IncludeDefinition → 'include' StringLiteral
     function parseInclude(): IncludeDefinition {
-        const keywordToken: Token = consume(SyntaxType.IncludeKeyword)
-        const pathToken: Token = consume(SyntaxType.StringLiteral)
-        requireValue(
-            pathToken,
+        const _keywordToken: Token | null = consume(SyntaxType.IncludeKeyword)
+        const keywordToken = requireValue(
+            _keywordToken,
+            `'indcluded' keyword expected`,
+        )
+        const _pathToken: Token | null = consume(SyntaxType.StringLiteral)
+        const pathToken = requireValue(
+            _pathToken,
             `Include statement must include a path as string literal`,
         )
 
@@ -190,17 +196,30 @@ export function createParser(
     // ServiceDefinition → 'service' Identifier ( 'extends' Identifier )? '{' Function* '} Annotations?'
     function parseService(): ServiceDefinition {
         const leadingComments: Array<Comment> = getComments()
-        const keywordToken: Token = consume(SyntaxType.ServiceKeyword)
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `Unable to find identifier for service`)
+        const _keywordToken: Token | null = consume(SyntaxType.ServiceKeyword)
+        const keywordToken: Token = requireValue(
+            _keywordToken,
+            `Unable to find service keyword for service`,
+        )
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `Unable to find identifier for service`,
+        )
 
-        const extendsId: Identifier = parseExtends()
-        const openBrace: Token = consume(SyntaxType.LeftBraceToken)
-        requireValue(openBrace, `Expected opening curly brace`)
+        const extendsId: Identifier | null = parseExtends()
+        const _openBrace: Token | null = consume(SyntaxType.LeftBraceToken)
+        const openBrace = requireValue(
+            _openBrace,
+            `Expected opening curly brace`,
+        )
 
         const functions: Array<FunctionDefinition> = parseFunctions()
-        const closeBrace: Token = consume(SyntaxType.RightBraceToken)
-        requireValue(closeBrace, `Expected closing curly brace`)
+        const _closeBrace: Token | null = consume(SyntaxType.RightBraceToken)
+        const closeBrace = requireValue(
+            _closeBrace,
+            `Expected closing curly brace`,
+        )
 
         const annotations: Annotations | undefined = parseAnnotations()
 
@@ -220,12 +239,18 @@ export function createParser(
         }
     }
 
-    function parseExtends(): Identifier {
+    function parseExtends(): Identifier | null {
         if (checkText('extends')) {
-            const keywordToken: Token = consume(SyntaxType.ExtendsKeyword)
-            const nameToken: Token = consume(SyntaxType.Identifier)
-            requireValue(
-                nameToken,
+            const _keywordToken: Token | null = consume(
+                SyntaxType.ExtendsKeyword,
+            )
+            const keywordToken = requireValue(
+                _keywordToken,
+                `'extends keyword expected`,
+            )
+            const _nameToken: Token | null = consume(SyntaxType.Identifier)
+            const nameToken = requireValue(
+                _nameToken,
                 `Identifier expected after 'extends' keyword`,
             )
 
@@ -248,11 +273,11 @@ export function createParser(
                 functions.push(parseFunction())
 
                 if (isStatementBeginning(currentToken())) {
-                    reportError(
+                    throw reportError(
                         `Closing curly brace expected, but new statement found`,
                     )
                 } else if (check(SyntaxType.EOF)) {
-                    reportError(
+                    throw reportError(
                         `Closing curly brace expected but reached end of file`,
                     )
                 }
@@ -265,20 +290,22 @@ export function createParser(
     // Function → 'oneway'? FunctionType Identifier '(' Field* ')' Throws? Annotations? ListSeparator?
     function parseFunction(): FunctionDefinition {
         const leadingComments: Array<Comment> = getComments()
-        const onewayToken: Token = consume(SyntaxType.OnewayKeyword)
+        const onewayToken: Token | null = consume(SyntaxType.OnewayKeyword)
         const returnType: FunctionType = parseFunctionType()
 
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `Unable to find function identifier`)
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `Unable to find function identifier`,
+        )
 
         const params: ParametersDefinition = parseParameterFields()
-        requireValue(params, `List of zero or more fields expected`)
 
-        const throws: ThrowsDefinition = parseThrows()
+        const throws: ThrowsDefinition | null = parseThrows()
 
         const annotations: Annotations | undefined = parseAnnotations()
 
-        const listSeparator: Token = readListSeparator()
+        const listSeparator: Token | null = readListSeparator()
         const endLoc: TextLocation =
             listSeparator !== null
                 ? listSeparator.loc
@@ -305,9 +332,9 @@ export function createParser(
 
     function parseParameterFields(): ParametersDefinition {
         const fields: Array<FieldDefinition> = []
-        const openParen: Token = consume(SyntaxType.LeftParenToken)
-        requireValue(
-            openParen,
+        const _openParen: Token | null = consume(SyntaxType.LeftParenToken)
+        const openParen: Token = requireValue(
+            _openParen,
             `Opening paren expected to start list of fields`,
         )
 
@@ -316,18 +343,21 @@ export function createParser(
             fields.push(parseField())
 
             if (isStatementBeginning(currentToken())) {
-                reportError(
+                throw reportError(
                     `Closing paren ')' expected, but new statement found`,
                 )
             } else if (check(SyntaxType.EOF)) {
-                reportError(
+                throw reportError(
                     `Closing paren ')' expected but reached end of file`,
                 )
             }
         }
 
-        const closeParen: Token = consume(SyntaxType.RightParenToken)
-        requireValue(closeParen, `Closing paren expected to end list of fields`)
+        const _closeParen: Token | null = consume(SyntaxType.RightParenToken)
+        const closeParen: Token = requireValue(
+            _closeParen,
+            `Closing paren expected to end list of fields`,
+        )
 
         return {
             type: SyntaxType.ParametersDefinition,
@@ -340,9 +370,15 @@ export function createParser(
     }
 
     // Throws → 'throws' '(' Field* ')'
-    function parseThrows(): ThrowsDefinition {
+    function parseThrows(): ThrowsDefinition | null {
         if (check(SyntaxType.ThrowsKeyword)) {
-            const keywordToken: Token = consume(SyntaxType.ThrowsKeyword)
+            const _keywordToken: Token | null = consume(
+                SyntaxType.ThrowsKeyword,
+            )
+            const keywordToken: Token = requireValue(
+                _keywordToken,
+                `'throws' keyword expected`,
+            )
             const params: ParametersDefinition = parseParameterFields()
 
             return {
@@ -360,15 +396,22 @@ export function createParser(
 
     // Namespace → 'namespace' ( NamespaceScope Identifier )
     function parseNamespace(): NamespaceDefinition {
-        const keywordToken: Token = consume(SyntaxType.NamespaceKeyword)
-        const scopeToken: Token = consume(SyntaxType.Identifier)
-        requireValue(
-            scopeToken,
+        const _keywordToken: Token | null = consume(SyntaxType.NamespaceKeyword)
+        const keywordToken: Token = requireValue(
+            _keywordToken,
+            `'namespace' keyword expected`,
+        )
+        const _scopeToken: Token | null = consume(SyntaxType.Identifier)
+        const scopeToken: Token = requireValue(
+            _scopeToken,
             `Unable to find scope identifier for namespace`,
         )
 
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `Unable to find name identifier for namespace`)
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `Unable to find name identifier for namespace`,
+        )
 
         return {
             type: SyntaxType.NamespaceDefinition,
@@ -382,13 +425,23 @@ export function createParser(
     // ConstDefinition → 'const' FieldType Identifier '=' ConstValue Annotations? ListSeparator?
     function parseConst(): ConstDefinition {
         const leadingComments: Array<Comment> = getComments()
-        const keywordToken: Token = consume(SyntaxType.ConstKeyword)
+        const _keywordToken: Token | null = consume(SyntaxType.ConstKeyword)
+        const keywordToken: Token = requireValue(
+            _keywordToken,
+            `'const' keyword expected`,
+        )
         const fieldType: FieldType = parseFieldType()
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `Const definition must have a name`)
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `Const definition must have a name`,
+        )
 
-        const initializer: ConstValue = parseValueAssignment()
-        requireValue(initializer, `Const must be initialized to a value`)
+        const _initializer: ConstValue | null = parseValueAssignment()
+        const initializer: ConstValue = requireValue(
+            _initializer,
+            `Const must be initialized to a value`,
+        )
 
         const annotations: Annotations | undefined = parseAnnotations()
         readListSeparator()
@@ -407,7 +460,7 @@ export function createParser(
         }
     }
 
-    function parseValueAssignment(): ConstValue {
+    function parseValueAssignment(): ConstValue | null {
         if (check(SyntaxType.EqualToken)) {
             advance()
             return parseValue()
@@ -467,11 +520,15 @@ export function createParser(
 
     // TypedefDefinition → 'typedef' FieldType Identifier
     function parseTypedef(): TypedefDefinition {
-        const keywordToken: Token = consume(SyntaxType.TypedefKeyword)
+        const _keywordToken: Token | null = consume(SyntaxType.TypedefKeyword)
+        const keywordToken: Token = requireValue(
+            _keywordToken,
+            `'typedef' keyword expected`,
+        )
         const type: FieldType = parseFieldType()
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(
-            nameToken,
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
             `Typedef is expected to have name and none found`,
         )
 
@@ -495,16 +552,26 @@ export function createParser(
     // EnumDefinition → 'enum' Identifier '{' EnumMember* '} Annotations?'
     function parseEnum(): EnumDefinition {
         const leadingComments: Array<Comment> = getComments()
-        const keywordToken: Token = consume(SyntaxType.EnumKeyword)
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `Expected identifier for enum definition`)
+        const _keywordToken: Token | null = consume(SyntaxType.EnumKeyword)
+        const keywordToken: Token = requireValue(
+            _keywordToken,
+            `'enum' keyword expected`,
+        )
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `Expected identifier for enum definition`,
+        )
 
-        const openBrace: Token = consume(SyntaxType.LeftBraceToken)
+        const openBrace: Token | null = consume(SyntaxType.LeftBraceToken)
         requireValue(openBrace, `Expected opening brace`)
 
         const members: Array<EnumMember> = parseEnumMembers()
-        const closeBrace: Token = consume(SyntaxType.RightBraceToken)
-        requireValue(closeBrace, `Expected closing brace`)
+        const _closeBrace: Token | null = consume(SyntaxType.RightBraceToken)
+        const closeBrace: Token = requireValue(
+            _closeBrace,
+            `Expected closing brace`,
+        )
 
         const annotations: Annotations | undefined = parseAnnotations()
 
@@ -534,11 +601,11 @@ export function createParser(
                 // consume list separator if there is one
                 readListSeparator()
                 if (isStatementBeginning(currentToken())) {
-                    reportError(
+                    throw reportError(
                         `Closing curly brace expected, but new statement found`,
                     )
                 } else if (check(SyntaxType.EOF)) {
-                    reportError(
+                    throw reportError(
                         `Closing curly brace expected but reached end of file`,
                     )
                 }
@@ -550,18 +617,21 @@ export function createParser(
 
     // EnumMember → (Identifier ('=' IntConstant)? Annotations? ListSeparator?)*
     function parseEnumMember(): EnumMember {
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `EnumMember must have identifier`)
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `EnumMember must have identifier`,
+        )
 
-        let loc: TextLocation = null
-        let initializer: IntConstant = null
+        let loc: TextLocation | null = null
+        let initializer: IntConstant | null = null
         if (consume(SyntaxType.EqualToken) !== null) {
-            const numToken: Token = consume(
+            const _numToken: Token | null = consume(
                 SyntaxType.IntegerLiteral,
                 SyntaxType.HexLiteral,
             )
-            requireValue(
-                numToken,
+            const numToken: Token = requireValue(
+                _numToken,
                 `Equals token "=" must be followed by an Integer`,
             )
             initializer = parseIntValue(numToken)
@@ -585,24 +655,31 @@ export function createParser(
     // StructLike → ('struct' | 'union' | 'exception') Identifier 'xsd_all'? '{' Field* '} Annotations?'
     function parseStructLikeInterface(): StructLike {
         const leadingComments: Array<Comment> = getComments()
-        const keywordToken: Token = consume(
+        const _keywordToken: Token | null = consume(
             SyntaxType.StructKeyword,
             SyntaxType.UnionKeyword,
             SyntaxType.ExceptionKeyword,
         )
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `Struct-like must have an identifier`)
+        const keywordToken: Token = requireValue(
+            _keywordToken,
+            `'struct | union | exception' expected`,
+        )
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `Struct-like must have an identifier`,
+        )
 
-        const openBrace: Token = consume(SyntaxType.LeftBraceToken)
+        const openBrace: Token | null = consume(SyntaxType.LeftBraceToken)
         requireValue(
             openBrace,
             `Struct-like body must begin with opening curly brace '{'`,
         )
 
         const fields: Array<FieldDefinition> = parseFields()
-        const closeBrace: Token = consume(SyntaxType.RightBraceToken)
-        requireValue(
-            closeBrace,
+        const _closeBrace: Token | null = consume(SyntaxType.RightBraceToken)
+        const closeBrace: Token = requireValue(
+            _closeBrace,
             `Struct-like body must end with a closing curly brace '}'`,
         )
 
@@ -676,11 +753,11 @@ export function createParser(
                 fields.push(parseField())
 
                 if (isStatementBeginning(currentToken())) {
-                    reportError(
+                    throw reportError(
                         `Closing curly brace expected, but new statement found`,
                     )
                 } else if (check(SyntaxType.EOF)) {
-                    reportError(
+                    throw reportError(
                         `Closing curly brace expected but reached end of file`,
                     )
                 }
@@ -693,15 +770,18 @@ export function createParser(
     // Field → FieldID? FieldReq? FieldType Identifier ('= ConstValue)? XsdFieldOptions Annotations? ListSeparator?
     function parseField(): FieldDefinition {
         const startLoc: TextLocation = currentToken().loc
-        const fieldID: FieldID = parseFieldId()
-        const fieldRequired: FieldRequired = parserequireValuedness()
+        const fieldID: FieldID | null = parseFieldId()
+        const fieldRequired: FieldRequired | null = parserequireValuedness()
         const fieldType: FieldType = parseFieldType()
-        const nameToken: Token = consume(SyntaxType.Identifier)
-        requireValue(nameToken, `Unable to find identifier for field`)
+        const _nameToken: Token | null = consume(SyntaxType.Identifier)
+        const nameToken: Token = requireValue(
+            _nameToken,
+            `Unable to find identifier for field`,
+        )
 
-        const defaultValue: ConstValue = parseValueAssignment()
+        const defaultValue: ConstValue | null = parseValueAssignment()
         const annotations: Annotations | undefined = parseAnnotations()
-        const listSeparator: Token = readListSeparator()
+        const listSeparator: Token | null = readListSeparator()
 
         const endLoc: TextLocation =
             listSeparator !== null
@@ -709,6 +789,7 @@ export function createParser(
                 : defaultValue !== null
                 ? defaultValue.loc
                 : nameToken.loc
+
         const location: TextLocation = createTextLocation(
             startLoc.start,
             endLoc.end,
@@ -728,7 +809,7 @@ export function createParser(
     }
 
     // ListSeparator → ',' | ';'
-    function readListSeparator(): Token {
+    function readListSeparator(): Token | null {
         if (check(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
             return advance()
         }
@@ -737,7 +818,7 @@ export function createParser(
     }
 
     // FieldRequired → 'required' | 'optional'
-    function parserequireValuedness(): FieldRequired {
+    function parserequireValuedness(): FieldRequired | null {
         const current: Token = currentToken()
         if (current.text === 'required' || current.text === 'optional') {
             advance()
@@ -748,18 +829,23 @@ export function createParser(
     }
 
     // FieldID → IntConstant ':'
-    function parseFieldId(): FieldID {
+    function parseFieldId(): FieldID | null {
         if (
             currentToken().type === SyntaxType.IntegerLiteral &&
             peek().type === SyntaxType.ColonToken
         ) {
-            const fieldIDToken: Token = consume(SyntaxType.IntegerLiteral)
-            const colonToken: Token = consume(SyntaxType.ColonToken)
+            const fieldIDToken: Token | null = consume(
+                SyntaxType.IntegerLiteral,
+            )
+            const colonToken: Token | null = consume(SyntaxType.ColonToken)
 
             // return value of number token
             return createFieldID(
-                parseInt(fieldIDToken.text),
-                createTextLocation(fieldIDToken.loc.start, colonToken.loc.end),
+                parseInt(fieldIDToken!.text, 10),
+                createTextLocation(
+                    fieldIDToken!.loc.start,
+                    colonToken!.loc.end,
+                ),
             )
         } else {
             return null
@@ -767,7 +853,7 @@ export function createParser(
     }
 
     // ConstValue → Literal | ConstMap | ConstList
-    function parseValue(): ConstValue {
+    function parseValue(): ConstValue | null {
         const next: Token = advance()
         switch (next.type) {
             case SyntaxType.Identifier:
@@ -816,7 +902,9 @@ export function createParser(
                 )
 
             default:
-                reportError(`IntConstant expected but found: ${token.type}`)
+                throw reportError(
+                    `IntConstant expected but found: ${token.type}`,
+                )
         }
     }
 
@@ -835,7 +923,9 @@ export function createParser(
                 )
 
             default:
-                reportError(`DoubleConstant expected but found: ${token.type}`)
+                throw reportError(
+                    `DoubleConstant expected but found: ${token.type}`,
+                )
         }
     }
 
@@ -848,8 +938,11 @@ export function createParser(
         )
             ? []
             : readMapValues()
-        const closeBrace: Token = consume(SyntaxType.RightBraceToken)
-        requireValue(closeBrace, `Closing brace missing from map definition`)
+        const _closeBrace: Token | null = consume(SyntaxType.RightBraceToken)
+        const closeBrace: Token = requireValue(
+            _closeBrace,
+            `Closing brace missing from map definition`,
+        )
 
         const endLoc: TextLocation = closeBrace.loc
         const location: TextLocation = {
@@ -867,9 +960,9 @@ export function createParser(
         const elements: Array<ConstValue> = check(SyntaxType.RightBracketToken)
             ? []
             : readListValues()
-        const closeBrace: Token = consume(SyntaxType.RightBracketToken)
-        requireValue(
-            closeBrace,
+        const _closeBrace: Token | null = consume(SyntaxType.RightBracketToken)
+        const closeBrace: Token = requireValue(
+            _closeBrace,
             `Closing square-bracket missing from list definition`,
         )
         const endLoc: TextLocation = closeBrace.loc
@@ -883,13 +976,18 @@ export function createParser(
     function readMapValues(): Array<PropertyAssignment> {
         const properties: Array<PropertyAssignment> = []
         while (true) {
-            const key: ConstValue = parseValue()
-            const semicolon: Token = consume(SyntaxType.ColonToken)
+            const _key: ConstValue | null = parseValue()
+            const key: ConstValue = requireValue(
+                _key,
+                'Key expected for map value',
+            )
+            const semicolon: Token | null = consume(SyntaxType.ColonToken)
             requireValue(
                 semicolon,
                 `Semicolon expected after key in map property assignment`,
             )
-            const value: ConstValue = parseValue()
+            const _value: ConstValue | null = parseValue()
+            const value: ConstValue = requireValue(_value, '')
 
             properties.push(
                 creataePropertyAssignment(key, value, {
@@ -916,7 +1014,10 @@ export function createParser(
     function readListValues(): Array<ConstValue> {
         const elements: Array<ConstValue> = []
         while (true) {
-            elements.push(parseValue())
+            const value: ConstValue | null = parseValue()
+            if (value !== null) {
+                elements.push(value)
+            }
 
             if (check(SyntaxType.CommaToken, SyntaxType.SemicolonToken)) {
                 advance()
@@ -934,7 +1035,7 @@ export function createParser(
 
     // FunctionType → FieldType | 'void'
     function parseFunctionType(): FunctionType {
-        const typeToken: Token = consume(SyntaxType.VoidKeyword)
+        const typeToken: Token | null = consume(SyntaxType.VoidKeyword)
         if (typeToken !== null) {
             return {
                 type: SyntaxType.VoidKeyword,
@@ -981,25 +1082,33 @@ export function createParser(
                 )
 
             default:
-                reportError(`FieldType expected but found: ${typeToken.type}`)
+                throw reportError(
+                    `FieldType expected but found: ${typeToken.type}`,
+                )
         }
     }
 
     // MapType → 'map' CppType? '<' FieldType ',' FieldType '>'
     function parseMapType(): MapType {
-        const openBracket: Token = consume(SyntaxType.LessThanToken)
-        requireValue(openBracket, `Map needs to defined contained types`)
+        const _openBracket: Token | null = consume(SyntaxType.LessThanToken)
+        const openBracket: Token = requireValue(
+            _openBracket,
+            `Map needs to defined contained types`,
+        )
 
         const keyType: FieldType = parseFieldType()
-        const commaToken: Token = consume(SyntaxType.CommaToken)
-        requireValue(
-            commaToken,
+        const _commaToken: Token | null = consume(SyntaxType.CommaToken)
+        const commaToken: Token = requireValue(
+            _commaToken,
             `Comma expected to separate map types <key, value>`,
         )
 
         const valueType: FieldType = parseFieldType()
-        const closeBracket: Token = consume(SyntaxType.GreaterThanToken)
-        requireValue(closeBracket, `Map needs to defined contained types`)
+        const _closeBracket: Token | null = consume(SyntaxType.GreaterThanToken)
+        const closeBracket: Token = requireValue(
+            _closeBracket,
+            `Map needs to defined contained types`,
+        )
 
         const location: TextLocation = {
             start: openBracket.loc.start,
@@ -1016,12 +1125,18 @@ export function createParser(
 
     // SetType → 'set' CppType? '<' FieldType '>'
     function parseSetType(): SetType {
-        const openBracket: Token = consume(SyntaxType.LessThanToken)
-        requireValue(openBracket, `Map needs to defined contained types`)
+        const _openBracket: Token | null = consume(SyntaxType.LessThanToken)
+        const openBracket: Token = requireValue(
+            _openBracket,
+            `Map needs to defined contained types`,
+        )
 
         const valueType: FieldType = parseFieldType()
-        const closeBracket: Token = consume(SyntaxType.GreaterThanToken)
-        requireValue(closeBracket, `Map needs to defined contained types`)
+        const _closeBracket: Token | null = consume(SyntaxType.GreaterThanToken)
+        const closeBracket: Token = requireValue(
+            _closeBracket,
+            `Map needs to defined contained types`,
+        )
 
         return {
             type: SyntaxType.SetType,
@@ -1036,12 +1151,18 @@ export function createParser(
 
     // ListType → 'list' '<' FieldType '>' CppType?
     function parseListType(): ListType {
-        const openBracket: Token = consume(SyntaxType.LessThanToken)
-        requireValue(openBracket, `Map needs to defined contained types`)
+        const _openBracket: Token | null = consume(SyntaxType.LessThanToken)
+        const openBracket: Token = requireValue(
+            _openBracket,
+            `Map needs to defined contained types`,
+        )
 
         const valueType: FieldType = parseFieldType()
-        const closeBracket: Token = consume(SyntaxType.GreaterThanToken)
-        requireValue(closeBracket, `Map needs to defined contained types`)
+        const _closeBracket: Token | null = consume(SyntaxType.GreaterThanToken)
+        const closeBracket: Token = requireValue(
+            _closeBracket,
+            `Map needs to defined contained types`,
+        )
 
         return {
             type: SyntaxType.ListType,
@@ -1118,7 +1239,7 @@ export function createParser(
     }
 
     // requireToken the current token to match given type and advance, otherwise return null
-    function consume(...types: Array<SyntaxType>): Token {
+    function consume(...types: Array<SyntaxType>): Token | null {
         for (const type of types) {
             if (check(type)) {
                 return advance()
@@ -1150,17 +1271,17 @@ export function createParser(
         return current
     }
 
-    function reportError(msg: string): void {
-        throw new ParseError(msg, previousToken().loc)
+    function reportError(msg: string): Error {
+        return new ParseError(msg, previousToken().loc)
     }
 
     // Throw if the given value doesn't exist.
-    function requireValue<T>(val: T, msg: string): T {
+    function requireValue<T>(val: T | null, msg: string): T {
         if (val === null || val === undefined) {
-            reportError(msg)
+            throw reportError(msg)
+        } else {
+            return val
         }
-
-        return val
     }
 
     return {
