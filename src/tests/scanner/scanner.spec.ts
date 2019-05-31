@@ -5,11 +5,19 @@ import { createScanner, Scanner } from '../../main/scanner'
 import { Token } from '../../main/types'
 
 function loadSource(name: string): string {
-    return fs.readFileSync(path.join(__dirname, `./fixtures/${name}.txt`), 'utf-8')
+    return fs.readFileSync(
+        path.join(__dirname, `./fixtures/${name}.txt`),
+        'utf-8',
+    )
 }
 
 function loadSolution(name: string): object {
-    return JSON.parse(fs.readFileSync(path.join(__dirname, `./solutions/${name}.solution.json`), 'utf-8'))
+    return JSON.parse(
+        fs.readFileSync(
+            path.join(__dirname, `./solutions/${name}.solution.json`),
+            'utf-8',
+        ),
+    )
 }
 
 describe('Scanner', () => {
