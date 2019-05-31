@@ -26,6 +26,7 @@
     "prebuild": "npm run clean && npm run lint && npm run format",
     "build": "tsc",
     "test:cli": "ts-node ./src/main/bin/index.ts ./fixtures/errors.thrift",
+    "pretest": "npm run build",
     "test": "npm run lint && NODE_ENV=test mocha --opts mocha.opts",
     "coverage": "NODE_ENV=test nyc mocha --opts mocha.cover.opts",
     "release:patch": "npm version patch && npm run release:publish",
