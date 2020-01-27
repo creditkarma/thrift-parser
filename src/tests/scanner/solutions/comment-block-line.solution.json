@@ -1,7 +1,7 @@
 [
     {
         "type": "CommentBlock",
-        "text": "This is a struct\nit does things",
+        "text": "This is a nice comment",
         "loc": {
             "start": {
                 "line": 1,
@@ -9,9 +9,9 @@
                 "index": 0
             },
             "end": {
-                "line": 3,
-                "column": 4,
-                "index": 41
+                "line": 1,
+                "column": 29,
+                "index": 28
             }
         }
     },
@@ -20,14 +20,14 @@
         "text": "",
         "loc": {
             "start": {
-                "line": 3,
-                "column": 4,
-                "index": 42
+                "line": 1,
+                "column": 29,
+                "index": 29
             },
             "end": {
-                "line": 4,
+                "line": 2,
                 "column": 1,
-                "index": 42
+                "index": 29
             }
         }
     }

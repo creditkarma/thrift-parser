@@ -308,45 +308,36 @@ export function createScanner(
     function multilineComment(): void {
         let comment: string = ''
         let cursor: number = 0
+        let isNewLine = true
+
+        // Skip first two characters: '/' and '*'
+        advance()
+        advance()
 
         while (true) {
-            if (
-                current() === '\n' ||
-                isAtEnd() ||
-                (current() !== '/' && current() !== '*' && current() !== ' ')
-            ) {
-                break
-            } else {
+            // A comment goes until we find a comment terminator (*/).
+            if ((current() === '*' && peek() === '/') || isAtEnd()) {
                 advance()
-            }
-        }
-
-        while (true) {
-            if (current() === '\n') {
-                nextLine()
+                break
             }
 
-            if (
-                comment.charAt(cursor - 1) === '\n' &&
-                (peek() === ' ' || peek() === '*')
-            ) {
+            if (isNewLine && (current() === ' ' || current() === '*')) {
                 /**
                  * We ignore stars and spaces after a new line to normalize comment formatting.
                  * We're only keeping the text of the comment without the extranious formatting.
                  */
             } else {
+                isNewLine = false
                 comment += current()
                 cursor += 1
             }
 
-            advance()
-
-            // A comment goes until we find a comment terminator (*/).
-            if ((peek() === '*' && peekNext() === '/') || isAtEnd()) {
-                advance()
-                advance()
-                break
+            if (current() === '\n') {
+                isNewLine = true
+                nextLine()
             }
+
+            advance()
         }
 
         addToken(SyntaxType.CommentBlock, comment.trim())

@@ -21,6 +21,14 @@ function loadSolution(name: string): object {
     )
 }
 
+function saveSolution(fileName: string, obj: any) {
+    fs.writeFileSync(
+        path.join(__dirname, `./solutions/${fileName}.solution.json`),
+        JSON.stringify(obj, null, 4),
+        'utf-8',
+    )
+}
+
 function objectify(thrift: ThriftDocument): object {
     return JSON.parse(JSON.stringify(thrift))
 }
@@ -410,6 +418,19 @@ describe('Parser', () => {
         const thrift: ThriftDocument = parser.parse()
 
         const expected: any = loadSolution('comments-mapping')
+
+        assert.deepEqual(objectify(thrift), expected)
+    })
+
+    it('should correctly handle empty block comments', () => {
+        const content: string = loadSource('empty-comments')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const parser: Parser = createParser(tokens)
+        const thrift: ThriftDocument = parser.parse()
+
+        const expected: any = loadSolution('empty-comments')
 
         assert.deepEqual(objectify(thrift), expected)
     })
