@@ -22,6 +22,7 @@ import {
     ListType,
     MapType,
     NamespaceDefinition,
+    NamespaceScope,
     ParametersDefinition,
     PropertyAssignment,
     ServiceDefinition,
@@ -53,6 +54,7 @@ import {
     createIntegerLiteral,
     createKeywordFieldType,
     createMapFieldType,
+    createNamespaceScope,
     createParseError,
     createStringLiteral,
     createTextLocation,
@@ -394,6 +396,23 @@ export function createParser(
         return null
     }
 
+    // NamespaceScope → '*' | Identifier
+    function parseNamespaceScope(): NamespaceScope {
+        if (currentToken().type === SyntaxType.StarToken) {
+            const loc = currentToken().loc
+            advance()
+            return createNamespaceScope('*', loc)
+        }
+
+        const _scopeToken: Token | null = consume(SyntaxType.Identifier)
+        const scopeToken: Token = requireValue(
+            _scopeToken,
+            `Unable to find scope identifier for namespace`,
+        )
+
+        return createNamespaceScope(scopeToken.text, scopeToken.loc)
+    }
+
     // Namespace → 'namespace' ( NamespaceScope Identifier )
     function parseNamespace(): NamespaceDefinition {
         const _keywordToken: Token | null = consume(SyntaxType.NamespaceKeyword)
@@ -401,11 +420,8 @@ export function createParser(
             _keywordToken,
             `'namespace' keyword expected`,
         )
-        const _scopeToken: Token | null = consume(SyntaxType.Identifier)
-        const scopeToken: Token = requireValue(
-            _scopeToken,
-            `Unable to find scope identifier for namespace`,
-        )
+
+        const scope: NamespaceScope = parseNamespaceScope()
 
         const _nameToken: Token | null = consume(SyntaxType.Identifier)
         const nameToken: Token = requireValue(
@@ -415,7 +431,7 @@ export function createParser(
 
         return {
             type: SyntaxType.NamespaceDefinition,
-            scope: createIdentifier(scopeToken.text, scopeToken.loc),
+            scope,
             name: createIdentifier(nameToken.text, nameToken.loc),
             comments: getComments(),
             loc: createTextLocation(keywordToken.loc.start, nameToken.loc.end),
