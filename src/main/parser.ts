@@ -536,6 +536,8 @@ export function createParser(
 
         const annotations: Annotations | undefined = parseAnnotations()
 
+        readListSeparator()
+
         return {
             type: SyntaxType.TypedefDefinition,
             name: createIdentifier(nameToken.text, nameToken.loc),

@@ -151,6 +151,16 @@ describe('Scanner', () => {
         assert.deepEqual(tokens, expected)
     })
 
+    it('should allow trailing semicolon in const and typedef', () => {
+        const content = loadSource('trailing-semi-colon')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const expected: any = loadSolution('trailing-semi-colon')
+
+        assert.deepEqual(tokens, expected)
+    })
+
     it('should correctly handle assignment to a negative number', () => {
         const content = loadSource('const-number')
         const scanner: Scanner = createScanner(content)
