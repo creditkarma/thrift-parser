@@ -42,15 +42,15 @@
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^8.0.24",
+    "@types/node": "^16.11.34",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
-    "prettier": "^1.16.4",
+    "prettier": "^2.6.0",
     "rimraf": "^2.6.2",
     "ts-node": "^8.0.1",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.15.0",
     "tslint-plugin-prettier": "^2.0.0",
-    "typescript": "3.4.x"
+    "typescript": "4.6.x"
   }
 }

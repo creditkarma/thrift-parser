@@ -81,7 +81,7 @@ export function createScanner(
                 startLine = line
                 startColumn = column
                 scanToken()
-            } catch (e) {
+            } catch (e: any) {
                 report(createScanError(e.message, e.loc))
             }
         }
