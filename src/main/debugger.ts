@@ -99,19 +99,17 @@ export function createDebugger(source: string): Debugger {
                 `Parse Failure: ${formattedErrors.length} errors found:`,
             )
             console.log()
-            formattedErrors.forEach(
-                (err: FormattedError): void => {
-                    const prefix: string = `${err.line} | `
+            formattedErrors.forEach((err: FormattedError): void => {
+                const prefix: string = `${err.line} | `
 
-                    console.log()
-                    console.log(`${errorType(err.type)}\n`)
-                    console.log(`Message: ${err.message}`)
-                    console.log()
-                    console.log(`${prefix}${err.sourceLine}`)
-                    console.log(padStart(prefix.length, err.locIndicator))
-                    console.log()
-                },
-            )
+                console.log()
+                console.log(`${errorType(err.type)}\n`)
+                console.log(`Message: ${err.message}`)
+                console.log()
+                console.log(`${prefix}${err.sourceLine}`)
+                console.log(padStart(prefix.length, err.locIndicator))
+                console.log()
+            })
         },
     }
 }

@@ -113,7 +113,7 @@ export function createParser(
                 if (statement !== null) {
                     thrift.body.push(statement)
                 }
-            } catch (e) {
+            } catch (e: any) {
                 report(createParseError(e.message, e.loc))
             }
         }
