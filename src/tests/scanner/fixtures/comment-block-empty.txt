@@ -1,0 +1,18 @@
+// This service does nothing
+/*
+ * This is a multi-line
+ * comment for testing
+ */
+/*
+Another muliti-line
+comment for testing
+*/
+/*
+*/
+/**/
+/* */
+/** */
+/**
+ *
+ */
+const string test = 'test'

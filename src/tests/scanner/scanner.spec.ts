@@ -20,6 +20,14 @@ function loadSolution(name: string): object {
     )
 }
 
+function saveSolution(fileName: string, obj: any) {
+    fs.writeFileSync(
+        path.join(__dirname, `./solutions/${fileName}.solution.json`),
+        JSON.stringify(obj, null, 4),
+        'utf-8',
+    )
+}
+
 describe('Scanner', () => {
     it('should correctly recognize floats', () => {
         const content = loadSource('floats')
@@ -137,6 +145,26 @@ describe('Scanner', () => {
         const tokens: Array<Token> = scanner.scan()
 
         const expected: any = loadSolution('comment-block')
+
+        assert.deepEqual(tokens, expected)
+    })
+
+    it(`should correctly handle single-line comments with '/* ... */'`, () => {
+        const content: string = loadSource('comment-block-line')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const expected: any = loadSolution('comment-block-line')
+
+        assert.deepEqual(tokens, expected)
+    })
+
+    it(`should correctly handle complex empty block comments`, () => {
+        const content: string = loadSource('comment-block-empty')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const expected: any = loadSolution('comment-block-empty')
 
         assert.deepEqual(tokens, expected)
     })
