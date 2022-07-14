@@ -112,8 +112,12 @@ export function createScanner(
                 nextLine()
                 break
 
+            case '*':
+                addToken(SyntaxType.StarToken)
+                break
+
             case '&':
-                // Thirft supports (undocumented by the grammar) a syntax for c-style pointers
+                // Thrift supports (undocumented by the grammar) a syntax for c-style pointers
                 // Pointers are indicated by the '&' token. As these are not relevant to JavaScript we
                 // drop them here. This may not be the best thing to do, perhaps should leave them in
                 // the parse tree and allow consumers to deal.

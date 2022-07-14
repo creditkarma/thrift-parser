@@ -4,7 +4,7 @@
         {
             "type": "NamespaceDefinition",
             "scope": {
-                "type": "Identifier",
+                "type": "NamespaceScope",
                 "value": "js",
                 "loc": {
                     "start": {
@@ -52,7 +52,7 @@
         {
             "type": "NamespaceDefinition",
             "scope": {
-                "type": "Identifier",
+                "type": "NamespaceScope",
                 "value": "js.ts",
                 "loc": {
                     "start": {
@@ -94,6 +94,54 @@
                     "line": 2,
                     "column": 21,
                     "index": 38
+                }
+            }
+        },
+        {
+            "type": "NamespaceDefinition",
+            "scope": {
+                "type": "NamespaceScope",
+                "value": "*",
+                "loc": {
+                    "start": {
+                        "line": 3,
+                        "column": 11,
+                        "index": 49
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 12,
+                        "index": 50
+                    }
+                }
+            },
+            "name": {
+                "type": "Identifier",
+                "value": "test",
+                "loc": {
+                    "start": {
+                        "line": 3,
+                        "column": 13,
+                        "index": 51
+                    },
+                    "end": {
+                        "line": 3,
+                        "column": 17,
+                        "index": 55
+                    }
+                }
+            },
+            "comments": [],
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 1,
+                    "index": 39
+                },
+                "end": {
+                    "line": 3,
+                    "column": 17,
+                    "index": 55
                 }
             }
         }

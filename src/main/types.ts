@@ -149,7 +149,7 @@ export type ConstValue =
 
 export interface NamespaceDefinition extends PrimarySyntax {
     type: SyntaxType.NamespaceDefinition
-    scope: Identifier
+    scope: NamespaceScope
     name: Identifier
 }
 
@@ -318,6 +318,11 @@ export interface Identifier extends SyntaxNode {
     annotations?: Annotations
 }
 
+export interface NamespaceScope extends SyntaxNode {
+    type: SyntaxType.NamespaceScope
+    value: string
+}
+
 export enum ErrorType {
     ParseError = 'ParseError',
     ScanError = 'ScanError',
@@ -328,6 +333,7 @@ export enum SyntaxType {
     ThriftErrors = 'ThriftErrors',
 
     Identifier = 'Identifier',
+    NamespaceScope = 'NamespaceScope',
     FieldID = 'FieldID',
 
     // Statements

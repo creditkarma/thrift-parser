@@ -22,6 +22,7 @@ import {
     KeywordType,
     ListType,
     MapType,
+    NamespaceScope,
     ParseError,
     PropertyAssignment,
     ScanError,
@@ -82,6 +83,13 @@ export function createIdentifier(
     annotations?: Annotations,
 ): Identifier {
     return { type: SyntaxType.Identifier, value, loc, annotations }
+}
+
+export function createNamespaceScope(
+    value: string,
+    loc: TextLocation,
+): NamespaceScope {
+    return { type: SyntaxType.NamespaceScope, value, loc }
 }
 
 export function creataePropertyAssignment(
