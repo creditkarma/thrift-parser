@@ -1003,7 +1003,9 @@ export function createParser(
                 if (check(SyntaxType.RightBraceToken)) {
                     break
                 }
-            } else {
+            } else if (
+                !check(SyntaxType.StringLiteral, SyntaxType.Identifier)
+            ) {
                 break
             }
         }
