@@ -39,7 +39,6 @@ import {
 } from './types'
 
 import {
-    creataePropertyAssignment,
     createBooleanLiteral,
     createConstList,
     createConstMap,
@@ -54,6 +53,7 @@ import {
     createKeywordFieldType,
     createMapFieldType,
     createParseError,
+    createPropertyAssignment,
     createStringLiteral,
     createTextLocation,
 } from './factory'
@@ -990,7 +990,7 @@ export function createParser(
             const value: ConstValue = requireValue(_value, '')
 
             properties.push(
-                creataePropertyAssignment(key, value, {
+                createPropertyAssignment(key, value, {
                     start: key.loc.start,
                     end: value.loc.end,
                 }),
