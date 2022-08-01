@@ -84,7 +84,7 @@ export function createIdentifier(
     return { type: SyntaxType.Identifier, value, loc, annotations }
 }
 
-export function creataePropertyAssignment(
+export function createPropertyAssignment(
     name: ConstValue,
     initializer: ConstValue,
     loc: TextLocation,
