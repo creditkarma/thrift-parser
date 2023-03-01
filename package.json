@@ -44,7 +44,7 @@
     "@types/mocha": "^5.2.5",
     "@types/node": "^16.11.34",
     "chai": "^4.2.0",
-    "mocha": "^5.2.0",
+    "mocha": "^10.2.0",
     "prettier": "^2.6.0",
     "rimraf": "^2.6.2",
     "ts-node": "^8.0.1",
