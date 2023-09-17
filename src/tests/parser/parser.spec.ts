@@ -128,6 +128,19 @@ describe('Parser', () => {
         assert.deepEqual(objectify(thrift), expected)
     })
 
+    it('should correctly parse the syntax of an cpp_include', () => {
+        const content: string = loadSource('cpp_include')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const parser: Parser = createParser(tokens)
+        const thrift: ThriftDocument = parser.parse()
+
+        const expected: any = loadSolution('cpp_include')
+
+        assert.deepEqual(objectify(thrift), expected)
+    })
+
     it('should correctly parse the syntax of a namespace definition', () => {
         const content: string = loadSource('namespace')
         const scanner: Scanner = createScanner(content)
