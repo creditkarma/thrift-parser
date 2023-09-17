@@ -6,6 +6,7 @@ import {
     ConstList,
     ConstMap,
     ConstValue,
+    CppIncludeDefinition,
     DoubleConstant,
     EnumDefinition,
     EnumMember,
@@ -69,6 +70,7 @@ function isStatementBeginning(token: Token): boolean {
     switch (token.type) {
         case SyntaxType.NamespaceKeyword:
         case SyntaxType.IncludeKeyword:
+        case SyntaxType.CppIncludeDefinition:
         case SyntaxType.ConstKeyword:
         case SyntaxType.StructKeyword:
         case SyntaxType.UnionKeyword:
@@ -139,6 +141,9 @@ export function createParser(
             case SyntaxType.IncludeKeyword:
                 return parseInclude()
 
+            case SyntaxType.CppIncludeKeyword:
+                return parseCppInclude()
+
             case SyntaxType.ConstKeyword:
                 return parseConst()
 
@@ -187,6 +192,26 @@ export function createParser(
 
         return {
             type: SyntaxType.IncludeDefinition,
+            path: createStringLiteral(pathToken.text, pathToken.loc),
+            comments: getComments(),
+            loc: createTextLocation(keywordToken.loc.start, pathToken.loc.end),
+        }
+    }
+
+    function parseCppInclude(): CppIncludeDefinition {
+        const _keywordToken: Token | null = consume(SyntaxType.CppIncludeKeyword)
+        const keywordToken = requireValue(
+            _keywordToken,
+            `'cpp_include' keyword expected`,
+        )
+        const _pathToken: Token | null = consume(SyntaxType.StringLiteral)
+        const pathToken = requireValue(
+            _pathToken,
+            `Cpp include statement must include a path as string literal`,
+        )
+
+        return {
+            type: SyntaxType.CppIncludeDefinition,
             path: createStringLiteral(pathToken.text, pathToken.loc),
             comments: getComments(),
             loc: createTextLocation(keywordToken.loc.start, pathToken.loc.end),

@@ -1,5 +1,6 @@
 import {
     ConstDefinition,
+    CppIncludeDefinition,
     EnumDefinition,
     ExceptionDefinition,
     IncludeDefinition,
@@ -15,6 +16,7 @@ import {
 export function organize(raw: ThriftDocument): ThriftDocument {
     const namespaces: Array<NamespaceDefinition> = []
     const includes: Array<IncludeDefinition> = []
+    const cppIncludes: Array<CppIncludeDefinition> = []
     const constants: Array<ConstDefinition> = []
     const enums: Array<EnumDefinition> = []
     const typedefs: Array<TypedefDefinition> = []
@@ -31,6 +33,10 @@ export function organize(raw: ThriftDocument): ThriftDocument {
 
             case SyntaxType.IncludeDefinition:
                 includes.push(next)
+                break
+
+            case SyntaxType.CppIncludeDefinition:
+                cppIncludes.push(next)
                 break
 
             case SyntaxType.CppIncludeDefinition:
@@ -76,6 +82,7 @@ export function organize(raw: ThriftDocument): ThriftDocument {
         body: [
             ...namespaces,
             ...includes,
+            ...cppIncludes,
             ...enums,
             ...typedefs,
             ...constants,
