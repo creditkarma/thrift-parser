@@ -154,6 +154,19 @@ describe('Parser', () => {
         assert.deepEqual(objectify(thrift), expected)
     })
 
+    it('should correctly parse the consts and typedefs with trailing-comma', () => {
+        const content: string = loadSource('trailing-semi-colon')
+        const scanner: Scanner = createScanner(content)
+        const tokens: Array<Token> = scanner.scan()
+
+        const parser: Parser = createParser(tokens)
+        const thrift: ThriftDocument = parser.parse()
+
+        const expected: any = loadSolution('trailing-semi-colon')
+
+        assert.deepEqual(objectify(thrift), expected)
+    })
+
     it('should correctly parse the syntax of an exception', () => {
         const content: string = loadSource('exception')
         const scanner: Scanner = createScanner(content)
